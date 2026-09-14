@@ -93,6 +93,24 @@ cor e tipografia e os padrões de cabeçalho/rodapé definidos em
 Campos entre colchetes (`[_____]`, `[nome completo]` etc.) são placeholders
 a preencher por quem emite o documento ou por integração de dados.
 
+O conjunto completo de cláusulas padrão do contrato de compra e venda
+(conteúdo jurídico, não layout) está em [`../Cont_venda.md`](../Cont_venda.md),
+na raiz do repositório — é o documento-parâmetro para montar qualquer
+contrato de venda a partir do modelo `contrato-compra-venda.html`.
+
+## Ferramentas
+
+| Ferramenta | Arquivo |
+|---|---|
+| Minuta de compra e venda — formulário que gera o contrato em PDF e Word | [`ferramentas/minuta-compra-venda.html`](./ferramentas/minuta-compra-venda.html) |
+
+A minuta é uma página autocontida: coleta os dados da transação, confere a
+composição do preço contra o valor total, monta as cláusulas de
+[`../Cont_venda.md`](../Cont_venda.md) e exporta o contrato pronto para
+assinatura. Publicada como artefato no claude.ai, usa a capacidade
+`downloads` para entregar os arquivos; aberta como arquivo local, o
+formulário e a pré-visualização funcionam, mas a exportação não.
+
 ### Dados institucionais fixos
 
 Usados em todos os modelos de papelaria:
