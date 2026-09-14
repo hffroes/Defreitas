@@ -92,6 +92,9 @@ legend{padding:0}
 .toggle b{color:var(--ink);font-weight:500}
 .cond{padding-left:14px;border-left:2px solid var(--rule)}
 .cond[hidden]{display:none}
+/* tracejado: acréscimo opcional à seção, não campo obrigatório dela */
+.toggle.obs{margin-top:16px;border-style:dashed;background:none}
+.toggle.obs:has(input:checked){border-style:solid;background:var(--panel)}
 
 /* modalidade de pagamento */
 .modos{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
@@ -218,7 +221,7 @@ button{font-family:var(--sans);cursor:pointer;border-radius:2px}
   <div class="grid">
     <form id="form" autocomplete="off">
 
-      <fieldset>
+      <fieldset data-obs="contrato">
         <div class="sec-head"><span class="sec-num">01</span><legend class="sec-title">Identificação do contrato</legend></div>
         <div class="row r3">
           <div class="f"><label for="num">Número</label><input class="mono" id="num" placeholder="001/2026"></div>
@@ -232,7 +235,7 @@ button{font-family:var(--sans);cursor:pointer;border-radius:2px}
         </div>
       </fieldset>
 
-      <fieldset>
+      <fieldset data-obs="vendedora">
         <div class="sec-head"><span class="sec-num">02</span><legend class="sec-title">Vendedora</legend>
           <span class="sec-note">dados fixos</span></div>
         <div class="locked">
@@ -255,14 +258,14 @@ button{font-family:var(--sans);cursor:pointer;border-radius:2px}
         </div>
       </fieldset>
 
-      <fieldset>
+      <fieldset data-obs="comprador">
         <div class="sec-head"><span class="sec-num">03</span><legend class="sec-title">Comprador(es)</legend>
           <span class="sec-note" id="cnt-compradores"></span></div>
         <div id="compradores"></div>
         <button type="button" class="btn-ghost" id="btn-add-comprador">+ Adicionar comprador</button>
       </fieldset>
 
-      <fieldset>
+      <fieldset data-obs="imovel">
         <div class="sec-head"><span class="sec-num">04</span><legend class="sec-title">Imóvel</legend></div>
         <div class="row r21">
           <div class="f"><label for="imovelTipo">Tipo e identificação</label><input id="imovelTipo" placeholder="Apartamento nº 1002"></div>
@@ -294,7 +297,7 @@ button{font-family:var(--sans);cursor:pointer;border-radius:2px}
         </div>
       </fieldset>
 
-      <fieldset>
+      <fieldset data-obs="preco">
         <div class="sec-head"><span class="sec-num">05</span><legend class="sec-title">Preço e pagamento</legend></div>
         <div class="row r21">
           <div class="f"><label for="preco">Valor total</label><input class="mono" id="preco" inputmode="decimal" placeholder="R$ 0,00">
@@ -383,7 +386,7 @@ button{font-family:var(--sans);cursor:pointer;border-radius:2px}
           <input type="checkbox" id="temFin">
           <span><b>Parte do preço será quitada por financiamento</b> imobiliário</span>
         </label>
-        <div class="cond" id="box-fin" hidden>
+        <div class="cond" id="box-fin" data-obs="financiamento" hidden>
           <div class="row r3">
             <div class="f"><label for="finBanco">Instituição financeira</label><input id="finBanco" placeholder="Caixa Econômica Federal"></div>
             <div class="f"><label for="finValor">Valor financiado</label><input class="mono" id="finValor" inputmode="decimal" placeholder="R$ 0,00"></div>
@@ -392,7 +395,7 @@ button{font-family:var(--sans);cursor:pointer;border-radius:2px}
         </div>
       </fieldset>
 
-      <fieldset>
+      <fieldset data-obs="entrega">
         <div class="sec-head"><span class="sec-num">07</span><legend class="sec-title">Entrega e garantia</legend></div>
         <div class="row r2">
           <div class="f"><label for="entregaModo">Entrega das chaves</label>
@@ -414,7 +417,7 @@ button{font-family:var(--sans);cursor:pointer;border-radius:2px}
         </div>
       </fieldset>
 
-      <fieldset>
+      <fieldset data-obs="mora">
         <div class="sec-head"><span class="sec-num">08</span><legend class="sec-title">Mora, rescisão e testemunhas</legend></div>
         <div class="row r3">
           <div class="f"><label for="moraDias">Atraso que autoriza notificação</label><input class="mono" id="moraDias" inputmode="numeric" placeholder="30"><span class="hint">dias</span></div>
@@ -621,6 +624,61 @@ const VAZIO={
   moraDias:'30', moraParcelas:'3', penal:'20', restituicaoPrazo:'30',
   test1Nome:'', test1Cpf:'', test2Nome:'', test2Cpf:''
 };
+
+/* Variações acordadas na negociação: cada seção do formulário deposita a sua
+   na cláusula que a governa, e não num apanhado geral no fim do contrato. */
+const SECOES_OBS=[
+  {k:'contrato',rotulo:'Observações sobre o contrato',onde:'nas disposições gerais',
+   exemplo:'Ex.: este contrato substitui a proposta assinada em 12/03/2026, que fica sem efeito.'},
+  {k:'vendedora',rotulo:'Observações sobre a vendedora',onde:'na cláusula de identificação das partes',
+   exemplo:'Ex.: a representação se dá por procuração pública lavrada em 02/02/2026.'},
+  {k:'comprador',rotulo:'Observações sobre o comprador',onde:'na cláusula de identificação das partes',
+   exemplo:'Ex.: o comprador adquire o imóvel com recursos próprios e saldo de FGTS.'},
+  {k:'imovel',rotulo:'Observações sobre o imóvel',onde:'na cláusula do objeto',
+   exemplo:'Ex.: o imóvel é entregue com os armários da cozinha e o ar-condicionado da suíte.'},
+  {k:'preco',rotulo:'Observações sobre o preço e o pagamento',onde:'na cláusula do preço e da forma de pagamento',
+   exemplo:'Ex.: a parcela de dezembro fica suspensa e é acrescida ao final do parcelamento.'},
+  {k:'financiamento',rotulo:'Observações sobre o financiamento',onde:'na cláusula do financiamento',
+   exemplo:'Ex.: a vendedora arcará com a taxa de avaliação cobrada pela instituição financeira.'},
+  {k:'entrega',rotulo:'Observações sobre entrega e garantia',onde:'na cláusula de entrega das chaves',
+   exemplo:'Ex.: a vendedora fará a pintura interna do imóvel antes da entrega das chaves.'},
+  {k:'mora',rotulo:'Observações sobre mora e rescisão',onde:'na cláusula de descumprimento e sanções',
+   exemplo:'Ex.: o primeiro atraso em cada ano não gera multa, apenas juros e correção.'}
+];
+SECOES_OBS.forEach(function(s){VAZIO['temObs_'+s.k]=false; VAZIO['obs_'+s.k]='';});
+
+function montarObs(){
+  SECOES_OBS.forEach(function(s){
+    const host=document.querySelector('[data-obs="'+s.k+'"]');
+    if(!host||document.getElementById('temObs_'+s.k)) return;
+    const wrap=document.createElement('div');
+    wrap.innerHTML=
+      '<label class="toggle obs" for="temObs_'+s.k+'">'+
+        '<input type="checkbox" id="temObs_'+s.k+'">'+
+        '<span><b>Observações e especificidades</b> — variações acordadas na negociação</span>'+
+      '</label>'+
+      '<div class="cond" id="boxObs_'+s.k+'" hidden><div class="row"><div class="f">'+
+        '<label for="obs_'+s.k+'">'+s.rotulo+'</label>'+
+        '<textarea id="obs_'+s.k+'" placeholder="'+s.exemplo+'"></textarea>'+
+        '<span class="hint">Entra no contrato como condição específica '+s.onde+'.</span>'+
+      '</div></div></div>';
+    while(wrap.firstChild) host.appendChild(wrap.firstChild);
+  });
+}
+function aplicarObs(d){
+  SECOES_OBS.forEach(function(s){
+    const box=document.getElementById('boxObs_'+s.k);
+    if(box) box.hidden=!d['temObs_'+s.k];
+  });
+}
+function blocosObs(d,chave){
+  if(!d['temObs_'+chave]) return [];
+  const linhas=String(d['obs_'+chave]||'').split(/\n+/)
+    .map(function(l){return l.trim();}).filter(Boolean);
+  return linhas.map(function(l,i){
+    return {t:'pi',text:(i===0?'Condição específica acordada entre as partes: ':'')+l};
+  });
+}
 
 const CAMPOS=Object.keys(VAZIO).filter(function(k){return k!=='compradores'&&k!=='modo';});
 const CAMPOS_COMPRADOR=['nome','nacionalidade','estadoCivil','profissao','cpf','rg','endereco','email',
@@ -879,6 +937,7 @@ function construirDoc(d){
   const enderecoCheio=[ou(d.imovelEndereco,'[endereço]'),ou(d.imovelBairro,'[bairro]'),cidadeImovel,
     String(d.imovelCep||'').trim()?'CEP '+d.imovelCep.trim():''].filter(Boolean).join(', ');
 
+  const obs=function(k){blocosObs(d,k).forEach(function(b){B.push(b);});};
   B.push({t:'title',text:'CONTRATO PARTICULAR DE COMPRA E VENDA DE IMÓVEL'});
 
   /* --- quadro-resumo --- */
@@ -935,11 +994,13 @@ function construirDoc(d){
   if(String(d.repRg||'').trim()) vend+=', portador(a) do RG nº '+d.repRg.trim();
   vend+=', doravante denominada VENDEDORA, legítima proprietária do imóvel adiante identificado; e, de outro lado,';
   B.push({t:'p',text:vend});
+  obs('vendedora');
   cs.forEach(function(c,i){
     B.push({t:'p',text:(plural?'COMPRADOR '+(i+1)+': ':'COMPRADOR(A): ')+qualificaComprador(c)+
       (i===cs.length-1?', doravante denominado(a) '+COMP+'.':';')});
   });
   B.push({t:'p',text:'As partes acima qualificadas têm entre si justo e contratado o presente Contrato de Compra e Venda de Imóvel, que se regerá pelas cláusulas seguintes e, subsidiariamente, pela legislação civil e consumerista aplicável.'});
+  obs('comprador');
 
   /* --- objeto --- */
   B.push({t:'h',text:'II — DO OBJETO'});
@@ -951,6 +1012,7 @@ function construirDoc(d){
     ', do qual a VENDEDORA é legítima proprietária, livre e desembaraçado de quaisquer ônus reais ou pessoais.';
   B.push({t:'p',text:obj});
   B.push({t:'pi',text:'Parágrafo único — A venda é realizada ad corpus, considerando-se o imóvel em sua descrição e não em sua exata medida, ressalvada divergência de área superior a um vigésimo, nos termos do art. 500 do Código Civil.'});
+  obs('imovel');
 
   /* --- preço --- */
   B.push({t:'h',text:'III — DO PREÇO E DA FORMA DE PAGAMENTO'});
@@ -1024,6 +1086,7 @@ function construirDoc(d){
     B.push({t:'pi',text:'Parágrafo primeiro — As obrigações de pagamento aqui previstas não se sujeitam a qualquer condição além das expressamente estipuladas neste contrato, sendo devidas nos prazos ajustados independentemente de aviso ou notificação prévia da VENDEDORA.'});
     B.push({t:'pi',text:'Parágrafo segundo — É assegurada ao(à) '+COMP+' a antecipação do pagamento de qualquer parcela, hipótese em que o valor será calculado pro rata die pelo índice de correção pactuado até a data do efetivo pagamento, sem incidência de qualquer penalidade. A antecipação, ainda que realizada mais de uma vez, não implica novação nem modificação dos critérios de reajuste ora estipulados.'});
   }
+  obs('preco');
 
   /* --- financiamento --- */
   if(d.temFin){
@@ -1031,6 +1094,7 @@ function construirDoc(d){
     B.push({t:'p',text:'O(A) '+COMP+' obriga-se a apresentar a '+ou(d.finBanco,'[instituição financeira]')+
       ' toda a documentação exigida no prazo de '+qtdExt(intOf(d.finPrazo)||30)+' dias contados da assinatura deste instrumento, bem como a firmar o respectivo contrato de financiamento no momento oportuno, mantendo atualizados os documentos necessários até a data da assinatura junto ao agente financeiro.'});
     B.push({t:'pi',text:'Parágrafo único — Eventual diferença entre o valor liberado pela instituição financeira e o saldo devedor, para mais ou para menos, será ajustada no valor final devido à VENDEDORA, mantendo-se inalterado o preço total do imóvel. A não aprovação do financiamento não exonera o(a) '+COMP+' da obrigação de pagar o preço ajustado.'});
+    obs('financiamento');
   }
 
   /* --- correção e mora --- */
@@ -1059,6 +1123,7 @@ function construirDoc(d){
       : 'em '+(d.entregaData?dataExtensa(d.entregaData):'[data]'))+
     ', mediante assinatura de Termo de Entrega e Vistoria, no qual serão registrados eventuais reparos a realizar.'});
   B.push({t:'pi',text:'Parágrafo único — A entrega fica condicionada à quitação integral de todas as obrigações vencidas até a data prevista, sob pena de prorrogação automática do prazo até a purgação do débito, sem que tal prorrogação configure inadimplemento da VENDEDORA.'});
+  obs('entrega');
 
   /* --- situação do imóvel --- */
   const n7=d.temFin?'VII':'VI';
@@ -1109,6 +1174,7 @@ function construirDoc(d){
     ' em até '+qtdExt(intOf(d.restituicaoPrazo)||30)+' dias, monetariamente atualizado pelo índice pactuado.'});
   B.push({t:'pi',text:'Parágrafo segundo — Rescindido o contrato quando o(a) '+COMP+
     ' já estiver na posse do imóvel, obriga-se este(a) a devolvê-lo limpo e em perfeitas condições de uso e conservação no prazo de 30 (trinta) dias contados da notificação, sob pena de reintegração de posse nos termos dos arts. 1.210 e 1.212 do Código Civil, respondendo ainda por 0,5% (cinco décimos por cento) ao mês sobre o valor do imóvel, a título de compensação pelo uso.'});
+  obs('mora');
 
   /* --- evicção --- */
   const n12=d.temFin?'XII':'XI';
@@ -1143,6 +1209,7 @@ function construirDoc(d){
   B.push({t:'h',text:ROM[prox]+' — DAS DISPOSIÇÕES GERAIS'});
   B.push({t:'p',text:'O(A) '+COMP+' declara ter recebido a minuta deste contrato previamente à assinatura, com liberdade para se assessorar por advogado(a) de sua confiança, e ter pleno conhecimento e compreensão de todas as suas cláusulas e condições, nos termos do art. 46 da Lei nº 8.078/1990, bem como que as obrigações ora assumidas são compatíveis com a sua capacidade econômico-financeira.'});
   B.push({t:'pi',text:'Parágrafo único — Toda comunicação entre as partes relativa a este contrato poderá ser feita por escrito, inclusive por correio eletrônico, para os endereços indicados no quadro-resumo, obrigando-se ambas as partes a observar, na execução e na conclusão deste contrato, os princípios de probidade e boa-fé.'});
+  obs('contrato');
   prox++;
 
   /* --- foro --- */
@@ -1500,7 +1567,10 @@ function atualizar(){
   renderTally(d);
   const blocks=construirDoc(d);
   renderMinuta(d,blocks);
-  document.getElementById('side-meta').textContent=blocks.filter(function(b){return b.t==='h';}).length+' cláusulas';
+  const nObs=SECOES_OBS.filter(function(s){return blocosObs(d,s.k).length;}).length;
+  document.getElementById('side-meta').textContent=
+    blocks.filter(function(b){return b.t==='h';}).length+' cláusulas'+
+    (nObs?' · '+nObs+(nObs===1?' observação':' observações'):'');
   const pe=document.getElementById('preco-extenso');
   const tot=numOf(d.preco);
   pe.textContent=tot>0?extensoMoeda(tot):'';
@@ -1559,6 +1629,7 @@ document.addEventListener('input',function(ev){
   if(t.id==='imovelCep') t.value=maskCEP(t.value);
   if(t.id==='temInter') document.getElementById('box-inter').hidden=!t.checked;
   if(t.id==='temFin') document.getElementById('box-fin').hidden=!t.checked;
+  if(t.id.indexOf('temObs_')===0) document.getElementById('boxObs_'+t.id.slice(7)).hidden=!t.checked;
   agendar();
 });
 /* Moeda só é formatada ao sair do campo — digitar 900000 vale novecentos mil. */
@@ -1577,6 +1648,7 @@ document.addEventListener('change',function(ev){
   if(!t.id) return;
   if(t.id==='temInter') document.getElementById('box-inter').hidden=!t.checked;
   if(t.id==='temFin') document.getElementById('box-fin').hidden=!t.checked;
+  if(t.id.indexOf('temObs_')===0) document.getElementById('boxObs_'+t.id.slice(7)).hidden=!t.checked;
   if(t.id==='entregaModo') document.getElementById('box-entrega-data').hidden=(t.value==='quitacao');
   agendar();
 });
@@ -1634,6 +1706,7 @@ document.getElementById('btn-clear').addEventListener('click',function(){
   document.getElementById('box-fin').hidden=true;
   document.getElementById('box-entrega-data').hidden=false;
   aplicarModo(VAZIO.modo);
+  aplicarObs(VAZIO);
   document.getElementById('draft-banner').hidden=true;
   try{localStorage.removeItem(LS);}catch(e){}
   atualizar();
@@ -1644,6 +1717,7 @@ document.getElementById('btn-docx').addEventListener('click',exportarDOCX);
 
 /* ---- arranque ---- */
 (function(){
+  montarObs();
   let inicial=null, restaurado=false;
   try{
     const raw=localStorage.getItem(LS);
@@ -1655,6 +1729,7 @@ document.getElementById('btn-docx').addEventListener('click',exportarDOCX);
   document.getElementById('box-fin').hidden=!inicial.temFin;
   document.getElementById('box-entrega-data').hidden=(inicial.entregaModo==='quitacao');
   aplicarModo(inicial.modo||'parcelado');
+  aplicarObs(inicial);
   document.getElementById('draft-banner').hidden=!restaurado;
   ['repCpf','test1Cpf','test2Cpf'].forEach(validarDoc);
   CAMPOS_MOEDA.forEach(function(id){
