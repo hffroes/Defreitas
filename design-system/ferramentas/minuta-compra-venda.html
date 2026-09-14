@@ -49,6 +49,7 @@ body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
 
 .seed{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--panel);border:1px solid var(--rule);
   border-left:3px solid var(--orange);padding:10px 14px;margin-bottom:22px;font-size:13px;color:var(--ink-2)}
+.seed[hidden]{display:none}
 .seed strong{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);font-weight:500}
 
 /* ---------- grade ---------- */
@@ -208,9 +209,9 @@ button{font-family:var(--sans);cursor:pointer;border-radius:2px}
     </div>
   </header>
 
-  <div class="seed" id="seed-banner">
-    <strong>Exemplo</strong>
-    <span>Os campos vêm preenchidos com uma venda fictícia para você ver o formato. Substitua pelos dados reais.</span>
+  <div class="seed" id="draft-banner" hidden>
+    <strong>Rascunho</strong>
+    <span>Restauramos o que você tinha preenchido neste navegador.</span>
     <button type="button" class="btn-ghost" id="btn-clear" style="margin-left:auto">Limpar tudo</button>
   </div>
 
@@ -602,32 +603,6 @@ const VENDEDORA={
 };
 
 /* ===================== estado ===================== */
-const EXEMPLO={
-  num:'001/2026', cidade:'Montes Claros/MG', dataAss:'2026-09-15', dataBase:'2026-09-15', foro:'Montes Claros/MG',
-  repNome:'Marina Gonçalves de Freitas', repCargo:'sócia-administradora', repEstadoCivil:'casada',
-  repCpf:'987.654.321-00', repRg:'MG-8.765.432',
-  compradores:[{tipo:'pf',nome:'João da Silva Santos',nacionalidade:'brasileiro',estadoCivil:'casado',profissao:'empresário',
-    cpf:'529.982.247-25',rg:'MG-1.234.567',endereco:'R. Alfeu Moreira, 450, apto 301, Funcionários, Belo Horizonte/MG, CEP 30.140-071',
-    email:'joao.santos@exemplo.com.br',
-    razaoSocial:'',cnpj:'',repNome:'',repCargo:'',repCpf:''}],
-  imovelTipo:'Apartamento nº 1002', imovelArea:'135,00',
-  imovelDesc:'3 quartos sendo 1 suíte, 2 banheiros, sala de estar e jantar, cozinha, área de serviço e varanda',
-  imovelEndereco:'R. Getúlio Vargas, 1.500', imovelVagas:'1', imovelBairro:'Centro',
-  imovelCidade:'Montes Claros/MG', imovelCep:'39.400-010',
-  registroTipo:'matricula', matricula:'123.456',
-  cartorio:'1º Ofício de Registro de Imóveis de Montes Claros/MG',
-  preco:'850.000,00', indice:'IPCA', modo:'parcelado',
-  avistaData:'', sinalValor:'85.000,00', sinalData:'2026-09-15', saldoData:'2026-10-15', arrasTipo:'confirmatorias',
-  entradaValor:'170.000,00', entradaData:'2026-09-15',
-  temInter:false, interQtd:'', interValor:'', interData:'',
-  parcQtd:'12', parcValor:'42.500,00', parcData:'2026-10-15',
-  banco:'Banco Itaú (341), ag. 1234, c/c 56789-0', pix:'11.435.163/0001-13',
-  temFin:true, finBanco:'Caixa Econômica Federal', finValor:'170.000,00', finPrazo:'30',
-  entregaModo:'data', entregaData:'2026-12-15', garantia:'usado', temCond:'sim',
-  moraDias:'30', moraParcelas:'3', penal:'20', restituicaoPrazo:'30',
-  test1Nome:'Franciane Veloso Santana', test1Cpf:'111.444.777-35',
-  test2Nome:'Cristiane Veloso da Silva', test2Cpf:'123.456.789-09'
-};
 const VAZIO={
   num:'', cidade:'Montes Claros/MG', dataAss:'', dataBase:'', foro:'Montes Claros/MG',
   repNome:'', repCargo:'', repEstadoCivil:'', repCpf:'', repRg:'',
@@ -772,36 +747,45 @@ function renderCompradores(){
 }
 
 /* ===================== conferência de valores ===================== */
+/* Toda a aritmética roda em centavos inteiros: somar floats acumula resíduo
+   e faz uma composição exata aparecer como se não fechasse. */
+function cent(v){return Math.round((numOf(v)||0)*100);}
+function qtdOuTraco(n){return n>0?String(n):'—';}
+
 function somas(d){
-  const total=numOf(d.preco);
-  const fin=d.temFin? numOf(d.finValor) : 0;
+  const totalC=cent(d.preco);
+  const finC=d.temFin? cent(d.finValor) : 0;
   const modo=d.modo||'parcelado';
-  const partes=[];
-  let avista=0,sinal=0,saldo=0,entrada=0,inter=0,parc=0;
+  const partesC=[];
+  let avistaC=0,sinalC=0,saldoC=0,entradaC=0,interC=0,parcC=0;
 
   if(modo==='avista'){
-    avista=Math.max(0,total-fin);
-    partes.push(['Pagamento à vista',avista]);
+    avistaC=Math.max(0,totalC-finC);
+    partesC.push(['Pagamento à vista',avistaC]);
   }else if(modo==='sinal'){
-    sinal=numOf(d.sinalValor);
-    saldo=Math.max(0,total-sinal-fin);
-    partes.push(['Sinal',sinal]);
-    partes.push(['Saldo',saldo]);
+    sinalC=cent(d.sinalValor);
+    saldoC=Math.max(0,totalC-sinalC-finC);
+    partesC.push(['Sinal',sinalC]);
+    partesC.push(['Saldo',saldoC]);
   }else{
-    entrada=numOf(d.entradaValor);
-    inter=d.temInter? intOf(d.interQtd)*numOf(d.interValor) : 0;
-    parc=intOf(d.parcQtd)*numOf(d.parcValor);
-    partes.push(['Entrada',entrada]);
-    if(d.temInter) partes.push([qtdOuTraco(intOf(d.interQtd))+' intermediária(s)',inter]);
-    partes.push([qtdOuTraco(intOf(d.parcQtd))+' parcela(s) mensal(is)',parc]);
+    entradaC=cent(d.entradaValor);
+    interC=d.temInter? intOf(d.interQtd)*cent(d.interValor) : 0;
+    parcC=intOf(d.parcQtd)*cent(d.parcValor);
+    partesC.push(['Entrada',entradaC]);
+    if(d.temInter) partesC.push([qtdOuTraco(intOf(d.interQtd))+' intermediária(s)',interC]);
+    partesC.push([qtdOuTraco(intOf(d.parcQtd))+' parcela(s) mensal(is)',parcC]);
   }
-  if(d.temFin) partes.push(['Financiamento',fin]);
+  if(d.temFin) partesC.push(['Financiamento',finC]);
 
-  const soma=partes.reduce(function(a,p){return a+p[1];},0);
-  return {total:total,fin:fin,modo:modo,avista:avista,sinal:sinal,saldo:saldo,
-    entrada:entrada,inter:inter,parc:parc,partes:partes,soma:soma,dif:total-soma};
+  const somaC=partesC.reduce(function(a,p){return a+p[1];},0);
+  const R=function(c){return c/100;};
+  return {total:R(totalC),fin:R(finC),modo:modo,
+    avista:R(avistaC),sinal:R(sinalC),saldo:R(saldoC),
+    entrada:R(entradaC),inter:R(interC),parc:R(parcC),
+    partes:partesC.map(function(p){return [p[0],R(p[1])];}),
+    soma:R(somaC),dif:R(totalC-somaC),
+    totalC:totalC,finC:finC,entradaC:entradaC,interC:interC,difC:totalC-somaC};
 }
-function qtdOuTraco(n){return n>0?String(n):'—';}
 
 function renderTally(d){
   const s=somas(d);
@@ -812,7 +796,7 @@ function renderTally(d){
   html+='<div class="tally-row sum"><span>Soma da composição</span><span>'+escH(brl(s.soma))+'</span></div>';
   html+='<div class="tally-row"><span class="lbl">Valor total do imóvel</span><span>'+escH(brl(s.total))+'</span></div>';
 
-  const cent=Math.round(s.dif*100);
+  const cent=s.difC;
   let flag;
   if(s.total<=0){
     flag=['off','Informe o valor total do imóvel para conferir a composição.'];
@@ -1628,10 +1612,20 @@ document.getElementById('btn-add-comprador').addEventListener('click',function()
 document.getElementById('btn-calc').addEventListener('click',function(){
   const d=lerForm(), s=somas(d), q=intOf(d.parcQtd);
   if(q<=0){avisar('Informe primeiro a quantidade de parcelas mensais.',true); return;}
-  const resto=s.total-s.entrada-s.inter-s.fin;
-  if(resto<=0){avisar('Não há saldo a parcelar com a composição atual.',true); return;}
-  document.getElementById('parcValor').value=fmtMoeda(resto/q);
-  avisar(NOTA_PADRAO,false);
+  const restoC=s.totalC-s.entradaC-s.interC-s.finC;
+  if(restoC<=0){avisar('Não há saldo a parcelar com a composição atual.',true); return;}
+  /* A divisão raramente é exata: a sobra de centavos vai para a entrada,
+     senão N x parcela arredondada nunca fecha com o total. */
+  const porParcelaC=Math.round(restoC/q);
+  const sobraC=restoC-porParcelaC*q;
+  document.getElementById('parcValor').value=fmtMoeda(porParcelaC/100);
+  if(sobraC!==0){
+    document.getElementById('entradaValor').value=fmtMoeda((s.entradaC+sobraC)/100);
+    avisar(q+' parcelas de '+brl(porParcelaC/100)+'. A entrada foi ajustada em '+
+      brl(Math.abs(sobraC)/100)+' para a composição fechar com o valor total.',false);
+  }else{
+    avisar(q+' parcelas de '+brl(porParcelaC/100)+'. A composição fecha com o valor total.',false);
+  }
   atualizar();
 });
 document.getElementById('btn-clear').addEventListener('click',function(){
@@ -1640,7 +1634,7 @@ document.getElementById('btn-clear').addEventListener('click',function(){
   document.getElementById('box-fin').hidden=true;
   document.getElementById('box-entrega-data').hidden=false;
   aplicarModo(VAZIO.modo);
-  document.getElementById('seed-banner').hidden=true;
+  document.getElementById('draft-banner').hidden=true;
   try{localStorage.removeItem(LS);}catch(e){}
   atualizar();
   const f=document.getElementById('num'); if(f) f.focus();
@@ -1655,13 +1649,13 @@ document.getElementById('btn-docx').addEventListener('click',exportarDOCX);
     const raw=localStorage.getItem(LS);
     if(raw){inicial=JSON.parse(raw); restaurado=true;}
   }catch(e){}
-  if(!inicial) inicial=JSON.parse(JSON.stringify(EXEMPLO));
+  if(!inicial) inicial=JSON.parse(JSON.stringify(VAZIO));
   escreverForm(inicial);
   document.getElementById('box-inter').hidden=!inicial.temInter;
   document.getElementById('box-fin').hidden=!inicial.temFin;
   document.getElementById('box-entrega-data').hidden=(inicial.entregaModo==='quitacao');
   aplicarModo(inicial.modo||'parcelado');
-  if(restaurado) document.getElementById('seed-banner').hidden=true;
+  document.getElementById('draft-banner').hidden=!restaurado;
   ['repCpf','test1Cpf','test2Cpf'].forEach(validarDoc);
   CAMPOS_MOEDA.forEach(function(id){
     const el=document.getElementById(id);
