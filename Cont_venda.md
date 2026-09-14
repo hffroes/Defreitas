@@ -7,6 +7,12 @@
 
 ## Como usar
 
+0. **Caminho mais rápido:** abra o formulário
+   [`design-system/ferramentas/minuta-compra-venda.html`](./design-system/ferramentas/minuta-compra-venda.html),
+   preencha os dados da transação e exporte o contrato em PDF e Word. Ele
+   já monta as cláusulas deste documento, calcula os valores por extenso e
+   confere a composição do preço. Os passos abaixo valem para montar a
+   minuta à mão ou para revisar o que a ferramenta gerou.
 1. Copie o texto das cláusulas abaixo para o modelo visual em
    [`design-system/templates/contrato-compra-venda.html`](./design-system/templates/contrato-compra-venda.html),
    preenchendo cada campo entre colchetes com os dados da transação.

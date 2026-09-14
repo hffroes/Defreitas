@@ -1,0 +1,1348 @@
+<title>Minuta Defreitas</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+:root{
+  --brown-900:#2E2118; --brown-800:#3A2A1F; --brown-700:#6B4A34; --brown-600:#8B6449;
+  --orange:#C1622D;
+  --ink:#2B2723; --ink-2:#55504A; --ink-3:#8B8479;
+  --rule:#D9D3C8; --rule-strong:#3A2A1F;
+  --paper:#F4F1EC; --ground:#FFFFFF; --panel:#FBF9F6; --field:#FFFFFF;
+  --ok:#3F6B45; --warn:#9A5B12;
+  --serif:'Source Serif 4',Georgia,serif;
+  --sans:'Work Sans',system-ui,-apple-system,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+  --shadow:0 1px 2px rgba(46,33,24,.06),0 8px 24px rgba(46,33,24,.06);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --brown-800:#E8DFD4; --brown-700:#C9AF98; --brown-600:#C97A3F;
+    --orange:#D98C4F;
+    --ink:#F4F1EC; --ink-2:#CFC6B9; --ink-3:#9B9184;
+    --rule:#4A3A2C; --rule-strong:#6B4A34;
+    --paper:#241A13; --ground:#1C1410; --panel:#241A13; --field:#2E2118;
+    --ok:#8FC194; --warn:#E0A860;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"]{
+  --brown-800:#E8DFD4; --brown-700:#C9AF98; --brown-600:#C97A3F;
+  --orange:#D98C4F;
+  --ink:#F4F1EC; --ink-2:#CFC6B9; --ink-3:#9B9184;
+  --rule:#4A3A2C; --rule-strong:#6B4A34;
+  --paper:#241A13; --ground:#1C1410; --panel:#241A13; --field:#2E2118;
+  --ok:#8FC194; --warn:#E0A860;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6}
+.wrap{max-width:1380px;margin:0 auto;padding-inline:20px;padding-block:0 64px}
+
+/* ---------- topo ---------- */
+.masthead{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;
+  padding-block:26px 16px;border-bottom:2px solid var(--rule-strong);margin-bottom:22px}
+.brand{font-family:var(--serif);font-weight:700;font-size:23px;letter-spacing:.04em;color:var(--brown-800);line-height:1}
+.brand-sub{font-family:var(--mono);font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--brown-600);margin-top:5px}
+.masthead h1{font-family:var(--serif);font-weight:600;font-size:17px;margin:0;color:var(--ink);text-wrap:balance}
+.masthead p{margin:3px 0 0;font-size:13px;color:var(--ink-3);max-width:52ch}
+
+.seed{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--panel);border:1px solid var(--rule);
+  border-left:3px solid var(--orange);padding:10px 14px;margin-bottom:22px;font-size:13px;color:var(--ink-2)}
+.seed strong{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);font-weight:500}
+
+/* ---------- grade ---------- */
+.grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:36px;align-items:start}
+@media (max-width:1000px){.grid{grid-template-columns:1fr;gap:28px}}
+
+/* ---------- formulário ---------- */
+fieldset{border:0;margin:0 0 30px;padding:0}
+.sec-head{display:flex;align-items:baseline;gap:11px;padding-bottom:8px;margin-bottom:16px;border-bottom:1px solid var(--rule)}
+.sec-num{font-family:var(--mono);font-size:11px;color:var(--orange);font-weight:500}
+legend{padding:0}
+.sec-title{font-family:var(--serif);font-weight:600;font-size:16px;color:var(--brown-800)}
+.sec-note{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--ink-3);letter-spacing:.04em}
+
+.row{display:grid;gap:14px;margin-bottom:14px}
+.r2{grid-template-columns:1fr 1fr}
+.r3{grid-template-columns:1fr 1fr 1fr}
+.r21{grid-template-columns:2fr 1fr}
+.r12{grid-template-columns:1fr 2fr}
+@media (max-width:560px){.r2,.r3,.r21,.r12{grid-template-columns:1fr}}
+
+.f{display:flex;flex-direction:column;gap:5px;min-width:0}
+.f label{font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--brown-600)}
+.f input,.f select,.f textarea{
+  font-family:var(--sans);font-size:14px;color:var(--ink);background:var(--field);
+  border:1px solid var(--rule);border-radius:2px;padding:9px 10px;width:100%;min-width:0}
+.f input.mono,.f select.mono{font-family:var(--mono);font-size:13.5px;font-variant-numeric:tabular-nums}
+.f textarea{resize:vertical;min-height:74px;line-height:1.55}
+.f input:focus-visible,.f select:focus-visible,.f textarea:focus-visible{
+  outline:2px solid var(--orange);outline-offset:1px;border-color:var(--orange)}
+.f .hint{font-size:11.5px;color:var(--ink-3);line-height:1.45}
+.f .hint.bad{color:var(--warn)}
+.f .hint.good{color:var(--ok)}
+
+.toggle{display:flex;align-items:center;gap:9px;padding:11px 13px;background:var(--panel);
+  border:1px solid var(--rule);border-radius:2px;margin-bottom:14px;cursor:pointer;font-size:13.5px}
+.toggle input{width:16px;height:16px;accent-color:var(--orange);cursor:pointer;flex:none}
+.toggle span{color:var(--ink-2)}
+.toggle b{color:var(--ink);font-weight:500}
+.cond{padding-left:14px;border-left:2px solid var(--rule)}
+.cond[hidden]{display:none}
+
+.locked{background:var(--panel);border:1px solid var(--rule);padding:12px 14px;margin-bottom:14px}
+.locked .lk{font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--brown-600);margin-bottom:6px}
+.locked dl{display:grid;grid-template-columns:auto 1fr;gap:3px 14px;margin:0;font-size:12.5px}
+.locked dt{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);white-space:nowrap}
+.locked dd{margin:0;color:var(--ink-2)}
+
+.party{border:1px solid var(--rule);border-left:3px solid var(--brown-600);padding:14px;margin-bottom:12px;background:var(--panel)}
+.party-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.party-top span{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--brown-600)}
+
+button{font-family:var(--sans);cursor:pointer;border-radius:2px}
+.btn-ghost{background:none;border:1px solid var(--rule);color:var(--ink-2);font-size:12.5px;padding:6px 12px}
+.btn-ghost:hover{border-color:var(--brown-600);color:var(--brown-700)}
+.btn-ghost:focus-visible{outline:2px solid var(--orange);outline-offset:1px}
+.btn-link{background:none;border:0;color:var(--orange);font-size:12.5px;padding:2px 4px;text-decoration:underline;text-underline-offset:2px}
+.btn-link:focus-visible{outline:2px solid var(--orange);outline-offset:1px}
+
+/* conferência de valores */
+.tally{border:1px solid var(--rule);padding:13px 15px;margin:4px 0 14px;background:var(--panel)}
+.tally-row{display:flex;justify-content:space-between;gap:16px;font-family:var(--mono);font-size:12px;
+  font-variant-numeric:tabular-nums;padding:3px 0;color:var(--ink-2)}
+.tally-row.sum{border-top:1px solid var(--rule);margin-top:6px;padding-top:8px;color:var(--ink);font-weight:500}
+.tally-row .lbl{color:var(--ink-3)}
+.tally-flag{margin-top:9px;font-size:12.5px;font-family:var(--sans);display:flex;gap:7px;align-items:flex-start}
+.tally-flag.ok{color:var(--ok)}
+.tally-flag.off{color:var(--warn)}
+.tally-flag .dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex:none;margin-top:6px}
+
+/* ---------- painel direito ---------- */
+.side{position:sticky;top:20px;display:flex;flex-direction:column;gap:14px}
+@media (max-width:1000px){.side{position:static}}
+.side-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+  padding-bottom:8px;border-bottom:1px solid var(--rule)}
+.side-head h2{font-family:var(--serif);font-weight:600;font-size:15px;margin:0;color:var(--brown-800)}
+.side-head .meta{font-family:var(--mono);font-size:10px;color:var(--ink-3);letter-spacing:.05em}
+
+.export{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:420px){.export{grid-template-columns:1fr}}
+.btn-x{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:12px 14px;
+  border:1px solid var(--rule-strong);background:var(--brown-800);color:var(--paper);text-align:left}
+:root[data-theme="dark"] .btn-x,:root:not([data-theme="light"]) .btn-x{color:var(--brown-900)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn-x{background:var(--brown-800);color:#241A13}}
+:root[data-theme="dark"] .btn-x{background:var(--brown-800);color:#241A13}
+.btn-x .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;opacity:.72}
+.btn-x .n{font-family:var(--sans);font-size:14px;font-weight:500}
+.btn-x:hover{background:var(--brown-700)}
+.btn-x:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+.btn-x[disabled]{background:var(--panel);border-color:var(--rule);color:var(--ink-3);cursor:not-allowed}
+.export-note{font-size:12px;color:var(--ink-3);line-height:1.5;margin:0}
+.export-note.err{color:var(--warn)}
+
+/* minuta */
+.minuta{background:var(--paper);border:1px solid var(--rule);padding:26px 30px;max-height:min(66vh,760px);
+  overflow-y:auto;overflow-x:auto;box-shadow:var(--shadow)}
+@media (max-width:1000px){.minuta{max-height:none}}
+.m-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;
+  padding-bottom:11px;border-bottom:2px solid var(--rule-strong);margin-bottom:17px}
+.m-brand{font-family:var(--serif);font-weight:700;font-size:14px;letter-spacing:.04em;color:var(--brown-800)}
+.m-brand-sub{font-family:var(--mono);font-size:7px;letter-spacing:.22em;text-transform:uppercase;color:var(--brown-600);margin-top:2px}
+.m-kind{font-family:var(--mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);text-align:right}
+.m-num{font-family:var(--mono);font-size:9px;color:var(--ink-2);text-align:right;margin-top:2px}
+.m-title{font-family:var(--serif);font-weight:700;font-size:15px;text-align:center;color:var(--brown-800);
+  margin:0 0 16px;text-wrap:balance;letter-spacing:.01em}
+.m-h{font-family:var(--sans);font-weight:600;font-size:11px;color:var(--brown-800);margin:17px 0 6px;letter-spacing:.02em}
+.m-p{font-size:11.8px;line-height:1.72;color:var(--ink-2);margin:0 0 8px;text-align:justify;hyphens:auto}
+.m-pi{font-size:11.2px;line-height:1.7;color:var(--ink-2);margin:0 0 8px 13px;text-align:justify}
+.m-li{font-size:11.5px;line-height:1.68;color:var(--ink-2);margin:0 0 5px 15px;text-align:justify}
+.m-quadro{width:100%;border-collapse:collapse;margin:0 0 16px;font-size:11px}
+.m-quadro td{border-bottom:1px solid var(--rule);padding:5px 8px 5px 0;vertical-align:top}
+.m-quadro td:first-child{font-family:var(--mono);font-size:9px;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--brown-600);width:38%;white-space:normal}
+.m-quadro td:last-child{color:var(--ink);font-variant-numeric:tabular-nums}
+.m-city{font-size:11.8px;color:var(--ink-2);margin:18px 0 22px}
+.m-sig{margin:0 0 18px}
+.m-sig-line{border-top:1px solid var(--ink);padding-top:5px;max-width:330px}
+.m-sig-role{font-family:var(--mono);font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--brown-600)}
+.m-sig-name{font-size:11.5px;color:var(--ink);margin-top:1px}
+.m-foot{border-top:1px solid var(--rule);margin-top:20px;padding-top:9px;display:flex;justify-content:space-between;
+  gap:12px;font-family:var(--mono);font-size:7.5px;letter-spacing:.05em;color:var(--ink-3)}
+
+.legalnote{font-size:12px;color:var(--ink-3);line-height:1.55;border-top:1px solid var(--rule);padding-top:12px;margin:0}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <div>
+      <div class="brand">DEFREITAS</div>
+      <div class="brand-sub">Imóveis Próprios</div>
+    </div>
+    <div style="flex:1 1 320px">
+      <h1>Minuta de compra e venda</h1>
+      <p>Preencha os dados da transação e gere o contrato em PDF e Word, prontos para conferência e assinatura.</p>
+    </div>
+  </header>
+
+  <div class="seed" id="seed-banner">
+    <strong>Exemplo</strong>
+    <span>Os campos vêm preenchidos com uma venda fictícia para você ver o formato. Substitua pelos dados reais.</span>
+    <button type="button" class="btn-ghost" id="btn-clear" style="margin-left:auto">Limpar tudo</button>
+  </div>
+
+  <div class="grid">
+    <form id="form" autocomplete="off">
+
+      <fieldset>
+        <div class="sec-head"><span class="sec-num">01</span><legend class="sec-title">Identificação do contrato</legend></div>
+        <div class="row r3">
+          <div class="f"><label for="num">Número</label><input class="mono" id="num" placeholder="001/2026"></div>
+          <div class="f"><label for="cidade">Cidade de assinatura</label><input id="cidade" placeholder="Montes Claros/MG"></div>
+          <div class="f"><label for="dataAss">Data de assinatura</label><input class="mono" id="dataAss" type="date"></div>
+        </div>
+        <div class="row r2">
+          <div class="f"><label for="dataBase">Data-base da correção</label><input class="mono" id="dataBase" type="date">
+            <span class="hint">Marco a partir do qual as parcelas são corrigidas.</span></div>
+          <div class="f"><label for="foro">Foro eleito</label><input id="foro" placeholder="Montes Claros/MG"></div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <div class="sec-head"><span class="sec-num">02</span><legend class="sec-title">Vendedora</legend>
+          <span class="sec-note">dados fixos</span></div>
+        <div class="locked">
+          <div class="lk">Defreitas — qualificação institucional</div>
+          <dl>
+            <dt>Razão social</dt><dd>Defreitas Compra, Venda, Incorporação e Locação de Bens Imóveis Próprios Ltda</dd>
+            <dt>CNPJ</dt><dd>11.435.163/0001-13</dd>
+            <dt>Sede</dt><dd>R. Lafeta, 116, Sala 105, Centro, Montes Claros/MG, CEP 39.400-045</dd>
+          </dl>
+        </div>
+        <div class="row r2">
+          <div class="f"><label for="repNome">Representante — nome</label><input id="repNome" placeholder="Nome completo"></div>
+          <div class="f"><label for="repCargo">Cargo / poderes</label><input id="repCargo" placeholder="sócia-administradora"></div>
+        </div>
+        <div class="row r3">
+          <div class="f"><label for="repEstadoCivil">Estado civil</label><input id="repEstadoCivil" placeholder="casada"></div>
+          <div class="f"><label for="repCpf">CPF</label><input class="mono" id="repCpf" inputmode="numeric" placeholder="000.000.000-00">
+            <span class="hint" id="repCpf-hint"></span></div>
+          <div class="f"><label for="repRg">RG</label><input class="mono" id="repRg" placeholder="MG-00.000.000"></div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <div class="sec-head"><span class="sec-num">03</span><legend class="sec-title">Comprador(es)</legend>
+          <span class="sec-note" id="cnt-compradores"></span></div>
+        <div id="compradores"></div>
+        <button type="button" class="btn-ghost" id="btn-add-comprador">+ Adicionar comprador</button>
+      </fieldset>
+
+      <fieldset>
+        <div class="sec-head"><span class="sec-num">04</span><legend class="sec-title">Imóvel</legend></div>
+        <div class="row r21">
+          <div class="f"><label for="imovelTipo">Tipo e identificação</label><input id="imovelTipo" placeholder="Apartamento nº 1002"></div>
+          <div class="f"><label for="imovelArea">Área privativa (m²)</label><input class="mono" id="imovelArea" inputmode="decimal" placeholder="135,00"></div>
+        </div>
+        <div class="row">
+          <div class="f"><label for="imovelDesc">Descrição</label>
+            <textarea id="imovelDesc" placeholder="3 quartos sendo 1 suíte, 2 banheiros, sala, cozinha, área de serviço"></textarea>
+            <span class="hint">Cômodos e dependências, como devem constar na cláusula do objeto.</span></div>
+        </div>
+        <div class="row r21">
+          <div class="f"><label for="imovelEndereco">Endereço</label><input id="imovelEndereco" placeholder="R. Getúlio Vargas, 1.500"></div>
+          <div class="f"><label for="imovelVagas">Vagas de garagem</label><input class="mono" id="imovelVagas" inputmode="numeric" placeholder="1"></div>
+        </div>
+        <div class="row r3">
+          <div class="f"><label for="imovelBairro">Bairro</label><input id="imovelBairro" placeholder="Centro"></div>
+          <div class="f"><label for="imovelCidade">Cidade/UF</label><input id="imovelCidade" placeholder="Montes Claros/MG"></div>
+          <div class="f"><label for="imovelCep">CEP</label><input class="mono" id="imovelCep" inputmode="numeric" placeholder="39.400-010"></div>
+        </div>
+        <div class="row r2">
+          <div class="f"><label for="matricula">Matrícula nº</label><input class="mono" id="matricula" placeholder="123.456"></div>
+          <div class="f"><label for="cartorio">Registro de imóveis</label><input id="cartorio" placeholder="1º Ofício de Montes Claros/MG"></div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <div class="sec-head"><span class="sec-num">05</span><legend class="sec-title">Preço e pagamento</legend></div>
+        <div class="row r21">
+          <div class="f"><label for="preco">Valor total</label><input class="mono" id="preco" inputmode="decimal" placeholder="R$ 0,00">
+            <span class="hint" id="preco-extenso"></span></div>
+          <div class="f"><label for="indice">Índice de correção</label>
+            <select class="mono" id="indice">
+              <option>IPCA</option><option>IGP-M</option><option>INPC</option><option>INCC</option>
+            </select></div>
+        </div>
+
+        <div class="row r2">
+          <div class="f"><label for="entradaValor">Entrada</label><input class="mono" id="entradaValor" inputmode="decimal" placeholder="R$ 0,00"></div>
+          <div class="f"><label for="entradaData">Vencimento da entrada</label><input class="mono" id="entradaData" type="date"></div>
+        </div>
+
+        <label class="toggle" for="temInter">
+          <input type="checkbox" id="temInter">
+          <span><b>Parcelas intermediárias</b> — reforços semestrais ou anuais</span>
+        </label>
+        <div class="cond" id="box-inter" hidden>
+          <div class="row r3">
+            <div class="f"><label for="interQtd">Quantidade</label><input class="mono" id="interQtd" inputmode="numeric" placeholder="3"></div>
+            <div class="f"><label for="interValor">Valor de cada</label><input class="mono" id="interValor" inputmode="decimal" placeholder="R$ 0,00"></div>
+            <div class="f"><label for="interData">Primeiro vencimento</label><input class="mono" id="interData" type="date"></div>
+          </div>
+        </div>
+
+        <div class="row r3">
+          <div class="f"><label for="parcQtd">Parcelas mensais</label><input class="mono" id="parcQtd" inputmode="numeric" placeholder="12"></div>
+          <div class="f"><label for="parcValor">Valor de cada</label><input class="mono" id="parcValor" inputmode="decimal" placeholder="R$ 0,00">
+            <button type="button" class="btn-link" id="btn-calc" style="align-self:flex-start">calcular pelo saldo</button></div>
+          <div class="f"><label for="parcData">Primeiro vencimento</label><input class="mono" id="parcData" type="date"></div>
+        </div>
+
+        <div class="tally" id="tally"></div>
+
+        <div class="row r2">
+          <div class="f"><label for="banco">Banco / agência / conta</label><input id="banco" placeholder="Banco Itaú (341), ag. 1234, c/c 56789-0"></div>
+          <div class="f"><label for="pix">Chave PIX</label><input class="mono" id="pix" placeholder="11.435.163/0001-13"></div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <div class="sec-head"><span class="sec-num">06</span><legend class="sec-title">Financiamento</legend>
+          <span class="sec-note">quando aplicável</span></div>
+        <label class="toggle" for="temFin">
+          <input type="checkbox" id="temFin">
+          <span><b>Parte do preço será quitada por financiamento</b> imobiliário</span>
+        </label>
+        <div class="cond" id="box-fin" hidden>
+          <div class="row r3">
+            <div class="f"><label for="finBanco">Instituição financeira</label><input id="finBanco" placeholder="Caixa Econômica Federal"></div>
+            <div class="f"><label for="finValor">Valor financiado</label><input class="mono" id="finValor" inputmode="decimal" placeholder="R$ 0,00"></div>
+            <div class="f"><label for="finPrazo">Prazo p/ documentação</label><input class="mono" id="finPrazo" inputmode="numeric" placeholder="30"><span class="hint">dias</span></div>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <div class="sec-head"><span class="sec-num">07</span><legend class="sec-title">Entrega e garantia</legend></div>
+        <div class="row r2">
+          <div class="f"><label for="entregaModo">Entrega das chaves</label>
+            <select id="entregaModo">
+              <option value="data">Em data determinada</option>
+              <option value="quitacao">Mediante quitação integral do preço</option>
+            </select></div>
+          <div class="f" id="box-entrega-data"><label for="entregaData">Data de entrega</label><input class="mono" id="entregaData" type="date"></div>
+        </div>
+        <div class="row r2">
+          <div class="f"><label for="garantia">Regime de garantia</label>
+            <select id="garantia">
+              <option value="novo">Imóvel novo ou reformado pela Defreitas</option>
+              <option value="usado">Imóvel usado, vendido no estado em que se encontra</option>
+            </select>
+            <span class="hint" id="garantia-hint"></span></div>
+          <div class="f"><label for="temCond">Condomínio</label>
+            <select id="temCond"><option value="sim">Imóvel em condomínio</option><option value="nao">Imóvel não sujeito a condomínio</option></select></div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <div class="sec-head"><span class="sec-num">08</span><legend class="sec-title">Mora, rescisão e testemunhas</legend></div>
+        <div class="row r3">
+          <div class="f"><label for="moraDias">Atraso que autoriza notificação</label><input class="mono" id="moraDias" inputmode="numeric" placeholder="30"><span class="hint">dias</span></div>
+          <div class="f"><label for="moraParcelas">Ou acúmulo de parcelas</label><input class="mono" id="moraParcelas" inputmode="numeric" placeholder="3"></div>
+          <div class="f"><label for="penal">Cláusula penal</label><input class="mono" id="penal" inputmode="decimal" placeholder="20"><span class="hint">% retido sobre o pago</span></div>
+        </div>
+        <div class="row r2">
+          <div class="f"><label for="restituicaoPrazo">Prazo de restituição do saldo</label><input class="mono" id="restituicaoPrazo" inputmode="numeric" placeholder="30"><span class="hint">dias</span></div>
+          <div class="f"></div>
+        </div>
+        <div class="row r2">
+          <div class="f"><label for="test1Nome">Testemunha 1 — nome</label><input id="test1Nome"></div>
+          <div class="f"><label for="test1Cpf">CPF</label><input class="mono" id="test1Cpf" inputmode="numeric" placeholder="000.000.000-00"><span class="hint" id="test1Cpf-hint"></span></div>
+        </div>
+        <div class="row r2">
+          <div class="f"><label for="test2Nome">Testemunha 2 — nome</label><input id="test2Nome"></div>
+          <div class="f"><label for="test2Cpf">CPF</label><input class="mono" id="test2Cpf" inputmode="numeric" placeholder="000.000.000-00"><span class="hint" id="test2Cpf-hint"></span></div>
+        </div>
+      </fieldset>
+    </form>
+
+    <aside class="side">
+      <div class="side-head">
+        <h2>Minuta</h2>
+        <span class="meta" id="side-meta"></span>
+      </div>
+      <div class="export">
+        <button type="button" class="btn-x" id="btn-pdf"><span class="k">Exportar</span><span class="n">Contrato em PDF</span></button>
+        <button type="button" class="btn-x" id="btn-docx"><span class="k">Exportar</span><span class="n">Contrato em Word</span></button>
+      </div>
+      <p class="export-note" id="export-note">O PDF sai paginado para impressão e assinatura. O Word sai editável, caso o jurídico precise ajustar alguma cláusula.</p>
+      <div class="minuta" id="minuta"></div>
+      <p class="legalnote">Modelo institucional da Defreitas, derivado do contrato-parâmetro do repositório. Toda minuta preenchida deve passar por revisão jurídica antes da assinatura.</p>
+    </aside>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+/* ===================== utilidades de número e texto ===================== */
+const UNI=['','um','dois','três','quatro','cinco','seis','sete','oito','nove'];
+const DEZ_ESP=['dez','onze','doze','treze','quatorze','quinze','dezesseis','dezessete','dezoito','dezenove'];
+const DEZ=['','','vinte','trinta','quarenta','cinquenta','sessenta','setenta','oitenta','noventa'];
+const CEM=['','cento','duzentos','trezentos','quatrocentos','quinhentos','seiscentos','setecentos','oitocentos','novecentos'];
+
+function tres(n){
+  if(n===100) return 'cem';
+  const c=Math.floor(n/100), r=n%100, p=[];
+  if(c) p.push(CEM[c]);
+  if(r){
+    if(r<10) p.push(UNI[r]);
+    else if(r<20) p.push(DEZ_ESP[r-10]);
+    else{const d=Math.floor(r/10),u=r%10; p.push(u?DEZ[d]+' e '+UNI[u]:DEZ[d]);}
+  }
+  return p.join(' e ');
+}
+function extensoInt(n){
+  n=Math.floor(Math.abs(n));
+  if(n===0) return 'zero';
+  if(n>999999999) return String(n);
+  const g=[]; let i=0, x=n;
+  while(x>0){g.unshift({v:x%1000,i:i}); x=Math.floor(x/1000); i++;}
+  const nomes={2:['milhão','milhões'],3:['bilhão','bilhões']};
+  const partes=[];
+  let ultimo=0;
+  g.forEach(function(it){
+    if(it.v===0) return;
+    ultimo=it.v;
+    if(it.i===0) partes.push(tres(it.v));
+    else if(it.i===1) partes.push(it.v===1?'mil':tres(it.v)+' mil');
+    else partes.push(tres(it.v)+' '+(it.v===1?nomes[it.i][0]:nomes[it.i][1]));
+  });
+  if(partes.length===1) return partes[0];
+  const liga=(ultimo<100||ultimo%100===0)?' e ':', ';
+  return partes.slice(0,-1).join(', ')+liga+partes[partes.length-1];
+}
+function extensoMoeda(v){
+  if(!isFinite(v)) return '';
+  const i=Math.floor(Math.abs(v)+1e-9), c=Math.round((Math.abs(v)-i)*100);
+  let s='';
+  if(i>0) s = (i===1?'um real':extensoInt(i)+' reais');
+  if(c>0) s += (s?' e ':'') + (c===1?'um centavo':extensoInt(c)+' centavos');
+  return s||'zero real';
+}
+function brl(v){
+  if(!isFinite(v)) v=0;
+  return 'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+function numOf(s){
+  if(typeof s==='number') return s;
+  const t=String(s||'').replace(/[^\d,.-]/g,'').replace(/\./g,'').replace(',','.');
+  const n=parseFloat(t);
+  return isFinite(n)?n:0;
+}
+function intOf(s){const n=parseInt(String(s||'').replace(/\D/g,''),10); return isFinite(n)?n:0;}
+
+const MESES=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+function dataCurta(iso){
+  if(!iso) return '';
+  const p=String(iso).split('-'); if(p.length!==3) return '';
+  return p[2]+'/'+p[1]+'/'+p[0];
+}
+function dataExtensa(iso){
+  if(!iso) return '';
+  const p=String(iso).split('-'); if(p.length!==3) return '';
+  const d=parseInt(p[2],10), m=parseInt(p[1],10)-1;
+  if(!MESES[m]) return '';
+  return d+' de '+MESES[m]+' de '+p[0];
+}
+function diaDoMes(iso){
+  if(!iso) return 0;
+  const p=String(iso).split('-'); return p.length===3?parseInt(p[2],10):0;
+}
+function qtdExt(n){return n>0? n+' ('+extensoInt(n)+')' : '';}
+function valorExt(v){return brl(v)+' ('+extensoMoeda(v)+')';}
+
+function maskCPF(v){
+  const d=String(v||'').replace(/\D/g,'').slice(0,11);
+  return d.replace(/^(\d{3})(\d)/,'$1.$2').replace(/^(\d{3})\.(\d{3})(\d)/,'$1.$2.$3')
+          .replace(/\.(\d{3})(\d{1,2})$/,'.$1-$2');
+}
+function validaCPF(v){
+  const d=String(v||'').replace(/\D/g,'');
+  if(d.length!==11||/^(\d)\1{10}$/.test(d)) return false;
+  let s=0;
+  for(let i=0;i<9;i++) s+=parseInt(d[i],10)*(10-i);
+  let r=(s*10)%11; if(r===10) r=0;
+  if(r!==parseInt(d[9],10)) return false;
+  s=0;
+  for(let i=0;i<10;i++) s+=parseInt(d[i],10)*(11-i);
+  r=(s*10)%11; if(r===10) r=0;
+  return r===parseInt(d[10],10);
+}
+function maskCEP(v){
+  const d=String(v||'').replace(/\D/g,'').slice(0,8);
+  return d.replace(/^(\d{2})(\d)/,'$1.$2').replace(/^(\d{2})\.(\d{3})(\d)/,'$1.$2-$3');
+}
+function maskMoneyLive(v){
+  const d=String(v||'').replace(/\D/g,'');
+  if(!d) return '';
+  const n=parseInt(d,10)/100;
+  return n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+
+/* ===================== dados fixos da vendedora ===================== */
+const VENDEDORA={
+  razao:'DEFREITAS COMPRA, VENDA, INCORPORAÇÃO E LOCAÇÃO DE BENS IMÓVEIS PRÓPRIOS LTDA',
+  razaoTitulo:'Defreitas Compra, Venda, Incorporação e Locação de Bens Imóveis Próprios Ltda',
+  cnpj:'11.435.163/0001-13',
+  sede:'R. Lafeta, 116, Sala 105, Centro, Montes Claros/MG, CEP 39.400-045'
+};
+
+/* ===================== estado ===================== */
+const EXEMPLO={
+  num:'001/2026', cidade:'Montes Claros/MG', dataAss:'2026-09-15', dataBase:'2026-09-15', foro:'Montes Claros/MG',
+  repNome:'Marina Gonçalves de Freitas', repCargo:'sócia-administradora', repEstadoCivil:'casada',
+  repCpf:'987.654.321-00', repRg:'MG-8.765.432',
+  compradores:[{nome:'João da Silva Santos',nacionalidade:'brasileiro',estadoCivil:'casado',profissao:'empresário',
+    cpf:'529.982.247-25',rg:'MG-1.234.567',endereco:'R. Alfeu Moreira, 450, apto 301, Funcionários, Belo Horizonte/MG, CEP 30.140-071',
+    email:'joao.santos@exemplo.com.br'}],
+  imovelTipo:'Apartamento nº 1002', imovelArea:'135,00',
+  imovelDesc:'3 quartos sendo 1 suíte, 2 banheiros, sala de estar e jantar, cozinha, área de serviço e varanda',
+  imovelEndereco:'R. Getúlio Vargas, 1.500', imovelVagas:'1', imovelBairro:'Centro',
+  imovelCidade:'Montes Claros/MG', imovelCep:'39.400-010', matricula:'123.456',
+  cartorio:'1º Ofício de Registro de Imóveis de Montes Claros/MG',
+  preco:'850.000,00', indice:'IPCA',
+  entradaValor:'170.000,00', entradaData:'2026-09-15',
+  temInter:false, interQtd:'', interValor:'', interData:'',
+  parcQtd:'12', parcValor:'42.500,00', parcData:'2026-10-15',
+  banco:'Banco Itaú (341), ag. 1234, c/c 56789-0', pix:'11.435.163/0001-13',
+  temFin:true, finBanco:'Caixa Econômica Federal', finValor:'170.000,00', finPrazo:'30',
+  entregaModo:'data', entregaData:'2026-12-15', garantia:'usado', temCond:'sim',
+  moraDias:'30', moraParcelas:'3', penal:'20', restituicaoPrazo:'30',
+  test1Nome:'Franciane Veloso Santana', test1Cpf:'111.444.777-35',
+  test2Nome:'Cristiane Veloso da Silva', test2Cpf:'123.456.789-09'
+};
+const VAZIO={
+  num:'', cidade:'Montes Claros/MG', dataAss:'', dataBase:'', foro:'Montes Claros/MG',
+  repNome:'', repCargo:'', repEstadoCivil:'', repCpf:'', repRg:'',
+  compradores:[{nome:'',nacionalidade:'brasileiro',estadoCivil:'',profissao:'',cpf:'',rg:'',endereco:'',email:''}],
+  imovelTipo:'', imovelArea:'', imovelDesc:'', imovelEndereco:'', imovelVagas:'', imovelBairro:'',
+  imovelCidade:'Montes Claros/MG', imovelCep:'', matricula:'', cartorio:'',
+  preco:'', indice:'IPCA', entradaValor:'', entradaData:'',
+  temInter:false, interQtd:'', interValor:'', interData:'',
+  parcQtd:'', parcValor:'', parcData:'', banco:'', pix:'11.435.163/0001-13',
+  temFin:false, finBanco:'', finValor:'', finPrazo:'30',
+  entregaModo:'data', entregaData:'', garantia:'usado', temCond:'sim',
+  moraDias:'30', moraParcelas:'3', penal:'20', restituicaoPrazo:'30',
+  test1Nome:'', test1Cpf:'', test2Nome:'', test2Cpf:''
+};
+
+const CAMPOS=Object.keys(VAZIO).filter(function(k){return k!=='compradores';});
+let compradores=[];
+let usandoExemplo=true;
+const LS='defreitas-minuta-v1';
+
+function lerForm(){
+  const d={};
+  CAMPOS.forEach(function(k){
+    const el=document.getElementById(k);
+    if(!el) return;
+    d[k]= el.type==='checkbox' ? el.checked : el.value;
+  });
+  d.compradores=compradores.map(function(_,i){
+    const g=function(f){const e=document.getElementById('c'+i+'-'+f); return e?e.value:'';};
+    return {nome:g('nome'),nacionalidade:g('nacionalidade'),estadoCivil:g('estadoCivil'),
+      profissao:g('profissao'),cpf:g('cpf'),rg:g('rg'),endereco:g('endereco'),email:g('email')};
+  });
+  return d;
+}
+function escreverForm(d){
+  CAMPOS.forEach(function(k){
+    const el=document.getElementById(k);
+    if(!el) return;
+    if(el.type==='checkbox') el.checked=!!d[k]; else el.value=d[k]==null?'':d[k];
+  });
+  compradores=(d.compradores&&d.compradores.length?d.compradores:[{}]).map(function(c){
+    return {nome:c.nome||'',nacionalidade:c.nacionalidade||'brasileiro',estadoCivil:c.estadoCivil||'',
+      profissao:c.profissao||'',cpf:c.cpf||'',rg:c.rg||'',endereco:c.endereco||'',email:c.email||''};
+  });
+  renderCompradores();
+}
+
+/* ===================== compradores ===================== */
+function renderCompradores(){
+  const box=document.getElementById('compradores');
+  box.textContent='';
+  compradores.forEach(function(c,i){
+    const div=document.createElement('div');
+    div.className='party';
+    const many=compradores.length>1;
+    div.innerHTML=
+      '<div class="party-top"><span>'+(many?'Comprador '+(i+1):'Comprador(a)')+'</span>'+
+      (many?'<button type="button" class="btn-ghost" data-rm="'+i+'">Remover</button>':'')+'</div>'+
+      '<div class="row r21">'+
+        '<div class="f"><label for="c'+i+'-nome">Nome completo</label><input id="c'+i+'-nome"></div>'+
+        '<div class="f"><label for="c'+i+'-nacionalidade">Nacionalidade</label><input id="c'+i+'-nacionalidade"></div>'+
+      '</div>'+
+      '<div class="row r3">'+
+        '<div class="f"><label for="c'+i+'-estadoCivil">Estado civil</label><input id="c'+i+'-estadoCivil"></div>'+
+        '<div class="f"><label for="c'+i+'-profissao">Profissão</label><input id="c'+i+'-profissao"></div>'+
+        '<div class="f"><label for="c'+i+'-rg">RG</label><input class="mono" id="c'+i+'-rg"></div>'+
+      '</div>'+
+      '<div class="row r2">'+
+        '<div class="f"><label for="c'+i+'-cpf">CPF</label><input class="mono" id="c'+i+'-cpf" inputmode="numeric" placeholder="000.000.000-00">'+
+          '<span class="hint" id="c'+i+'-cpf-hint"></span></div>'+
+        '<div class="f"><label for="c'+i+'-email">E-mail</label><input id="c'+i+'-email" type="email"></div>'+
+      '</div>'+
+      '<div class="row"><div class="f"><label for="c'+i+'-endereco">Endereço completo</label><input id="c'+i+'-endereco"></div></div>';
+    box.appendChild(div);
+    ['nome','nacionalidade','estadoCivil','profissao','cpf','rg','endereco','email'].forEach(function(f){
+      const el=document.getElementById('c'+i+'-'+f);
+      if(el) el.value=c[f]||'';
+    });
+  });
+  document.getElementById('cnt-compradores').textContent=
+    compradores.length+(compradores.length===1?' parte':' partes');
+}
+
+/* ===================== conferência de valores ===================== */
+function somas(d){
+  const total=numOf(d.preco);
+  const entrada=numOf(d.entradaValor);
+  const inter=d.temInter? intOf(d.interQtd)*numOf(d.interValor) : 0;
+  const parc=intOf(d.parcQtd)*numOf(d.parcValor);
+  const fin=d.temFin? numOf(d.finValor) : 0;
+  const soma=entrada+inter+parc+fin;
+  return {total:total,entrada:entrada,inter:inter,parc:parc,fin:fin,soma:soma,dif:total-soma};
+}
+function renderTally(d){
+  const s=somas(d);
+  const box=document.getElementById('tally');
+  const linhas=[['Entrada',s.entrada]];
+  if(d.temInter) linhas.push([intOf(d.interQtd)+' intermediária(s)',s.inter]);
+  linhas.push([intOf(d.parcQtd)+' parcela(s) mensal(is)',s.parc]);
+  if(d.temFin) linhas.push(['Financiamento',s.fin]);
+  let html=linhas.map(function(l){
+    return '<div class="tally-row"><span class="lbl">'+escH(l[0])+'</span><span>'+escH(brl(l[1]))+'</span></div>';
+  }).join('');
+  html+='<div class="tally-row sum"><span>Soma das parcelas</span><span>'+escH(brl(s.soma))+'</span></div>';
+  html+='<div class="tally-row"><span class="lbl">Valor total do imóvel</span><span>'+escH(brl(s.total))+'</span></div>';
+  const cent=Math.round(s.dif*100);
+  if(s.total<=0){
+    html+='<div class="tally-flag off"><span class="dot"></span><span>Informe o valor total do imóvel para conferir a composição.</span></div>';
+  }else if(cent===0){
+    html+='<div class="tally-flag ok"><span class="dot"></span><span>A composição fecha com o valor total.</span></div>';
+  }else if(cent>0){
+    html+='<div class="tally-flag off"><span class="dot"></span><span>Faltam '+escH(brl(s.dif))+' para fechar o valor total.</span></div>';
+  }else{
+    html+='<div class="tally-flag off"><span class="dot"></span><span>A composição excede o valor total em '+escH(brl(-s.dif))+'.</span></div>';
+  }
+  box.innerHTML=html;
+}
+
+/* ===================== modelo do documento ===================== */
+function escH(s){
+  return String(s==null?'':s).replace(/[&<>"']/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+function escX(s){
+  return String(s==null?'':s)
+    .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g,'')
+    .replace(/[&<>"']/g,function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c];
+    });
+}
+function ou(v,fallback){
+  const s=String(v==null?'':v).trim();
+  return s?s:fallback;
+}
+
+function qualificaComprador(c){
+  const p=[ou(c.nome,'[nome completo]')];
+  const q=[];
+  if(String(c.nacionalidade||'').trim()) q.push(c.nacionalidade.trim());
+  if(String(c.estadoCivil||'').trim()) q.push(c.estadoCivil.trim());
+  if(String(c.profissao||'').trim()) q.push(c.profissao.trim());
+  let s=p[0].toUpperCase();
+  if(q.length) s+=', '+q.join(', ');
+  s+=', inscrito(a) no CPF sob o nº '+ou(c.cpf,'[CPF]');
+  if(String(c.rg||'').trim()) s+=', portador(a) do RG nº '+c.rg.trim();
+  s+=', residente e domiciliado(a) em '+ou(c.endereco,'[endereço completo]');
+  return s;
+}
+
+function construirDoc(d){
+  const B=[];
+  const s=somas(d);
+  const cs=d.compradores||[];
+  const plural=cs.length>1;
+  const COMP=plural?'COMPRADORES':'COMPRADOR(A)';
+  const compNomes=cs.map(function(c){return ou(c.nome,'[nome completo]');}).join('; ');
+  const cidadeImovel=ou(d.imovelCidade,'[cidade/UF]');
+  const enderecoCheio=[ou(d.imovelEndereco,'[endereço]'),ou(d.imovelBairro,'[bairro]'),cidadeImovel,
+    String(d.imovelCep||'').trim()?'CEP '+d.imovelCep.trim():''].filter(Boolean).join(', ');
+
+  B.push({t:'title',text:'CONTRATO PARTICULAR DE COMPRA E VENDA DE IMÓVEL'});
+
+  /* --- quadro-resumo --- */
+  const linhas=[];
+  linhas.push(['Imóvel',ou(d.imovelTipo,'[identificação]')]);
+  linhas.push(['Endereço',enderecoCheio]);
+  linhas.push(['Matrícula',ou(d.matricula,'[nº]')+' — '+ou(d.cartorio,'[registro de imóveis]')]);
+  if(String(d.imovelArea||'').trim()) linhas.push(['Área privativa',d.imovelArea.trim()+' m²']);
+  if(intOf(d.imovelVagas)>0) linhas.push(['Vagas de garagem',qtdExt(intOf(d.imovelVagas))]);
+  linhas.push([plural?'Compradores':'Comprador(a)',compNomes]);
+  const emails=cs.map(function(c){return String(c.email||'').trim();}).filter(Boolean).join('; ');
+  if(emails) linhas.push(['E-mail para comunicações',emails]);
+  linhas.push(['Valor total',valorExt(s.total)]);
+  linhas.push(['Entrada',brl(s.entrada)+(d.entradaData?' — vencimento em '+dataCurta(d.entradaData):'')]);
+  if(d.temInter&&intOf(d.interQtd)>0){
+    linhas.push(['Parcelas intermediárias',qtdExt(intOf(d.interQtd))+' x '+brl(numOf(d.interValor))+
+      (d.interData?', a partir de '+dataCurta(d.interData):'')]);
+  }
+  if(intOf(d.parcQtd)>0){
+    linhas.push(['Parcelas mensais',qtdExt(intOf(d.parcQtd))+' x '+brl(numOf(d.parcValor))+
+      (d.parcData?', a partir de '+dataCurta(d.parcData):'')]);
+  }
+  if(d.temFin) linhas.push(['Financiamento',brl(s.fin)+' junto a '+ou(d.finBanco,'[instituição financeira]')]);
+  linhas.push(['Índice de correção',ou(d.indice,'IPCA')]);
+  linhas.push(['Data-base',d.dataBase?dataCurta(d.dataBase):'[dd/mm/aaaa]']);
+  linhas.push(['Entrega das chaves', d.entregaModo==='quitacao' ? 'Mediante quitação integral do preço'
+    : (d.entregaData?dataCurta(d.entregaData):'[dd/mm/aaaa]')]);
+  B.push({t:'quadro',rows:linhas});
+
+  /* --- partes --- */
+  B.push({t:'h',text:'I — DA IDENTIFICAÇÃO DAS PARTES'});
+  let vend='VENDEDORA: '+VENDEDORA.razao+', inscrita no CNPJ sob o nº '+VENDEDORA.cnpj+
+    ', com sede na '+VENDEDORA.sede+', neste ato representada por '+ou(d.repNome,'[nome do representante]');
+  const rq=[];
+  if(String(d.repEstadoCivil||'').trim()) rq.push(d.repEstadoCivil.trim());
+  if(String(d.repCargo||'').trim()) rq.push(d.repCargo.trim());
+  if(rq.length) vend+=', '+rq.join(', ');
+  vend+=', inscrito(a) no CPF sob o nº '+ou(d.repCpf,'[CPF]');
+  if(String(d.repRg||'').trim()) vend+=', portador(a) do RG nº '+d.repRg.trim();
+  vend+=', doravante denominada VENDEDORA, legítima proprietária do imóvel adiante identificado; e, de outro lado,';
+  B.push({t:'p',text:vend});
+  cs.forEach(function(c,i){
+    B.push({t:'p',text:(plural?'COMPRADOR '+(i+1)+': ':'COMPRADOR(A): ')+qualificaComprador(c)+
+      (i===cs.length-1?', doravante denominado(a) '+COMP+'.':';')});
+  });
+  B.push({t:'p',text:'As partes acima qualificadas têm entre si justo e contratado o presente Contrato de Compra e Venda de Imóvel, que se regerá pelas cláusulas seguintes e, subsidiariamente, pela legislação civil e consumerista aplicável.'});
+
+  /* --- objeto --- */
+  B.push({t:'h',text:'II — DO OBJETO'});
+  let obj='O objeto do presente contrato é o '+ou(d.imovelTipo,'[identificação do imóvel]');
+  if(String(d.imovelDesc||'').trim()) obj+=', composto de '+d.imovelDesc.trim();
+  if(String(d.imovelArea||'').trim()) obj+=', com área privativa de '+d.imovelArea.trim()+' m²';
+  if(intOf(d.imovelVagas)>0) obj+=', acompanhado de '+qtdExt(intOf(d.imovelVagas))+' vaga(s) de garagem';
+  obj+=', situado na '+enderecoCheio+', registrado sob a matrícula nº '+ou(d.matricula,'[nº]')+
+    ' do '+ou(d.cartorio,'[registro de imóveis]')+', do qual a VENDEDORA é legítima proprietária, livre e desembaraçado de quaisquer ônus reais ou pessoais.';
+  B.push({t:'p',text:obj});
+  B.push({t:'pi',text:'Parágrafo único — A venda é realizada ad corpus, considerando-se o imóvel em sua descrição e não em sua exata medida, ressalvada divergência de área superior a um vigésimo, nos termos do art. 500 do Código Civil.'});
+
+  /* --- preço --- */
+  B.push({t:'h',text:'III — DO PREÇO E DA FORMA DE PAGAMENTO'});
+  B.push({t:'p',text:'O preço certo e ajustado para a presente venda é de '+valorExt(s.total)+
+    ', a ser pago pelo(a) '+COMP+' à VENDEDORA da seguinte forma:'});
+  const letras=['a','b','c','d'];
+  let li=0;
+  B.push({t:'li',text:letras[li++]+') entrada no valor de '+valorExt(s.entrada)+
+    (d.entradaData?', com vencimento em '+dataExtensa(d.entradaData):'')+
+    (String(d.banco||'').trim()||String(d.pix||'').trim()
+      ? ', mediante transferência bancária ou PIX, conforme os dados: '+
+        [String(d.banco||'').trim(),String(d.pix||'').trim()?'chave PIX '+d.pix.trim():''].filter(Boolean).join('; ')
+      : '')+';'});
+  if(d.temInter&&intOf(d.interQtd)>0){
+    B.push({t:'li',text:letras[li++]+') '+qtdExt(intOf(d.interQtd))+' parcela(s) intermediária(s) no valor de '+
+      valorExt(numOf(d.interValor))+' cada'+(d.interData?', com vencimento a partir de '+dataExtensa(d.interData):'')+';'});
+  }
+  if(intOf(d.parcQtd)>0){
+    const dm=diaDoMes(d.parcData);
+    B.push({t:'li',text:letras[li++]+') '+qtdExt(intOf(d.parcQtd))+' parcelas mensais e sucessivas no valor de '+
+      valorExt(numOf(d.parcValor))+' cada'+(d.parcData?', com vencimento a partir de '+dataExtensa(d.parcData):'')+
+      (dm?', sempre no dia '+dm+' de cada mês':'')+';'});
+  }
+  if(d.temFin){
+    B.push({t:'li',text:letras[li++]+') saldo de '+valorExt(s.fin)+', mediante financiamento imobiliário a ser obtido pelo(a) '+
+      COMP+' junto a '+ou(d.finBanco,'[instituição financeira]')+', nos termos da Cláusula IV.'});
+  }
+  B.push({t:'pi',text:'Parágrafo primeiro — As obrigações de pagamento aqui previstas não se sujeitam a qualquer condição além das expressamente estipuladas neste contrato, sendo devidas nos prazos ajustados independentemente de aviso ou notificação prévia da VENDEDORA.'});
+  B.push({t:'pi',text:'Parágrafo segundo — É assegurada ao(à) '+COMP+' a antecipação do pagamento de qualquer parcela, hipótese em que o valor será calculado pro rata die pelo índice de correção pactuado até a data do efetivo pagamento, sem incidência de qualquer penalidade. A antecipação, ainda que realizada mais de uma vez, não implica novação nem modificação dos critérios de reajuste ora estipulados.'});
+
+  /* --- financiamento --- */
+  if(d.temFin){
+    B.push({t:'h',text:'IV — DO FINANCIAMENTO'});
+    B.push({t:'p',text:'O(A) '+COMP+' obriga-se a apresentar a '+ou(d.finBanco,'[instituição financeira]')+
+      ' toda a documentação exigida no prazo de '+qtdExt(intOf(d.finPrazo)||30)+' dias contados da assinatura deste instrumento, bem como a firmar o respectivo contrato de financiamento no momento oportuno, mantendo atualizados os documentos necessários até a data da assinatura junto ao agente financeiro.'});
+    B.push({t:'pi',text:'Parágrafo único — Eventual diferença entre o valor liberado pela instituição financeira e o saldo devedor, para mais ou para menos, será ajustada no valor final devido à VENDEDORA, mantendo-se inalterado o preço total do imóvel. A não aprovação do financiamento não exonera o(a) '+COMP+' da obrigação de pagar o preço ajustado.'});
+  }
+
+  /* --- correção e mora --- */
+  B.push({t:'h',text:(d.temFin?'V':'IV')+' — DA CORREÇÃO MONETÁRIA E DOS ENCARGOS MORATÓRIOS'});
+  B.push({t:'p',text:'As parcelas do preço serão atualizadas monetariamente pelo '+ou(d.indice,'IPCA')+
+    ', calculado pro rata die entre a data-base de '+(d.dataBase?dataExtensa(d.dataBase):'[data-base]')+
+    ' e a data do efetivo pagamento. Na hipótese de variação negativa do índice, será considerado índice zero.'});
+  B.push({t:'pi',text:'Parágrafo único — O atraso no pagamento de qualquer parcela sujeita o(a) '+COMP+
+    ', de pleno direito e independentemente de notificação judicial ou extrajudicial, a juros de mora de 1% (um por cento) ao mês, calculados dia a dia, multa de 2% (dois por cento) sobre o valor da parcela e correção monetária pelo índice pactuado, até a data do efetivo pagamento.'});
+
+  /* --- entrega --- */
+  const nEnt=d.temFin?'VI':'V';
+  B.push({t:'h',text:nEnt+' — DA ENTREGA DAS CHAVES E DA IMISSÃO NA POSSE'});
+  B.push({t:'p',text:'A entrega das chaves e a imissão do(a) '+COMP+' na posse do imóvel ocorrerão '+
+    (d.entregaModo==='quitacao'
+      ? 'mediante a quitação integral do preço ajustado na Cláusula III'
+      : 'em '+(d.entregaData?dataExtensa(d.entregaData):'[data]'))+
+    ', mediante assinatura de Termo de Entrega e Vistoria, no qual serão registrados eventuais reparos a realizar.'});
+  B.push({t:'pi',text:'Parágrafo único — A entrega fica condicionada à quitação integral de todas as obrigações vencidas até a data prevista, sob pena de prorrogação automática do prazo até a purgação do débito, sem que tal prorrogação configure inadimplemento da VENDEDORA.'});
+
+  /* --- situação do imóvel --- */
+  const n7=d.temFin?'VII':'VI';
+  B.push({t:'h',text:n7+' — DA SITUAÇÃO DO IMÓVEL'});
+  B.push({t:'p',text:'A VENDEDORA declara e garante que o imóvel objeto deste contrato está livre e desembaraçado de quaisquer ônus reais ou pessoais, judiciais ou extrajudiciais, e de tributos, impostos e taxas vencidos até a data da assinatura, respondendo por qualquer restrição não informada ao(à) '+COMP+', bem como pela solução de toda pendência que impeça a regular transmissão da propriedade.'});
+
+  /* --- impostos --- */
+  const n8=d.temFin?'VIII':'VII';
+  B.push({t:'h',text:n8+' — DOS IMPOSTOS, TAXAS E DESPESAS'});
+  B.push({t:'p',text:'Os tributos e taxas incidentes sobre o imóvel até a data da entrega das chaves são de responsabilidade da VENDEDORA; a partir dessa data, passam a ser de responsabilidade do(a) '+COMP+'.'});
+  B.push({t:'pi',text:'Parágrafo único — Correm por conta do(a) '+COMP+
+    ' as despesas de lavratura e registro da escritura definitiva, o Imposto de Transmissão de Bens Imóveis (ITBI) e os demais custos necessários à transferência da propriedade.'});
+
+  /* --- irrevogabilidade --- */
+  const n9=d.temFin?'IX':'VIII';
+  B.push({t:'h',text:n9+' — DA IRREVOGABILIDADE E IRRETRATABILIDADE'});
+  B.push({t:'p',text:'O presente contrato é celebrado em caráter irrevogável e irretratável, obrigando as partes, seus herdeiros e sucessores ao seu integral cumprimento.'});
+  B.push({t:'pi',text:'Parágrafo único — Quando a assinatura ocorrer fora da sede da VENDEDORA, fica assegurado ao(à) '+COMP+
+    ' o direito de arrependimento previsto no art. 49 da Lei nº 8.078/1990, a ser exercido por comunicação escrita, com aviso de recebimento, no prazo de 7 (sete) dias contados da assinatura.'});
+
+  /* --- obrigações --- */
+  const n10=d.temFin?'X':'IX';
+  B.push({t:'h',text:n10+' — DAS OBRIGAÇÕES DAS PARTES'});
+  B.push({t:'p',text:'São obrigações da VENDEDORA:'});
+  B.push({t:'li',text:'I — manter o imóvel livre de ônus até a efetiva transferência da propriedade;'});
+  B.push({t:'li',text:'II — outorgar a escritura definitiva de compra e venda em favor do(a) '+COMP+' após a quitação integral do preço ou, havendo financiamento, no momento exigido pelo agente financeiro;'});
+  B.push({t:'li',text:'III — entregar o imóvel nas condições descritas na Cláusula II, limpo e desocupado;'});
+  B.push({t:'li',text:'IV — promover o pagamento dos tributos e encargos de sua responsabilidade.'});
+  B.push({t:'p',text:'São obrigações do(a) '+COMP+':'});
+  B.push({t:'li',text:'I — pagar pontualmente as parcelas do preço e demais encargos previstos;'});
+  B.push({t:'li',text:'II — arcar com os tributos, taxas e despesas de sua responsabilidade;'});
+  B.push({t:'li',text:'III — comunicar à VENDEDORA qualquer alteração de endereço ou de dados de contato.'});
+
+  /* --- descumprimento --- */
+  const n11=d.temFin?'XI':'X';
+  B.push({t:'h',text:n11+' — DO DESCUMPRIMENTO E DAS SANÇÕES'});
+  B.push({t:'p',text:'O atraso superior a '+qtdExt(intOf(d.moraDias)||30)+' dias no pagamento de qualquer parcela, ou o acúmulo de '+
+    qtdExt(intOf(d.moraParcelas)||3)+' parcelas em atraso, autoriza a VENDEDORA a notificar o(a) '+COMP+
+    ' para a purgação da mora no prazo de 15 (quinze) dias.'});
+  B.push({t:'pi',text:'Parágrafo primeiro — Não purgada a mora, a VENDEDORA poderá optar entre (a) exigir judicialmente o crédito vencido e vincendo, constituindo este contrato título executivo extrajudicial nos termos dos arts. 784, III, 785 e 786 do Código de Processo Civil, ou (b) rescindir o contrato, hipótese em que reterá, a título de cláusula penal, '+
+    (numOf(d.penal)||20).toLocaleString('pt-BR')+'% ('+extensoInt(Math.round(numOf(d.penal)||20))+' por cento) das quantias pagas, restituindo o saldo remanescente ao(à) '+COMP+
+    ' em até '+qtdExt(intOf(d.restituicaoPrazo)||30)+' dias, monetariamente atualizado pelo índice pactuado.'});
+  B.push({t:'pi',text:'Parágrafo segundo — Rescindido o contrato quando o(a) '+COMP+
+    ' já estiver na posse do imóvel, obriga-se este(a) a devolvê-lo limpo e em perfeitas condições de uso e conservação no prazo de 30 (trinta) dias contados da notificação, sob pena de reintegração de posse nos termos dos arts. 1.210 e 1.212 do Código Civil, respondendo ainda por 0,5% (cinco décimos por cento) ao mês sobre o valor do imóvel, a título de compensação pelo uso.'});
+
+  /* --- evicção --- */
+  const n12=d.temFin?'XII':'XI';
+  B.push({t:'h',text:n12+' — DA EVICÇÃO DE DIREITOS'});
+  B.push({t:'p',text:'A VENDEDORA obriga-se a fazer a presente venda sempre boa, firme e valiosa, respondendo pela evicção de direitos por si, seus herdeiros e sucessores, nos termos dos arts. 447 a 457 do Código Civil.'});
+
+  /* --- garantia --- */
+  const n13=d.temFin?'XIII':'XII';
+  B.push({t:'h',text:n13+' — DA GARANTIA E DOS VÍCIOS DO IMÓVEL'});
+  if(d.garantia==='novo'){
+    B.push({t:'p',text:'A VENDEDORA responde pelos defeitos aparentes, de fácil constatação, pelo prazo decadencial de 90 (noventa) dias contados da entrega das chaves, e pelos vícios ocultos pelo prazo de 1 (um) ano contado da mesma data, sem prejuízo do prazo de 5 (cinco) anos de garantia de solidez e segurança previsto no art. 618 do Código Civil.'});
+    B.push({t:'pi',text:'Parágrafo único — O(A) '+COMP+' obriga-se a zelar, conservar e manter o imóvel, observando as normas técnicas de uso e manutenção, ficando pré-excluída a responsabilidade da VENDEDORA por danos decorrentes de uso inadequado, de falta de manutenção ou de alterações promovidas após a entrega. Os prazos aqui previstos são os prazos legais de garantia, não constituindo garantia contratual complementar.'});
+  }else{
+    B.push({t:'p',text:'O(A) '+COMP+' declara ter vistoriado pessoalmente o imóvel previamente à assinatura deste contrato e aceita-o no estado de conservação em que se encontra, ressalvados os vícios ocultos não perceptíveis em vistoria regular, aos quais se aplica a garantia legal do Código Civil.'});
+    B.push({t:'pi',text:'Parágrafo único — A partir da imissão na posse, o(a) '+COMP+
+      ' assume integralmente a conservação e a manutenção do imóvel, ficando pré-excluída a responsabilidade da VENDEDORA por danos decorrentes de uso inadequado, de falta de manutenção ou de alterações promovidas após a entrega.'});
+  }
+
+  /* --- condomínio --- */
+  let prox=d.temFin?14:13;
+  const ROM={13:'XIII',14:'XIV',15:'XV',16:'XVI',17:'XVII'};
+  if(d.temCond==='sim'){
+    B.push({t:'h',text:ROM[prox]+' — DAS DISPOSIÇÕES CONDOMINIAIS'});
+    B.push({t:'p',text:'Estando o imóvel sujeito a condomínio, o(a) '+COMP+
+      ' declara ter conhecimento da convenção condominial e do regimento interno, comprometendo-se a observá-los a partir da imissão na posse.'});
+    B.push({t:'pi',text:'Parágrafo único — Correm por conta do(a) '+COMP+
+      ' as despesas condominiais, ordinárias e extraordinárias, vencidas a partir da data da imissão na posse, respondendo a VENDEDORA pelas anteriores.'});
+    prox++;
+  }
+
+  /* --- disposições gerais --- */
+  B.push({t:'h',text:ROM[prox]+' — DAS DISPOSIÇÕES GERAIS'});
+  B.push({t:'p',text:'O(A) '+COMP+' declara ter recebido a minuta deste contrato previamente à assinatura, com liberdade para se assessorar por advogado(a) de sua confiança, e ter pleno conhecimento e compreensão de todas as suas cláusulas e condições, nos termos do art. 46 da Lei nº 8.078/1990, bem como que as obrigações ora assumidas são compatíveis com a sua capacidade econômico-financeira.'});
+  B.push({t:'pi',text:'Parágrafo único — Toda comunicação entre as partes relativa a este contrato poderá ser feita por escrito, inclusive por correio eletrônico, para os endereços indicados no quadro-resumo, obrigando-se ambas as partes a observar, na execução e na conclusão deste contrato, os princípios de probidade e boa-fé.'});
+  prox++;
+
+  /* --- foro --- */
+  B.push({t:'h',text:ROM[prox]+' — DO FORO'});
+  B.push({t:'p',text:'Fica eleito o foro da comarca de '+ou(d.foro,'Montes Claros/MG')+
+    ' para dirimir quaisquer questões oriundas deste contrato, com renúncia a qualquer outro, por mais privilegiado que seja.'});
+
+  /* --- fecho e assinaturas --- */
+  B.push({t:'p',text:'E, por estarem assim justas e contratadas, as partes assinam o presente instrumento em 2 (duas) vias de igual teor e forma, na presença das testemunhas abaixo.'});
+  B.push({t:'city',text:ou(d.cidade,'[cidade]')+', '+(d.dataAss?dataExtensa(d.dataAss):'[data]')+'.'});
+
+  B.push({t:'sig',role:'Vendedora',name:VENDEDORA.razaoTitulo});
+  cs.forEach(function(c,i){
+    B.push({t:'sig',role:plural?'Comprador '+(i+1):'Comprador(a)',name:ou(c.nome,'[nome completo]')});
+  });
+  B.push({t:'sig',role:'Testemunha',name:ou(d.test1Nome,'[nome]')+' — CPF '+ou(d.test1Cpf,'[_____]')});
+  B.push({t:'sig',role:'Testemunha',name:ou(d.test2Nome,'[nome]')+' — CPF '+ou(d.test2Cpf,'[_____]')});
+
+  return B;
+}
+
+/* ===================== renderizador: pré-visualização ===================== */
+function renderMinuta(d,blocks){
+  const num=ou(d.num,'[000/2026]');
+  let h='<div class="m-head"><div><div class="m-brand">DEFREITAS</div><div class="m-brand-sub">Imóveis Próprios</div></div>'+
+        '<div><div class="m-kind">Contrato</div><div class="m-num">Nº '+escH(num)+'</div></div></div>';
+  blocks.forEach(function(b){
+    if(b.t==='title') h+='<h3 class="m-title">'+escH(b.text)+'</h3>';
+    else if(b.t==='quadro'){
+      h+='<table class="m-quadro"><tbody>'+b.rows.map(function(r){
+        return '<tr><td>'+escH(r[0])+'</td><td>'+escH(r[1])+'</td></tr>';
+      }).join('')+'</tbody></table>';
+    }
+    else if(b.t==='h') h+='<div class="m-h">'+escH(b.text)+'</div>';
+    else if(b.t==='p') h+='<p class="m-p">'+escH(b.text)+'</p>';
+    else if(b.t==='pi') h+='<p class="m-pi">'+escH(b.text)+'</p>';
+    else if(b.t==='li') h+='<p class="m-li">'+escH(b.text)+'</p>';
+    else if(b.t==='city') h+='<p class="m-city">'+escH(b.text)+'</p>';
+    else if(b.t==='sig'){
+      h+='<div class="m-sig"><div class="m-sig-line"><div class="m-sig-role">'+escH(b.role)+'</div>'+
+         '<div class="m-sig-name">'+escH(b.name)+'</div></div></div>';
+    }
+  });
+  h+='<div class="m-foot"><span>DEFREITAS IMÓVEIS PRÓPRIOS</span><span>CONTRATO Nº '+escH(num)+'</span></div>';
+  document.getElementById('minuta').innerHTML=h;
+}
+
+/* ===================== renderizador: PDF ===================== */
+const PG={w:210,h:297,ml:20,mr:20,top:30,bot:270};
+const CW=PG.w-PG.ml-PG.mr;
+const COR={marrom:[58,42,31],laranja:[193,98,45],texto:[43,39,35],suave:[85,80,74],claro:[139,132,121],fio:[217,211,200]};
+
+function gerarPDF(d,blocks){
+  const jsPDF=window.jspdf.jsPDF;
+  const doc=new jsPDF({unit:'mm',format:'a4',orientation:'portrait'});
+  const num=ou(d.num,'000/2026');
+  let y=PG.top;
+
+  function cabecalho(){
+    doc.setFont('times','bold'); doc.setFontSize(13); doc.setTextColor.apply(doc,COR.marrom);
+    doc.text('DEFREITAS',PG.ml,17);
+    doc.setFont('courier','normal'); doc.setFontSize(6); doc.setTextColor.apply(doc,[139,100,73]);
+    doc.text('IMOVEIS PROPRIOS',PG.ml,21,{charSpace:0.9});
+    doc.setFontSize(7.5); doc.setTextColor.apply(doc,COR.laranja);
+    doc.text('CONTRATO',PG.w-PG.mr,17,{align:'right',charSpace:0.6});
+    doc.setTextColor.apply(doc,COR.suave); doc.setFontSize(8);
+    doc.text('No '+num,PG.w-PG.mr,21,{align:'right'});
+    doc.setDrawColor.apply(doc,COR.marrom); doc.setLineWidth(0.5);
+    doc.line(PG.ml,24,PG.w-PG.mr,24);
+  }
+  function novaPagina(){doc.addPage(); cabecalho(); y=PG.top;}
+  function espaco(h){if(y+h>PG.bot) novaPagina();}
+
+  cabecalho();
+
+  blocks.forEach(function(b){
+    if(b.t==='title'){
+      doc.setFont('times','bold'); doc.setFontSize(14.5); doc.setTextColor.apply(doc,COR.marrom);
+      const ls=doc.splitTextToSize(b.text,CW);
+      espaco(ls.length*7+6);
+      ls.forEach(function(l){doc.text(l,PG.w/2,y,{align:'center'}); y+=7;});
+      y+=5;
+    }
+    else if(b.t==='quadro'){
+      const lw=52, vw=CW-lw-4;
+      b.rows.forEach(function(r){
+        doc.setFont('courier','normal'); doc.setFontSize(7.2);
+        const ll=doc.splitTextToSize(String(r[0]).toUpperCase(),lw);
+        doc.setFont('helvetica','normal'); doc.setFontSize(9);
+        const vl=doc.splitTextToSize(String(r[1]),vw);
+        const hRow=Math.max(ll.length*3.6,vl.length*4.4)+3.4;
+        espaco(hRow+2);
+        let yl=y;
+        doc.setFont('courier','normal'); doc.setFontSize(7.2); doc.setTextColor.apply(doc,[139,100,73]);
+        ll.forEach(function(l){doc.text(l,PG.ml,yl); yl+=3.6;});
+        let yv=y;
+        doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor.apply(doc,COR.texto);
+        vl.forEach(function(l){doc.text(l,PG.ml+lw+4,yv); yv+=4.4;});
+        y+=hRow;
+        doc.setDrawColor.apply(doc,COR.fio); doc.setLineWidth(0.15);
+        doc.line(PG.ml,y-1.6,PG.w-PG.mr,y-1.6);
+      });
+      y+=5;
+    }
+    else if(b.t==='h'){
+      doc.setFont('helvetica','bold'); doc.setFontSize(9.8); doc.setTextColor.apply(doc,COR.marrom);
+      const ls=doc.splitTextToSize(b.text,CW);
+      espaco(ls.length*5+9);
+      y+=4;
+      ls.forEach(function(l){doc.text(l,PG.ml,y); y+=5;});
+      y+=1.8;
+    }
+    else if(b.t==='p'||b.t==='pi'||b.t==='li'||b.t==='city'){
+      const ind = b.t==='pi'?7 : (b.t==='li'?7:0);
+      const size= b.t==='p'?9.6 : (b.t==='city'?9.6:9.2);
+      const lh  = b.t==='p'?5.0 : 4.8;
+      doc.setFont('helvetica','normal'); doc.setFontSize(size);
+      doc.setTextColor.apply(doc, b.t==='p'||b.t==='city'?COR.texto:COR.suave);
+      const w=CW-ind;
+      const ls=doc.splitTextToSize(b.text,w);
+      if(b.t==='city') y+=5;
+      let i=0;
+      while(i<ls.length){
+        const cabe=Math.max(1,Math.floor((PG.bot-y)/lh));
+        if(cabe<1){novaPagina(); continue;}
+        const chunk=ls.slice(i,i+cabe);
+        doc.text(chunk,PG.ml+ind,y,{align: b.t==='city'?'left':'justify', maxWidth:w, lineHeightFactor:lh/(size*0.3528)});
+        y+=chunk.length*lh;
+        i+=chunk.length;
+        if(i<ls.length) novaPagina();
+      }
+      y+= b.t==='city'?6:3.2;
+    }
+    else if(b.t==='sig'){
+      espaco(20);
+      y+=9;
+      doc.setDrawColor.apply(doc,COR.texto); doc.setLineWidth(0.3);
+      doc.line(PG.ml,y,PG.ml+95,y);
+      y+=4;
+      doc.setFont('courier','normal'); doc.setFontSize(6.8); doc.setTextColor.apply(doc,[139,100,73]);
+      doc.text(String(b.role).toUpperCase(),PG.ml,y,{charSpace:0.5});
+      y+=4;
+      doc.setFont('helvetica','normal'); doc.setFontSize(8.8); doc.setTextColor.apply(doc,COR.texto);
+      const ls=doc.splitTextToSize(b.name,CW);
+      ls.forEach(function(l){doc.text(l,PG.ml,y); y+=4;});
+      y+=2;
+    }
+  });
+
+  const total=doc.internal.getNumberOfPages();
+  for(let p=1;p<=total;p++){
+    doc.setPage(p);
+    doc.setDrawColor.apply(doc,COR.fio); doc.setLineWidth(0.15);
+    doc.line(PG.ml,278,PG.w-PG.mr,278);
+    doc.setFont('courier','normal'); doc.setFontSize(6.8); doc.setTextColor.apply(doc,COR.claro);
+    doc.text('DEFREITAS IMOVEIS PROPRIOS',PG.ml,283,{charSpace:0.4});
+    doc.text('PAGINA '+p+'/'+total,PG.w-PG.mr,283,{align:'right',charSpace:0.4});
+  }
+  return doc.output('blob');
+}
+
+/* ===================== renderizador: Word (OOXML) ===================== */
+function rPr(o){
+  o=o||{};
+  let s='<w:rPr>';
+  s+='<w:rFonts w:ascii="'+(o.font||'Calibri')+'" w:hAnsi="'+(o.font||'Calibri')+'" w:cs="'+(o.font||'Calibri')+'"/>';
+  if(o.b) s+='<w:b/>';
+  if(o.i) s+='<w:i/>';
+  if(o.caps) s+='<w:caps/>';
+  s+='<w:color w:val="'+(o.color||'2B2723')+'"/>';
+  s+='<w:sz w:val="'+(o.size||20)+'"/><w:szCs w:val="'+(o.size||20)+'"/>';
+  if(o.spacing) s+='<w:spacing w:val="'+o.spacing+'"/>';
+  s+='</w:rPr>';
+  return s;
+}
+function pDocx(text,o){
+  o=o||{};
+  let pPr='<w:pPr>';
+  pPr+='<w:spacing w:before="'+(o.before||0)+'" w:after="'+(o.after||120)+'" w:line="'+(o.line||276)+'" w:lineRule="auto"/>';
+  if(o.ind) pPr+='<w:ind w:left="'+o.ind+'"/>';
+  pPr+='<w:jc w:val="'+(o.jc||'both')+'"/>';
+  pPr+='</w:pPr>';
+  return '<w:p>'+pPr+'<w:r>'+rPr(o)+'<w:t xml:space="preserve">'+escX(text)+'</w:t></w:r></w:p>';
+}
+function pVazio(){return '<w:p><w:pPr><w:spacing w:after="0"/></w:pPr></w:p>';}
+
+function gerarDOCX(d,blocks){
+  const num=ou(d.num,'000/2026');
+  let body='';
+
+  body+=pDocx('DEFREITAS',{font:'Cambria',b:true,size:26,color:'3A2A1F',jc:'left',after:0,spacing:20});
+  body+=pDocx('IMÓVEIS PRÓPRIOS  ·  CONTRATO Nº '+num,
+    {font:'Consolas',size:14,color:'8B6449',jc:'left',after:240,spacing:30});
+
+  blocks.forEach(function(b){
+    if(b.t==='title'){
+      body+=pDocx(b.text,{font:'Cambria',b:true,size:30,color:'3A2A1F',jc:'center',before:120,after:280});
+    }
+    else if(b.t==='quadro'){
+      body+='<w:tbl><w:tblPr><w:tblW w:w="5000" w:type="pct"/>'+
+        '<w:tblBorders>'+
+        '<w:top w:val="single" w:sz="4" w:space="0" w:color="D9D3C8"/>'+
+        '<w:bottom w:val="single" w:sz="4" w:space="0" w:color="D9D3C8"/>'+
+        '<w:insideH w:val="single" w:sz="4" w:space="0" w:color="D9D3C8"/>'+
+        '</w:tblBorders>'+
+        '<w:tblCellMar><w:top w:w="60" w:type="dxa"/><w:bottom w:w="60" w:type="dxa"/>'+
+        '<w:left w:w="0" w:type="dxa"/><w:right w:w="120" w:type="dxa"/></w:tblCellMar>'+
+        '</w:tblPr><w:tblGrid><w:gridCol w:w="3200"/><w:gridCol w:w="6438"/></w:tblGrid>';
+      b.rows.forEach(function(r){
+        body+='<w:tr>'+
+          '<w:tc><w:tcPr><w:tcW w:w="3200" w:type="dxa"/></w:tcPr>'+
+          pDocx(String(r[0]).toUpperCase(),{font:'Consolas',size:15,color:'8B6449',jc:'left',after:40,line:240})+'</w:tc>'+
+          '<w:tc><w:tcPr><w:tcW w:w="6438" w:type="dxa"/></w:tcPr>'+
+          pDocx(String(r[1]),{size:18,jc:'left',after:40,line:240})+'</w:tc>'+
+          '</w:tr>';
+      });
+      body+='</w:tbl>'+pVazio();
+    }
+    else if(b.t==='h'){
+      body+=pDocx(b.text,{b:true,size:20,color:'3A2A1F',jc:'left',before:260,after:120});
+    }
+    else if(b.t==='p') body+=pDocx(b.text,{size:20,after:140});
+    else if(b.t==='pi') body+=pDocx(b.text,{size:19,color:'55504A',ind:340,after:140});
+    else if(b.t==='li') body+=pDocx(b.text,{size:19,color:'55504A',ind:340,after:100});
+    else if(b.t==='city') body+=pDocx(b.text,{size:20,jc:'left',before:320,after:320});
+    else if(b.t==='sig'){
+      body+=pDocx('______________________________________________________',
+        {size:20,jc:'left',before:280,after:40});
+      body+=pDocx(String(b.role).toUpperCase(),{font:'Consolas',size:14,color:'8B6449',jc:'left',after:20});
+      body+=pDocx(b.name,{size:18,jc:'left',after:120});
+    }
+  });
+
+  const sect='<w:sectPr><w:pgSz w:w="11906" w:h="16838"/>'+
+    '<w:pgMar w:top="1134" w:right="1134" w:bottom="1134" w:left="1134" w:header="567" w:footer="567" w:gutter="0"/>'+
+    '</w:sectPr>';
+
+  const documentXml='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+    '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">'+
+    '<w:body>'+body+sect+'</w:body></w:document>';
+
+  const stylesXml='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+    '<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">'+
+    '<w:docDefaults><w:rPrDefault><w:rPr>'+
+    '<w:rFonts w:ascii="Calibri" w:hAnsi="Calibri" w:cs="Calibri"/>'+
+    '<w:color w:val="2B2723"/><w:sz w:val="20"/><w:szCs w:val="20"/>'+
+    '<w:lang w:val="pt-BR"/></w:rPr></w:rPrDefault>'+
+    '<w:pPrDefault><w:pPr><w:spacing w:after="120" w:line="276" w:lineRule="auto"/></w:pPr></w:pPrDefault>'+
+    '</w:docDefaults>'+
+    '<w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/></w:style>'+
+    '</w:styles>';
+
+  const contentTypes='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+    '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'+
+    '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>'+
+    '<Default Extension="xml" ContentType="application/xml"/>'+
+    '<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>'+
+    '<Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/>'+
+    '</Types>';
+
+  const rels='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+    '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'+
+    '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>'+
+    '</Relationships>';
+
+  const docRels='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+    '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'+
+    '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>'+
+    '</Relationships>';
+
+  const zip=new JSZip();
+  zip.file('[Content_Types].xml',contentTypes);
+  zip.folder('_rels').file('.rels',rels);
+  const w=zip.folder('word');
+  w.file('document.xml',documentXml);
+  w.file('styles.xml',stylesXml);
+  w.folder('_rels').file('document.xml.rels',docRels);
+  return zip.generateAsync({type:'blob'});
+}
+
+/* ===================== download ===================== */
+let downloads=null, downloadsResolved=false;
+if(window.claude&&window.claude.use){
+  window.claude.use('downloads').then(function(ns){
+    downloads=ns; downloadsResolved=true; atualizarBotoes();
+  }).catch(function(){downloadsResolved=true; atualizarBotoes();});
+}else{downloadsResolved=true;}
+
+function atualizarBotoes(){
+  const nota=document.getElementById('export-note');
+  const ok=!!downloads;
+  document.getElementById('btn-pdf').disabled=!ok;
+  document.getElementById('btn-docx').disabled=!ok;
+  if(!downloadsResolved) return;
+  if(!ok){
+    nota.className='export-note err';
+    nota.textContent='A exportação de arquivos não está disponível nesta visualização. Abra o artefato em claude.ai para gerar o PDF e o Word.';
+  }
+}
+function nomeArquivo(d,ext){
+  const num=ou(d.num,'000-2026').replace(/[^\w-]+/g,'-');
+  const cs=(d.compradores||[]);
+  const quem=ou(cs[0]&&cs[0].nome,'comprador').normalize('NFD').replace(/[̀-ͯ]/g,'')
+    .replace(/[^\w\s-]/g,'').trim().split(/\s+/).slice(0,2).join('-').toLowerCase();
+  return 'contrato-'+num+'-'+quem+'.'+ext;
+}
+function avisar(msg,erro){
+  const nota=document.getElementById('export-note');
+  nota.className='export-note'+(erro?' err':'');
+  nota.textContent=msg;
+}
+const NOTA_PADRAO='O PDF sai paginado para impressão e assinatura. O Word sai editável, caso o jurídico precise ajustar alguma cláusula.';
+
+function tratarErro(e){
+  const c=e&&e.code;
+  if(c==='declined'){avisar('Download cancelado. Nada foi salvo.',false); return;}
+  if(c==='rate_limited'){avisar('Já existe um download aguardando confirmação. Conclua-o e tente de novo.',true); return;}
+  if(c==='unavailable'||c==='not_granted'||c==='capability_disabled'||c==='capability_removed'){
+    downloads=null; atualizarBotoes(); return;
+  }
+  avisar('Não foi possível gerar o arquivo. Confira os dados e tente novamente.',true);
+}
+
+async function exportarPDF(){
+  const d=lerForm(), blocks=construirDoc(d);
+  avisar('Gerando o PDF…',false);
+  try{
+    const blob=gerarPDF(d,blocks);
+    await downloads.save({filename:nomeArquivo(d,'pdf'),data:blob});
+    avisar('PDF salvo.',false);
+  }catch(e){tratarErro(e);}
+}
+async function exportarDOCX(){
+  const d=lerForm(), blocks=construirDoc(d);
+  avisar('Gerando o documento Word…',false);
+  try{
+    const blob=await gerarDOCX(d,blocks);
+    await downloads.save({filename:nomeArquivo(d,'docx'),data:blob});
+    avisar('Documento Word salvo.',false);
+  }catch(e){tratarErro(e);}
+}
+
+/* ===================== ciclo ===================== */
+let tRender=null;
+function atualizar(){
+  const d=lerForm();
+  renderTally(d);
+  const blocks=construirDoc(d);
+  renderMinuta(d,blocks);
+  document.getElementById('side-meta').textContent=blocks.filter(function(b){return b.t==='h';}).length+' cláusulas';
+  const pe=document.getElementById('preco-extenso');
+  const tot=numOf(d.preco);
+  pe.textContent=tot>0?extensoMoeda(tot):'';
+  pe.className='hint';
+  const gh=document.getElementById('garantia-hint');
+  gh.textContent = d.garantia==='novo'
+    ? '90 dias para vícios aparentes, 1 ano para ocultos, 5 anos de solidez e segurança.'
+    : 'Vistoriado e aceito no estado em que se encontra, com garantia legal para vícios ocultos.';
+  try{localStorage.setItem(LS,JSON.stringify(d));}catch(e){}
+}
+function agendar(){clearTimeout(tRender); tRender=setTimeout(atualizar,120);}
+
+function validarCampoCPF(id,hintId){
+  const el=document.getElementById(id), hint=document.getElementById(hintId);
+  if(!el) return;
+  el.value=maskCPF(el.value);
+  if(!hint) return;
+  const d=el.value.replace(/\D/g,'');
+  if(!d.length){hint.textContent=''; hint.className='hint';}
+  else if(d.length<11){hint.textContent='CPF incompleto'; hint.className='hint bad';}
+  else if(validaCPF(el.value)){hint.textContent='CPF válido'; hint.className='hint good';}
+  else{hint.textContent='Dígitos verificadores não conferem'; hint.className='hint bad';}
+}
+
+document.addEventListener('input',function(ev){
+  const t=ev.target;
+  if(!t||!t.id) return;
+  if(/cpf$/i.test(t.id)){
+    const pos=t.selectionStart, antes=t.value.length;
+    t.value=maskCPF(t.value);
+    const hint=document.getElementById(t.id+'-hint');
+    if(hint){
+      const d=t.value.replace(/\D/g,'');
+      if(!d.length){hint.textContent=''; hint.className='hint';}
+      else if(d.length<11){hint.textContent='CPF incompleto'; hint.className='hint bad';}
+      else if(validaCPF(t.value)){hint.textContent='CPF válido'; hint.className='hint good';}
+      else{hint.textContent='Dígitos verificadores não conferem'; hint.className='hint bad';}
+    }
+    if(pos!=null) try{t.setSelectionRange(pos+(t.value.length-antes),pos+(t.value.length-antes));}catch(e){}
+  }
+  if(t.id==='imovelCep') t.value=maskCEP(t.value);
+  if(['preco','entradaValor','interValor','parcValor','finValor'].indexOf(t.id)>=0){
+    const pos=t.selectionStart, antes=t.value.length;
+    t.value=maskMoneyLive(t.value);
+    if(pos!=null) try{t.setSelectionRange(pos+(t.value.length-antes),pos+(t.value.length-antes));}catch(e){}
+  }
+  if(t.id==='temInter') document.getElementById('box-inter').hidden=!t.checked;
+  if(t.id==='temFin') document.getElementById('box-fin').hidden=!t.checked;
+  agendar();
+});
+document.addEventListener('change',function(ev){
+  const t=ev.target;
+  if(!t||!t.id) return;
+  if(t.id==='temInter') document.getElementById('box-inter').hidden=!t.checked;
+  if(t.id==='temFin') document.getElementById('box-fin').hidden=!t.checked;
+  if(t.id==='entregaModo') document.getElementById('box-entrega-data').hidden=(t.value==='quitacao');
+  agendar();
+});
+document.addEventListener('click',function(ev){
+  const rm=ev.target.getAttribute&&ev.target.getAttribute('data-rm');
+  if(rm!=null){
+    const d=lerForm();
+    compradores=d.compradores;
+    compradores.splice(parseInt(rm,10),1);
+    if(!compradores.length) compradores=[{nacionalidade:'brasileiro'}];
+    renderCompradores(); atualizar();
+  }
+});
+
+document.getElementById('btn-add-comprador').addEventListener('click',function(){
+  const d=lerForm();
+  compradores=d.compradores;
+  compradores.push({nome:'',nacionalidade:'brasileiro',estadoCivil:'',profissao:'',cpf:'',rg:'',endereco:'',email:''});
+  renderCompradores(); atualizar();
+});
+document.getElementById('btn-calc').addEventListener('click',function(){
+  const d=lerForm(), s=somas(d), q=intOf(d.parcQtd);
+  if(q<=0){avisar('Informe primeiro a quantidade de parcelas mensais.',true); return;}
+  const resto=s.total-s.entrada-s.inter-s.fin;
+  if(resto<=0){avisar('Não há saldo a parcelar com a composição atual.',true); return;}
+  document.getElementById('parcValor').value=(resto/q).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+  avisar(NOTA_PADRAO,false);
+  atualizar();
+});
+document.getElementById('btn-clear').addEventListener('click',function(){
+  escreverForm(JSON.parse(JSON.stringify(VAZIO)));
+  document.getElementById('box-inter').hidden=true;
+  document.getElementById('box-fin').hidden=true;
+  document.getElementById('box-entrega-data').hidden=false;
+  usandoExemplo=false;
+  document.getElementById('seed-banner').hidden=true;
+  try{localStorage.removeItem(LS);}catch(e){}
+  atualizar();
+  const f=document.getElementById('num'); if(f) f.focus();
+});
+document.getElementById('btn-pdf').addEventListener('click',exportarPDF);
+document.getElementById('btn-docx').addEventListener('click',exportarDOCX);
+
+/* ---- arranque ---- */
+(function(){
+  let inicial=null, restaurado=false;
+  try{
+    const raw=localStorage.getItem(LS);
+    if(raw){inicial=JSON.parse(raw); restaurado=true;}
+  }catch(e){}
+  if(!inicial) inicial=JSON.parse(JSON.stringify(EXEMPLO));
+  escreverForm(inicial);
+  document.getElementById('box-inter').hidden=!inicial.temInter;
+  document.getElementById('box-fin').hidden=!inicial.temFin;
+  document.getElementById('box-entrega-data').hidden=(inicial.entregaModo==='quitacao');
+  if(restaurado){
+    usandoExemplo=false;
+    document.getElementById('seed-banner').hidden=true;
+  }
+  ['repCpf','test1Cpf','test2Cpf'].forEach(function(id){validarCampoCPF(id,id+'-hint');});
+  compradores.forEach(function(_,i){validarCampoCPF('c'+i+'-cpf','c'+i+'-cpf-hint');});
+  atualizarBotoes();
+  atualizar();
+})();
+</script>
