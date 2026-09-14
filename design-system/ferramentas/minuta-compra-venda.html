@@ -71,6 +71,7 @@ legend{padding:0}
 @media (max-width:560px){.r2,.r3,.r21,.r12{grid-template-columns:1fr}}
 
 .f{display:flex;flex-direction:column;gap:5px;min-width:0}
+.f[hidden]{display:none}
 .f label{font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--brown-600)}
 .f input,.f select,.f textarea{
   font-family:var(--sans);font-size:14px;color:var(--ink);background:var(--field);
@@ -280,9 +281,15 @@ button{font-family:var(--sans);cursor:pointer;border-radius:2px}
           <div class="f"><label for="imovelCidade">Cidade/UF</label><input id="imovelCidade" placeholder="Montes Claros/MG"></div>
           <div class="f"><label for="imovelCep">CEP</label><input class="mono" id="imovelCep" inputmode="numeric" placeholder="39.400-010"></div>
         </div>
-        <div class="row r2">
-          <div class="f"><label for="matricula">Matrícula nº</label><input class="mono" id="matricula" placeholder="123.456"></div>
-          <div class="f"><label for="cartorio">Registro de imóveis</label><input id="cartorio" placeholder="1º Ofício de Montes Claros/MG"></div>
+        <div class="row r3">
+          <div class="f"><label for="registroTipo">Identificação do registro</label>
+            <select id="registroTipo">
+              <option value="matricula">Número da matrícula</option>
+              <option value="inscricao">Inscrição imobiliária</option>
+            </select>
+            <span class="hint" id="registro-hint"></span></div>
+          <div class="f"><label for="matricula" id="lbl-matricula">Matrícula nº</label><input class="mono" id="matricula" placeholder="123.456"></div>
+          <div class="f" id="box-cartorio"><label for="cartorio">Cartório de registro de imóveis</label><input id="cartorio" placeholder="1º Ofício de Montes Claros/MG"></div>
         </div>
       </fieldset>
 
@@ -606,7 +613,8 @@ const EXEMPLO={
   imovelTipo:'Apartamento nº 1002', imovelArea:'135,00',
   imovelDesc:'3 quartos sendo 1 suíte, 2 banheiros, sala de estar e jantar, cozinha, área de serviço e varanda',
   imovelEndereco:'R. Getúlio Vargas, 1.500', imovelVagas:'1', imovelBairro:'Centro',
-  imovelCidade:'Montes Claros/MG', imovelCep:'39.400-010', matricula:'123.456',
+  imovelCidade:'Montes Claros/MG', imovelCep:'39.400-010',
+  registroTipo:'matricula', matricula:'123.456',
   cartorio:'1º Ofício de Registro de Imóveis de Montes Claros/MG',
   preco:'850.000,00', indice:'IPCA', modo:'parcelado',
   avistaData:'', sinalValor:'85.000,00', sinalData:'2026-09-15', saldoData:'2026-10-15', arrasTipo:'confirmatorias',
@@ -626,7 +634,8 @@ const VAZIO={
   compradores:[{tipo:'pf',nome:'',nacionalidade:'brasileiro',estadoCivil:'',profissao:'',cpf:'',rg:'',endereco:'',email:'',
     razaoSocial:'',cnpj:'',repNome:'',repCargo:'',repCpf:''}],
   imovelTipo:'', imovelArea:'', imovelDesc:'', imovelEndereco:'', imovelVagas:'', imovelBairro:'',
-  imovelCidade:'Montes Claros/MG', imovelCep:'', matricula:'', cartorio:'',
+  imovelCidade:'Montes Claros/MG', imovelCep:'',
+  registroTipo:'matricula', matricula:'', cartorio:'',
   preco:'', indice:'IPCA', modo:'parcelado',
   avistaData:'', sinalValor:'', sinalData:'', saldoData:'', arrasTipo:'confirmatorias',
   entradaValor:'', entradaData:'',
@@ -676,7 +685,15 @@ function escreverForm(d){
   CAMPOS.forEach(function(k){
     const el=document.getElementById(k);
     if(!el) return;
-    if(el.type==='checkbox') el.checked=!!d[k]; else el.value=d[k]==null?'':d[k];
+    if(el.type==='checkbox'){el.checked=!!d[k]; return;}
+    const v=d[k]==null?'':String(d[k]);
+    if(el.tagName==='SELECT'){
+      /* rascunho salvo antes de um campo existir não pode deixar o select vazio */
+      const existe=Array.prototype.some.call(el.options,function(o){return o.value===v;});
+      el.value=existe?v:el.options[0].value;
+      return;
+    }
+    el.value=v;
   });
   const rb=document.getElementById('modo-'+(d.modo||'parcelado'));
   if(rb) rb.checked=true;
@@ -864,6 +881,16 @@ function construirDoc(d){
   const COMP=plural?'COMPRADORES':'COMPRADOR(A)';
   const compNomes=cs.map(nomeComprador).join('; ');
   const modo=d.modo||'parcelado';
+  const ehInscricao=d.registroTipo==='inscricao';
+  const regRotulo=ehInscricao?'Inscrição imobiliária':'Matrícula';
+  const regNum=ou(d.matricula, ehInscricao?'[nº da inscrição]':'[nº da matrícula]');
+  /* sem matrícula, o cadastro é o do município do próprio imóvel */
+  const regOrgao=ehInscricao
+    ? ou(d.imovelCidade,'[cidade/UF]')
+    : ou(d.cartorio,'[registro de imóveis]');
+  const regFrase=ehInscricao
+    ? 'cadastrado sob a inscrição imobiliária nº '+regNum+' no cadastro imobiliário de '+regOrgao
+    : 'registrado sob a matrícula nº '+regNum+' do '+regOrgao;
   const cidadeImovel=ou(d.imovelCidade,'[cidade/UF]');
   const enderecoCheio=[ou(d.imovelEndereco,'[endereço]'),ou(d.imovelBairro,'[bairro]'),cidadeImovel,
     String(d.imovelCep||'').trim()?'CEP '+d.imovelCep.trim():''].filter(Boolean).join(', ');
@@ -874,7 +901,7 @@ function construirDoc(d){
   const linhas=[];
   linhas.push(['Imóvel',ou(d.imovelTipo,'[identificação]')]);
   linhas.push(['Endereço',enderecoCheio]);
-  linhas.push(['Matrícula',ou(d.matricula,'[nº]')+' — '+ou(d.cartorio,'[registro de imóveis]')]);
+  linhas.push([regRotulo,regNum+' — '+regOrgao]);
   if(String(d.imovelArea||'').trim()) linhas.push(['Área privativa',d.imovelArea.trim()+' m²']);
   if(intOf(d.imovelVagas)>0) linhas.push(['Vagas de garagem',qtdExt(intOf(d.imovelVagas))]);
   linhas.push([plural?'Compradores':'Comprador(a)',compNomes]);
@@ -936,8 +963,8 @@ function construirDoc(d){
   if(String(d.imovelDesc||'').trim()) obj+=', composto de '+d.imovelDesc.trim();
   if(String(d.imovelArea||'').trim()) obj+=', com área privativa de '+d.imovelArea.trim()+' m²';
   if(intOf(d.imovelVagas)>0) obj+=', acompanhado de '+qtdExt(intOf(d.imovelVagas))+' vaga(s) de garagem';
-  obj+=', situado na '+enderecoCheio+', registrado sob a matrícula nº '+ou(d.matricula,'[nº]')+
-    ' do '+ou(d.cartorio,'[registro de imóveis]')+', do qual a VENDEDORA é legítima proprietária, livre e desembaraçado de quaisquer ônus reais ou pessoais.';
+  obj+=', situado na '+enderecoCheio+', '+regFrase+
+    ', do qual a VENDEDORA é legítima proprietária, livre e desembaraçado de quaisquer ônus reais ou pessoais.';
   B.push({t:'p',text:obj});
   B.push({t:'pi',text:'Parágrafo único — A venda é realizada ad corpus, considerando-se o imóvel em sua descrição e não em sua exata medida, ressalvada divergência de área superior a um vigésimo, nos termos do art. 500 do Código Civil.'});
 
@@ -1498,6 +1525,13 @@ function atualizar(){
   gh.textContent = d.garantia==='novo'
     ? '90 dias para vícios aparentes, 1 ano para ocultos, 5 anos de solidez e segurança.'
     : 'Vistoriado e aceito no estado em que se encontra, com garantia legal para vícios ocultos.';
+  const ins=d.registroTipo==='inscricao';
+  document.getElementById('lbl-matricula').textContent=ins?'Inscrição imobiliária nº':'Matrícula nº';
+  document.getElementById('matricula').placeholder=ins?'00.00.000.0000.000':'123.456';
+  document.getElementById('box-cartorio').hidden=ins;
+  document.getElementById('registro-hint').textContent=ins
+    ? 'Sem matrícula aberta: o cadastro é o do município do imóvel. Confirme a via de transferência com o jurídico.'
+    : '';
   const ah=document.getElementById('arras-hint');
   if(ah) ah.textContent = d.arrasTipo==='penitenciais'
     ? 'Admite arrependimento: quem desiste perde o sinal, ou o devolve em dobro.'
