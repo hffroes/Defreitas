@@ -93,6 +93,11 @@ cor e tipografia e os padrões de cabeçalho/rodapé definidos em
 Campos entre colchetes (`[_____]`, `[nome completo]` etc.) são placeholders
 a preencher por quem emite o documento ou por integração de dados.
 
+O conjunto completo de cláusulas padrão do contrato de compra e venda
+(conteúdo jurídico, não layout) está em [`../Cont_venda.md`](../Cont_venda.md),
+na raiz do repositório — é o documento-parâmetro para montar qualquer
+contrato de venda a partir do modelo `contrato-compra-venda.html`.
+
 ### Dados institucionais fixos
 
 Usados em todos os modelos de papelaria:
