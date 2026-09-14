@@ -182,10 +182,12 @@ button{font-family:var(--sans);cursor:pointer;border-radius:2px}
 .m-p{font-size:11.8px;line-height:1.72;color:var(--ink-2);margin:0 0 8px;text-align:justify;hyphens:auto}
 .m-pi{font-size:11.2px;line-height:1.7;color:var(--ink-2);margin:0 0 8px 13px;text-align:justify}
 .m-li{font-size:11.5px;line-height:1.68;color:var(--ink-2);margin:0 0 5px 15px;text-align:justify}
-.m-quadro{width:100%;border-collapse:collapse;margin:0 0 16px;font-size:11px}
-.m-quadro td{border-bottom:1px solid var(--rule);padding:5px 8px 5px 0;vertical-align:top}
+.m-quadro{width:100%;border-collapse:collapse;margin:0 0 16px;font-size:11px;
+  table-layout:fixed;border-top:1px solid var(--rule)}
+.m-quadro td{border-bottom:1px solid var(--rule);padding:5px 8px 5px 0;vertical-align:top;
+  overflow-wrap:anywhere}
 .m-quadro td:first-child{font-family:var(--mono);font-size:9px;letter-spacing:.05em;text-transform:uppercase;
-  color:var(--brown-600);width:38%;white-space:normal}
+  color:var(--brown-600);width:31%;white-space:normal}
 .m-quadro td:last-child{color:var(--ink);font-variant-numeric:tabular-nums}
 .m-city{font-size:11.8px;color:var(--ink-2);margin:18px 0 22px}
 .m-sig{margin:0 0 18px}
@@ -1297,25 +1299,37 @@ function gerarPDF(d,blocks){
       y+=5;
     }
     else if(b.t==='quadro'){
-      const lw=52, vw=CW-lw-4;
-      b.rows.forEach(function(r){
-        doc.setFont('courier','normal'); doc.setFontSize(7.2);
-        const ll=doc.splitTextToSize(String(r[0]).toUpperCase(),lw);
-        doc.setFont('helvetica','normal'); doc.setFontSize(9);
-        const vl=doc.splitTextToSize(String(r[1]),vw);
-        const hRow=Math.max(ll.length*3.6,vl.length*4.4)+3.4;
-        espaco(hRow+2);
-        let yl=y;
-        doc.setFont('courier','normal'); doc.setFontSize(7.2); doc.setTextColor.apply(doc,[139,100,73]);
-        ll.forEach(function(l){doc.text(l,PG.ml,yl); yl+=3.6;});
-        let yv=y;
-        doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor.apply(doc,COR.texto);
-        vl.forEach(function(l){doc.text(l,PG.ml+lw+4,yv); yv+=4.4;});
-        y+=hRow;
+      /* Caixa de linha explícita: a régua fecha a linha embaixo e o texto da
+         seguinte começa depois dela. Desenhar na própria base do texto fazia
+         a régua cortar os rótulos ao meio. */
+      const lw=52, gap=5, vw=CW-lw-gap;
+      const szL=7.2, szV=9;
+      const lh=4.4;      // mesma entrelinha nas duas colunas: rótulo e valor
+      const capH=2.6;    // altura da caixa alta a 9pt, do topo até a linha de base
+      const padTop=2.2, padBot=2.4;
+      const regua=function(yy){
         doc.setDrawColor.apply(doc,COR.fio); doc.setLineWidth(0.15);
-        doc.line(PG.ml,y-1.6,PG.w-PG.mr,y-1.6);
+        doc.line(PG.ml,yy,PG.w-PG.mr,yy);
+      };
+      espaco(padTop+capH+padBot);
+      regua(y);
+      b.rows.forEach(function(r){
+        doc.setFont('courier','normal'); doc.setFontSize(szL);
+        const ll=doc.splitTextToSize(String(r[0]).toUpperCase(),lw);
+        doc.setFont('helvetica','normal'); doc.setFontSize(szV);
+        const vl=doc.splitTextToSize(String(r[1]),vw);
+        const n=Math.max(ll.length,vl.length);
+        const hRow=padTop+capH+(n-1)*lh+padBot;
+        if(y+hRow>PG.bot){novaPagina(); regua(y);}
+        const base=y+padTop+capH;
+        doc.setFont('courier','normal'); doc.setFontSize(szL); doc.setTextColor.apply(doc,[139,100,73]);
+        ll.forEach(function(l,i){doc.text(l,PG.ml,base+i*lh);});
+        doc.setFont('helvetica','normal'); doc.setFontSize(szV); doc.setTextColor.apply(doc,COR.texto);
+        vl.forEach(function(l,i){doc.text(l,PG.ml+lw+gap,base+i*lh);});
+        y+=hRow;
+        regua(y);
       });
-      y+=5;
+      y+=7;
     }
     else if(b.t==='h'){
       doc.setFont('helvetica','bold'); doc.setFontSize(9.8); doc.setTextColor.apply(doc,COR.marrom);
@@ -1416,21 +1430,29 @@ function gerarDOCX(d,blocks){
       body+=pDocx(b.text,{font:'Cambria',b:true,size:30,color:'3A2A1F',jc:'center',before:120,after:280});
     }
     else if(b.t==='quadro'){
-      body+='<w:tbl><w:tblPr><w:tblW w:w="5000" w:type="pct"/>'+
+      /* tblLayout fixed é obrigatório: sem ele o Word ignora as larguras
+         declaradas e redimensiona as colunas pelo conteúdo, e cada linha
+         quebra num ponto diferente. Ordem dos filhos de tblPr e tcPr segue
+         a sequência do esquema — fora de ordem o Word descarta o elemento. */
+      const COL_ROT=2948, COL_VAL=6690;   // 9638 twips úteis, na mesma proporção do PDF
+      body+='<w:tbl><w:tblPr>'+
+        '<w:tblW w:w="'+(COL_ROT+COL_VAL)+'" w:type="dxa"/>'+
         '<w:tblBorders>'+
         '<w:top w:val="single" w:sz="4" w:space="0" w:color="D9D3C8"/>'+
         '<w:bottom w:val="single" w:sz="4" w:space="0" w:color="D9D3C8"/>'+
         '<w:insideH w:val="single" w:sz="4" w:space="0" w:color="D9D3C8"/>'+
         '</w:tblBorders>'+
-        '<w:tblCellMar><w:top w:w="60" w:type="dxa"/><w:bottom w:w="60" w:type="dxa"/>'+
-        '<w:left w:w="0" w:type="dxa"/><w:right w:w="120" w:type="dxa"/></w:tblCellMar>'+
-        '</w:tblPr><w:tblGrid><w:gridCol w:w="3200"/><w:gridCol w:w="6438"/></w:tblGrid>';
+        '<w:tblLayout w:type="fixed"/>'+
+        '<w:tblCellMar><w:top w:w="90" w:type="dxa"/><w:bottom w:w="90" w:type="dxa"/>'+
+        '<w:left w:w="0" w:type="dxa"/><w:right w:w="160" w:type="dxa"/></w:tblCellMar>'+
+        '</w:tblPr>'+
+        '<w:tblGrid><w:gridCol w:w="'+COL_ROT+'"/><w:gridCol w:w="'+COL_VAL+'"/></w:tblGrid>';
       b.rows.forEach(function(r){
         body+='<w:tr>'+
-          '<w:tc><w:tcPr><w:tcW w:w="3200" w:type="dxa"/></w:tcPr>'+
-          pDocx(String(r[0]).toUpperCase(),{font:'Consolas',size:15,color:'8B6449',jc:'left',after:40,line:240})+'</w:tc>'+
-          '<w:tc><w:tcPr><w:tcW w:w="6438" w:type="dxa"/></w:tcPr>'+
-          pDocx(String(r[1]),{size:18,jc:'left',after:40,line:240})+'</w:tc>'+
+          '<w:tc><w:tcPr><w:tcW w:w="'+COL_ROT+'" w:type="dxa"/><w:vAlign w:val="top"/></w:tcPr>'+
+          pDocx(String(r[0]).toUpperCase(),{font:'Consolas',size:15,color:'8B6449',jc:'left',after:0,line:240})+'</w:tc>'+
+          '<w:tc><w:tcPr><w:tcW w:w="'+COL_VAL+'" w:type="dxa"/><w:vAlign w:val="top"/></w:tcPr>'+
+          pDocx(String(r[1]),{size:18,jc:'left',after:0,line:240})+'</w:tc>'+
           '</w:tr>';
       });
       body+='</w:tbl>'+pVazio();
