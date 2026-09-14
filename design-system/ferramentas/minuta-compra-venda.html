@@ -1232,6 +1232,11 @@ function construirDoc(d){
   B.push({t:'sig',role:'Testemunha',name:ou(d.test1Nome,'[nome]')+' — CPF '+ou(d.test1Cpf,'[_____]')});
   B.push({t:'sig',role:'Testemunha',name:ou(d.test2Nome,'[nome]')+' — CPF '+ou(d.test2Cpf,'[_____]')});
 
+  /* Do foro até a última testemunha nada pode ser separado por quebra de
+     página: assinaturas em folhas distintas invalidam a via na prática. */
+  const iForo=B.findIndex(function(b){return b.t==='h'&&b.text.indexOf('DO FORO')>=0;});
+  if(iForo>=0) for(let i=iForo;i<B.length;i++) B[i].junto=true;
+
   return B;
 }
 
@@ -1285,14 +1290,65 @@ function gerarPDF(d,blocks){
     doc.setDrawColor.apply(doc,COR.marrom); doc.setLineWidth(0.5);
     doc.line(PG.ml,24,PG.w-PG.mr,24);
   }
-  function novaPagina(){doc.addPage(); cabecalho(); y=PG.top;}
+  /* O cabeçalho deixa a fonte em Courier cinza. Sem reaplicar o estilo, o
+     trecho de parágrafo que continua na página seguinte sai com a formatação
+     do cabeçalho. */
+  let estiloAtual={fam:'helvetica',est:'normal',tam:9.6,cor:COR.texto};
+  function estilo(fam,est,tam,cor){
+    estiloAtual={fam:fam,est:est,tam:tam,cor:cor};
+    doc.setFont(fam,est); doc.setFontSize(tam); doc.setTextColor.apply(doc,cor);
+  }
+  function reaplicarEstilo(){
+    doc.setFont(estiloAtual.fam,estiloAtual.est);
+    doc.setFontSize(estiloAtual.tam);
+    doc.setTextColor.apply(doc,estiloAtual.cor);
+  }
+  function novaPagina(){doc.addPage(); cabecalho(); y=PG.top; reaplicarEstilo();}
   function espaco(h){if(y+h>PG.bot) novaPagina();}
+
+  /* Altura de um conjunto de blocos, na mesma métrica do desenho abaixo.
+     Usada para manter foro e assinaturas na mesma página. */
+  function medirGrupo(blocos){
+    let h=0;
+    blocos.forEach(function(b){
+      if(b.t==='h'){
+        doc.setFont('helvetica','bold'); doc.setFontSize(9.8);
+        h+=4+doc.splitTextToSize(b.text,CW).length*5+1.8;
+      }else if(b.t==='p'||b.t==='pi'||b.t==='li'||b.t==='city'){
+        const ind=(b.t==='pi'||b.t==='li')?7:0;
+        const size=(b.t==='p'||b.t==='city')?9.6:9.2;
+        const lh=(b.t==='p')?5.0:4.8;
+        doc.setFont('helvetica','normal'); doc.setFontSize(size);
+        h+=(b.t==='city'?5:0)+doc.splitTextToSize(b.text,CW-ind).length*lh+(b.t==='city'?6:3.2);
+      }else if(b.t==='sig'){
+        doc.setFont('helvetica','normal'); doc.setFontSize(8.8);
+        h+=7+4+4+doc.splitTextToSize(b.name,CW).length*4+1.5;
+        if(b.sub){doc.setFontSize(8); h+=doc.splitTextToSize(b.sub,CW).length*3.6;}
+      }
+    });
+    reaplicarEstilo();
+    return h;
+  }
 
   cabecalho();
 
-  blocks.forEach(function(b){
+  blocks.forEach(function(b,idx){
+    /* Foro e assinaturas formam um bloco indivisível: se não couber no que
+       resta da página, começa em página nova — assinatura partida ao meio
+       obriga a reimprimir o contrato. */
+    const pagInteira=PG.bot-PG.top;
+    if(b.junto && (idx===0 || !blocks[idx-1].junto)){
+      const alturaGrupo=medirGrupo(blocks.slice(idx));
+      if(alturaGrupo>PG.bot-y && alturaGrupo<=pagInteira) novaPagina();
+    }
+    /* Se o grupo inteiro não cabe numa página (muitas partes), ao menos as
+       assinaturas começam juntas numa folha limpa. */
+    if(b.t==='sig' && (idx===0 || blocks[idx-1].t!=='sig')){
+      const alturaAss=medirGrupo(blocks.slice(idx));
+      if(alturaAss>PG.bot-y && alturaAss<=pagInteira) novaPagina();
+    }
     if(b.t==='title'){
-      doc.setFont('times','bold'); doc.setFontSize(14.5); doc.setTextColor.apply(doc,COR.marrom);
+      estilo('times','bold',14.5,COR.marrom);
       const ls=doc.splitTextToSize(b.text,CW);
       espaco(ls.length*7+6);
       ls.forEach(function(l){doc.text(l,PG.w/2,y,{align:'center'}); y+=7;});
@@ -1332,7 +1388,7 @@ function gerarPDF(d,blocks){
       y+=7;
     }
     else if(b.t==='h'){
-      doc.setFont('helvetica','bold'); doc.setFontSize(9.8); doc.setTextColor.apply(doc,COR.marrom);
+      estilo('helvetica','bold',9.8,COR.marrom);
       const ls=doc.splitTextToSize(b.text,CW);
       espaco(ls.length*5+9);
       y+=4;
@@ -1343,40 +1399,39 @@ function gerarPDF(d,blocks){
       const ind = b.t==='pi'?7 : (b.t==='li'?7:0);
       const size= b.t==='p'?9.6 : (b.t==='city'?9.6:9.2);
       const lh  = b.t==='p'?5.0 : 4.8;
-      doc.setFont('helvetica','normal'); doc.setFontSize(size);
-      doc.setTextColor.apply(doc, b.t==='p'||b.t==='city'?COR.texto:COR.suave);
+      const cor = (b.t==='p'||b.t==='city')?COR.texto:COR.suave;
+      estilo('helvetica','normal',size,cor);
       const w=CW-ind;
       const ls=doc.splitTextToSize(b.text,w);
       if(b.t==='city') y+=5;
       let i=0;
       while(i<ls.length){
         const cabe=Math.max(1,Math.floor((PG.bot-y)/lh));
-        if(cabe<1){novaPagina(); continue;}
         const chunk=ls.slice(i,i+cabe);
         doc.text(chunk,PG.ml+ind,y,{align: b.t==='city'?'left':'justify', maxWidth:w, lineHeightFactor:lh/(size*0.3528)});
         y+=chunk.length*lh;
         i+=chunk.length;
-        if(i<ls.length) novaPagina();
+        if(i<ls.length) novaPagina();   /* reaplica o estilo do parágrafo */
       }
       y+= b.t==='city'?6:3.2;
     }
     else if(b.t==='sig'){
-      espaco(20);
-      y+=9;
+      espaco(medirGrupo([b]));   /* uma assinatura nunca se parte ao meio */
+      y+=7;
       doc.setDrawColor.apply(doc,COR.texto); doc.setLineWidth(0.3);
       doc.line(PG.ml,y,PG.ml+95,y);
       y+=4;
-      doc.setFont('courier','normal'); doc.setFontSize(6.8); doc.setTextColor.apply(doc,[139,100,73]);
+      estilo('courier','normal',6.8,[139,100,73]);
       doc.text(String(b.role).toUpperCase(),PG.ml,y,{charSpace:0.5});
       y+=4;
-      doc.setFont('helvetica','normal'); doc.setFontSize(8.8); doc.setTextColor.apply(doc,COR.texto);
+      estilo('helvetica','normal',8.8,COR.texto);
       const ls=doc.splitTextToSize(b.name,CW);
       ls.forEach(function(l){doc.text(l,PG.ml,y); y+=4;});
       if(b.sub){
-        doc.setFontSize(8); doc.setTextColor.apply(doc,COR.claro);
+        estilo('helvetica','normal',8,COR.claro);
         doc.splitTextToSize(b.sub,CW).forEach(function(l){doc.text(l,PG.ml,y); y+=3.6;});
       }
-      y+=2;
+      y+=1.5;
     }
   });
 
@@ -1409,6 +1464,9 @@ function rPr(o){
 function pDocx(text,o){
   o=o||{};
   let pPr='<w:pPr>';
+  /* keepNext/keepLines antes de spacing: a sequência de CT_PPrBase é fixa e
+     o Word descarta elemento fora de ordem. */
+  if(o.keep) pPr+='<w:keepNext/><w:keepLines/>';
   pPr+='<w:spacing w:before="'+(o.before||0)+'" w:after="'+(o.after||120)+'" w:line="'+(o.line||276)+'" w:lineRule="auto"/>';
   if(o.ind) pPr+='<w:ind w:left="'+o.ind+'"/>';
   pPr+='<w:jc w:val="'+(o.jc||'both')+'"/>';
@@ -1425,7 +1483,9 @@ function gerarDOCX(d,blocks){
   body+=pDocx('IMÓVEIS PRÓPRIOS  ·  CONTRATO Nº '+num,
     {font:'Consolas',size:14,color:'8B6449',jc:'left',after:240,spacing:30});
 
-  blocks.forEach(function(b){
+  blocks.forEach(function(b,idx){
+    const kp=!!b.junto;
+    const ultimo=idx===blocks.length-1;   /* keepNext no fim não tem a quem se prender */
     if(b.t==='title'){
       body+=pDocx(b.text,{font:'Cambria',b:true,size:30,color:'3A2A1F',jc:'center',before:120,after:280});
     }
@@ -1458,18 +1518,19 @@ function gerarDOCX(d,blocks){
       body+='</w:tbl>'+pVazio();
     }
     else if(b.t==='h'){
-      body+=pDocx(b.text,{b:true,size:20,color:'3A2A1F',jc:'left',before:260,after:120});
+      body+=pDocx(b.text,{b:true,size:20,color:'3A2A1F',jc:'left',before:260,after:120,keep:kp&&!ultimo});
     }
-    else if(b.t==='p') body+=pDocx(b.text,{size:20,after:140});
-    else if(b.t==='pi') body+=pDocx(b.text,{size:19,color:'55504A',ind:340,after:140});
-    else if(b.t==='li') body+=pDocx(b.text,{size:19,color:'55504A',ind:340,after:100});
-    else if(b.t==='city') body+=pDocx(b.text,{size:20,jc:'left',before:320,after:320});
+    else if(b.t==='p') body+=pDocx(b.text,{size:20,after:140,keep:kp&&!ultimo});
+    else if(b.t==='pi') body+=pDocx(b.text,{size:19,color:'55504A',ind:340,after:140,keep:kp&&!ultimo});
+    else if(b.t==='li') body+=pDocx(b.text,{size:19,color:'55504A',ind:340,after:100,keep:kp&&!ultimo});
+    else if(b.t==='city') body+=pDocx(b.text,{size:20,jc:'left',before:320,after:320,keep:kp&&!ultimo});
     else if(b.t==='sig'){
+      /* as duas primeiras linhas prendem-se ao nome mesmo na última assinatura */
       body+=pDocx('______________________________________________________',
-        {size:20,jc:'left',before:280,after:40});
-      body+=pDocx(String(b.role).toUpperCase(),{font:'Consolas',size:14,color:'8B6449',jc:'left',after:20});
-      body+=pDocx(b.name,{size:18,jc:'left',after:b.sub?20:120});
-      if(b.sub) body+=pDocx(b.sub,{size:16,color:'8B8479',jc:'left',after:120});
+        {size:20,jc:'left',before:280,after:40,keep:kp});
+      body+=pDocx(String(b.role).toUpperCase(),{font:'Consolas',size:14,color:'8B6449',jc:'left',after:20,keep:kp});
+      body+=pDocx(b.name,{size:18,jc:'left',after:b.sub?20:120,keep:(kp&&!ultimo)||!!b.sub});
+      if(b.sub) body+=pDocx(b.sub,{size:16,color:'8B8479',jc:'left',after:120,keep:kp&&!ultimo});
     }
   });
 
