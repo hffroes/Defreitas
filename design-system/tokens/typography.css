@@ -1,0 +1,57 @@
+/**
+ * Defreitas — sistema tipográfico
+ * Fonte: Posicionamento de marca Defreitas (Claude Design, 2026)
+ *
+ * Source Serif 4 — títulos, capas, nome da empresa.
+ * Work Sans     — corpo de texto, contratos, relatórios.
+ * IBM Plex Mono — números, datas, campos e códigos.
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root {
+  --df-font-serif: 'Source Serif 4', serif;
+  --df-font-sans: 'Work Sans', sans-serif;
+  --df-font-mono: 'IBM Plex Mono', monospace;
+
+  /* Pesos disponíveis por família */
+  --df-weight-serif-regular: 400;
+  --df-weight-serif-semibold: 600;
+  --df-weight-serif-bold: 700;
+  --df-weight-sans-regular: 400;
+  --df-weight-sans-medium: 500;
+  --df-weight-sans-semibold: 600;
+  --df-weight-mono-regular: 400;
+  --df-weight-mono-medium: 500;
+
+  /* Rótulos em mono: padrão maiúsculas + tracking largo */
+  --df-label-letter-spacing: 0.08em;
+  --df-label-transform: uppercase;
+}
+
+/* Classes utilitárias de referência */
+.df-heading {
+  font-family: var(--df-font-serif);
+  font-weight: var(--df-weight-serif-bold);
+  color: var(--df-color-heading);
+}
+
+.df-body {
+  font-family: var(--df-font-sans);
+  font-weight: var(--df-weight-sans-regular);
+  color: var(--df-color-body);
+  line-height: 1.75;
+}
+
+.df-label {
+  font-family: var(--df-font-mono);
+  font-weight: var(--df-weight-mono-regular);
+  letter-spacing: var(--df-label-letter-spacing);
+  text-transform: var(--df-label-transform);
+  color: var(--df-color-label);
+}
+
+.df-figure {
+  font-family: var(--df-font-mono);
+  color: var(--df-color-body);
+}

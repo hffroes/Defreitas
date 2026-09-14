@@ -1,0 +1,199 @@
+/**
+ * Defreitas — base de documentos institucionais (papelaria)
+ * Compartilhada por: papel-timbrado, contratos, relatório, proposta, recibo.
+ *
+ * Página A4, pensada para impressão. Importa os tokens de cor e tipografia.
+ */
+@import url('../tokens/colors.css');
+@import url('../tokens/typography.css');
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--df-gray-300);
+  font-family: var(--df-font-sans);
+}
+
+.df-page {
+  width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto;
+  background: var(--df-color-bg);
+  color: var(--df-color-body);
+  padding: 15mm 15mm 12mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+@media print {
+  body {
+    background: none;
+  }
+  .df-page {
+    margin: 0;
+    box-shadow: none;
+  }
+}
+
+/* Cabeçalho institucional: logotipo + metadado do documento */
+.df-doc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--df-color-border-strong);
+  margin-bottom: 22px;
+}
+
+.df-logo {
+  font-family: var(--df-font-serif);
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 0.04em;
+  color: var(--df-color-heading);
+}
+
+.df-logo-sub {
+  font-family: var(--df-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--df-color-label);
+  margin-top: 2px;
+}
+
+.df-doc-meta {
+  text-align: right;
+}
+
+.df-doc-meta-kind {
+  font-family: var(--df-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--df-color-accent);
+}
+
+.df-doc-meta-number {
+  font-family: var(--df-font-mono);
+  font-size: 11px;
+  color: var(--df-color-body-muted);
+  margin-top: 2px;
+}
+
+/* Rodapé institucional: nome da marca + identificação do modelo */
+.df-doc-footer {
+  border-top: 1px solid var(--df-color-border);
+  padding-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--df-font-mono);
+  font-size: 9px;
+  color: var(--df-color-caption);
+  letter-spacing: 0.04em;
+}
+
+/* Título de documento centralizado (contratos) */
+.df-doc-title {
+  font-family: var(--df-font-serif);
+  font-weight: 700;
+  font-size: 19px;
+  letter-spacing: 0.02em;
+  text-align: center;
+  color: var(--df-color-heading);
+  margin-bottom: 24px;
+}
+
+/* Rótulo de cláusula */
+.df-clause-label {
+  font-family: var(--df-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--df-color-accent);
+  margin-bottom: 8px;
+}
+
+.df-clause-body {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--df-color-body-muted);
+}
+
+/* Bloco de assinatura */
+.df-signature-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  padding-top: 18px;
+  margin-bottom: 14px;
+}
+
+.df-signature-row.single {
+  grid-template-columns: 1fr;
+}
+
+.df-signature-line {
+  border-top: 1px solid var(--df-gray-900);
+  padding-top: 6px;
+  font-family: var(--df-font-mono);
+  font-size: 10px;
+  color: var(--df-color-caption);
+  text-align: center;
+}
+
+/* Tabela financeira (relatório, proposta) */
+.df-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--df-font-sans);
+  font-size: 13px;
+}
+
+.df-table thead tr {
+  border-bottom: 2px solid var(--df-color-border-strong);
+}
+
+.df-table th {
+  text-align: left;
+  padding: 8px 0;
+  font-family: var(--df-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: var(--df-color-label);
+  text-transform: uppercase;
+}
+
+.df-table th.df-col-value {
+  text-align: right;
+}
+
+.df-table td {
+  padding: 9px 0;
+}
+
+.df-table td.df-col-value {
+  text-align: right;
+  font-family: var(--df-font-mono);
+}
+
+.df-table tbody tr {
+  border-bottom: 1px solid var(--df-color-border);
+}
+
+.df-table .df-total td {
+  border-bottom: none;
+  font-weight: 600;
+}
+
+.df-table .df-total td.df-col-value {
+  color: var(--df-color-accent);
+}

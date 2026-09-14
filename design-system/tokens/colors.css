@@ -1,0 +1,45 @@
+/**
+ * Defreitas — paleta de cores
+ * Fonte: Posicionamento de marca Defreitas (Claude Design, 2026)
+ *
+ * Marrom é a cor institucional (títulos, cabeçalhos, logotipo).
+ * Laranja é usado só como acento: assinatura visual, destaque, campo ativo.
+ * Cinzas conduzem o texto corrido.
+ */
+
+:root {
+  /* Marrons — institucional */
+  --df-brown-900: #2E2118; /* fundo institucional escuro (capas, destaques fortes) */
+  --df-brown-800: #3A2A1F; /* títulos e cabeçalhos em fundo claro */
+  --df-brown-700: #6B4A34; /* variações de marca, hover de institucional */
+  --df-brown-600: #8B6449; /* rótulos/labels em mono sobre fundo claro */
+  --df-brown-500-on-dark: #C97A3F; /* acento sobre fundo escuro (marrom 900) */
+
+  /* Laranja — acento único */
+  --df-orange-600: #C1622D; /* acento sobre fundo claro: assinatura, destaque, valores */
+
+  /* Cinzas — texto e estrutura */
+  --df-gray-900: #2B2723; /* texto principal sobre fundo claro */
+  --df-gray-700: #55504A; /* texto secundário / corpo de cláusulas */
+  --df-gray-500: #8B8479; /* texto auxiliar, legendas, rodapés */
+  --df-gray-300: #D9D3C8; /* bordas leves, divisores, texto sobre fundo escuro */
+  --df-gray-border-dark: #4A3A2C; /* divisores sobre fundo institucional escuro */
+
+  /* Papel */
+  --df-paper: #F4F1EC; /* fundo "papel" / texto sobre institucional escuro */
+  --df-white: #FFFFFF; /* fundo padrão de documentos */
+
+  /* Tokens semânticos */
+  --df-color-bg: var(--df-white);
+  --df-color-bg-institutional: var(--df-brown-900);
+  --df-color-fg-institutional: var(--df-paper);
+  --df-color-heading: var(--df-brown-800);
+  --df-color-body: var(--df-gray-900);
+  --df-color-body-muted: var(--df-gray-700);
+  --df-color-caption: var(--df-gray-500);
+  --df-color-label: var(--df-brown-600);
+  --df-color-accent: var(--df-orange-600);
+  --df-color-accent-on-dark: var(--df-brown-500-on-dark);
+  --df-color-border: var(--df-gray-300);
+  --df-color-border-strong: var(--df-brown-800);
+}
