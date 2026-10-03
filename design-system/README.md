@@ -107,12 +107,18 @@ qualquer contrato de locação a partir do modelo `contrato-locacao.html`.
 | Ferramenta | Arquivo |
 |---|---|
 | Minuta de compra e venda — formulário que gera o contrato em PDF e Word | [`ferramentas/minuta-compra-venda.html`](./ferramentas/minuta-compra-venda.html) |
+| Minuta de locação — formulário que gera o contrato em PDF e Word | [`ferramentas/minuta-locacao.html`](./ferramentas/minuta-locacao.html) |
 
 A minuta é uma página autocontida: coleta os dados da transação, confere a
 composição do preço contra o valor total, monta as cláusulas de
 [`../Cont_venda.md`](../Cont_venda.md) e exporta o contrato pronto para
-assinatura. Publicada como artefato no claude.ai, usa a capacidade
-`downloads` para entregar os arquivos; aberta como arquivo local, o
+assinatura. A minuta de locação segue o mesmo padrão, a partir de
+[`../Cont_locacao.md`](../Cont_locacao.md): calcula o aluguel proporcional do
+primeiro período, o término do prazo e os vencimentos, e muda as cláusulas
+conforme a garantia escolhida (caução, fiança, seguro-fiança ou nenhuma).
+As duas ferramentas compartilham o mesmo gerador de PDF e Word. Publicadas
+como artefato no claude.ai, usam a capacidade
+`downloads` para entregar os arquivos; abertas como arquivo local, o
 formulário e a pré-visualização funcionam, mas a exportação não.
 
 ### Dados institucionais fixos

@@ -7,6 +7,14 @@
 
 ## Como usar
 
+0. **Caminho mais rápido:** abra o formulário
+   [`design-system/ferramentas/minuta-locacao.html`](./design-system/ferramentas/minuta-locacao.html),
+   preencha os dados da locação e exporte o contrato em PDF e Word. Ele
+   já monta as cláusulas deste documento, calcula o primeiro aluguel
+   proporcional, o término do prazo e os valores por extenso, e alerta
+   quando a caução passa de 3 aluguéis ou quando a cobrança antecipada não
+   é permitida. Os passos abaixo valem para montar a minuta à mão ou para
+   revisar o que a ferramenta gerou.
 1. Copie o texto das cláusulas abaixo para o modelo visual em
    [`design-system/templates/contrato-locacao.html`](./design-system/templates/contrato-locacao.html),
    preenchendo cada campo entre colchetes com os dados da locação.
