@@ -98,6 +98,10 @@ O conjunto completo de cláusulas padrão do contrato de compra e venda
 na raiz do repositório — é o documento-parâmetro para montar qualquer
 contrato de venda a partir do modelo `contrato-compra-venda.html`.
 
+Da mesma forma, as cláusulas padrão do contrato de locação estão em
+[`../Cont_locacao.md`](../Cont_locacao.md) — documento-parâmetro para montar
+qualquer contrato de locação a partir do modelo `contrato-locacao.html`.
+
 ## Ferramentas
 
 | Ferramenta | Arquivo |
