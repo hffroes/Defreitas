@@ -108,7 +108,7 @@ Nº [000/2026]
 | E-mail e telefone do(a) locatário(a) | [e-mail] — [telefone] |
 | Prazo | [12 (doze)] meses — de [dd/mm/aaaa] a [dd/mm/aaaa] |
 | Aluguel mensal | R$ [valor] ([valor por extenso]) |
-| Vencimento | Todo dia [10] de cada mês — [pós-pago, ao fim de cada mês de ocupação / pré-pago, no início de cada mês de ocupação] |
+| Vencimento | Todo dia [10] de cada mês — [pós-pago, ao fim de cada mês de ocupação / pago na data do vencimento estipulado / pré-pago, no início de cada mês de ocupação] |
 | Primeiro aluguel | [proporcional: R$ [valor], referente a [nº] dias, de [dd/mm/aaaa] a [dd/mm/aaaa], vencimento em [dd/mm/aaaa] / sem proporcional: aluguel integral com vencimento em [dd/mm/aaaa]] |
 | Forma de pagamento | [uma ou mais: PIX — chave [_____] / boleto bancário / dinheiro — [local]] |
 | Reajuste | Anual, pelo [IGP-M / IPCA], a cada [mês de aniversário] |
@@ -152,7 +152,7 @@ A locação vigorará pelo prazo de [12 (doze)] meses, com início em [dd/mm/aaa
 
 **CLÁUSULA 3ª — DO ALUGUEL, DO VENCIMENTO E DA FORMA DE PAGAMENTO**
 
-O aluguel mensal é de R$ [valor] ([valor por extenso]), vencendo todo dia [10] de cada mês, e será pago [pós-pago: ao final de cada período mensal de ocupação / pré-pago: antecipadamente, no início de cada período mensal de ocupação — somente na hipótese da Cláusula 7ª, opção D], [uma forma: mediante PIX para a chave [_____] / mediante boleto bancário emitido pela LOCADORA e enviado ao endereço eletrônico indicado no quadro-resumo / em dinheiro, [local], mediante recibo assinado pela LOCADORA] [mais de uma forma: por qualquer das seguintes formas, à escolha do(a) LOCATÁRIO(A): (i) ...; (ii) ...; (iii) ...].
+O aluguel mensal é de R$ [valor] ([valor por extenso]), vencendo todo dia [10] de cada mês, e será pago [pós-pago: ao final de cada período mensal de ocupação / na data do vencimento: na própria data do vencimento estipulado / pré-pago: antecipadamente, no início de cada período mensal de ocupação — somente na hipótese da Cláusula 7ª, opção D], [uma forma: mediante PIX para a chave [_____] / mediante boleto bancário emitido pela LOCADORA e enviado ao endereço eletrônico indicado no quadro-resumo / em dinheiro, [local], mediante recibo assinado pela LOCADORA] [mais de uma forma: por qualquer das seguintes formas, à escolha do(a) LOCATÁRIO(A): (i) ...; (ii) ...; (iii) ...].
 
 *Parágrafo primeiro* — [com proporcional] O primeiro aluguel será cobrado de forma proporcional aos dias de ocupação, à razão de 1/30 (um trinta avos) do aluguel mensal por dia, no valor de R$ [valor] ([valor por extenso]), referente ao período de [dd/mm/aaaa] a [dd/mm/aaaa], com vencimento em [dd/mm/aaaa]. O primeiro aluguel integral vence em [dd/mm/aaaa] e os seguintes no dia [10] de cada mês.
 [sem proporcional] Não haverá cobrança proporcional do período inicial. O primeiro aluguel, no valor integral, vence em [dd/mm/aaaa], e os seguintes vencem no dia [10] de cada mês.

@@ -327,9 +327,11 @@ button{font-family:var(--sans);cursor:pointer;border-radius:2px}
         </div>
         <div class="f" style="margin-bottom:14px">
           <label id="lbl-momento">Momento do pagamento</label>
-          <div class="modos m2" role="radiogroup" aria-labelledby="lbl-momento">
+          <div class="modos" role="radiogroup" aria-labelledby="lbl-momento">
             <label class="modo" for="mom-pos"><input type="radio" name="momento" id="mom-pos" value="pos">
               <span><b>Pós-pago</b><em>Pago ao fim de cada mês de ocupação</em></span></label>
+            <label class="modo" for="mom-venc"><input type="radio" name="momento" id="mom-venc" value="venc">
+              <span><b>Na data do vencimento</b><em>Pago no dia fixado, sem vínculo com o mês de ocupação</em></span></label>
             <label class="modo" for="mom-pre"><input type="radio" name="momento" id="mom-pre" value="pre">
               <span><b>Pré-pago</b><em>Pago no início de cada mês de ocupação</em></span></label>
           </div>
@@ -858,7 +860,7 @@ function escreverForm(d){
   });
   const rb=document.getElementById('gar-'+(d.garantia||'caucao'));
   if(rb) rb.checked=true;
-  const rmo=document.getElementById('mom-'+(d.momento==='pre'?'pre':'pos'));
+  const rmo=document.getElementById('mom-'+(['pre','venc'].indexOf(d.momento)>=0?d.momento:'pos'));
   if(rmo) rmo.checked=true;
   locatarios=(d.locatarios&&d.locatarios.length?d.locatarios:[{}]).map(normalizaLocatario);
   fiadores=(d.fiadores&&d.fiadores.length?d.fiadores:[{}]).map(normalizaFiador);
@@ -964,7 +966,10 @@ function cent(v){return Math.round((numOf(v)||0)*100);}
    pós-pago: no seu fim. Sem proporcional, o primeiro vencimento é o que a
    Defreitas definir, com sugestão calculada. */
 function calcDatas(d){
-  const r={antecipado:d.momento==='pre'};
+  /* "na data do vencimento" segue as datas do pós-pago: o primeiro pagamento
+     cai no primeiro dia de vencimento após a entrega das chaves. Muda só a
+     redação, que não vincula o pagamento ao mês de ocupação. */
+  const r={antecipado:d.momento==='pre', naData:d.momento==='venc'};
   r.dia=Math.min(28,Math.max(1,intOf(d.diaVenc)||10));
   r.meses=intOf(d.prazoMeses);
   r.aluguelC=cent(d.aluguel);
@@ -1155,7 +1160,8 @@ function construirDoc(d){
   q.push(['Prazo',(r.meses>0?qtdExt(r.meses)+' meses':'[nº] meses')+
     (r.ini?' — de '+dataCurta(r.ini)+' a '+(r.fim?dataCurta(r.fim):'[dd/mm/aaaa]'):'')]);
   q.push(['Aluguel mensal',valorExt(aluguel)]);
-  q.push(['Vencimento','Todo dia '+dia+' de cada mês — '+(r.antecipado?'pré-pago, no início de cada mês de ocupação':'pós-pago, ao fim de cada mês de ocupação')]);
+  q.push(['Vencimento','Todo dia '+dia+' de cada mês — '+(r.antecipado?'pré-pago, no início de cada mês de ocupação':
+    r.naData?'pago na data do vencimento estipulado':'pós-pago, ao fim de cada mês de ocupação')]);
   if(r.temProp) q.push(['Primeiro aluguel (proporcional)',brl(r.propC/100)+', de '+dataCurta(r.ini)+' a '+
     dataCurta(r.propFim)+' ('+r.propDias+' dias), vencimento em '+dataCurta(r.propVenc)]);
   else if(r.ini) q.push(['Primeiro vencimento',dataCurta(r.primVenc)+' — aluguel integral']);
@@ -1249,6 +1255,7 @@ function construirDoc(d){
     (r.antecipado
       ? 'e será pago antecipadamente, no início de cada período mensal de ocupação'+
         (d.garantia==='nenhuma'?', nos termos do art. 42 da Lei nº 8.245/1991, por não estar a locação garantida por nenhuma das modalidades do art. 37 da mesma lei':'')
+      : r.naData ? 'e será pago na própria data do vencimento estipulado'
       : 'e será pago ao final de cada período mensal de ocupação')+formaTxt+'.');
   const al=[];
   if(r.temProp){
@@ -1930,6 +1937,7 @@ function atualizar(){
     r.fim?'meses · término em '+dataCurta(r.fim):'meses';
   document.getElementById('venc-hint').textContent=r.antecipado
     ? 'Pré-pago: no início de cada mês de ocupação.'
+    : r.naData ? 'Pago no dia fixado de cada mês.'
     : 'Pós-pago: ao fim de cada mês de ocupação.';
   document.getElementById('momento-hint').textContent=r.antecipado&&d.garantia!=='nenhuma'
     ? 'Pré-pago só é permitido em locação sem garantia (art. 42).' : '';
