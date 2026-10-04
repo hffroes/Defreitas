@@ -108,13 +108,13 @@ Nº [000/2026]
 | E-mail e telefone do(a) locatário(a) | [e-mail] — [telefone] |
 | Prazo | [12 (doze)] meses — de [dd/mm/aaaa] a [dd/mm/aaaa] |
 | Aluguel mensal | R$ [valor] ([valor por extenso]) |
-| Vencimento | Todo dia [10] de cada mês |
-| Primeiro aluguel (proporcional) | R$ [valor], referente a [nº] dias, de [dd/mm/aaaa] a [dd/mm/aaaa], vencimento em [dd/mm/aaaa] |
-| Forma de pagamento | [PIX / transferência / boleto] — [banco, agência, conta, chave PIX] |
+| Vencimento | Todo dia [10] de cada mês — [pós-pago, ao fim de cada mês de ocupação / pré-pago, no início de cada mês de ocupação] |
+| Primeiro aluguel | [proporcional: R$ [valor], referente a [nº] dias, de [dd/mm/aaaa] a [dd/mm/aaaa], vencimento em [dd/mm/aaaa] / sem proporcional: aluguel integral com vencimento em [dd/mm/aaaa]] |
+| Forma de pagamento | [uma ou mais: PIX — chave [_____] / boleto bancário / dinheiro — [local]] |
 | Reajuste | Anual, pelo [IGP-M / IPCA], a cada [mês de aniversário] |
-| Garantia | [caução em dinheiro / fiança / seguro-fiança / sem garantia — pagamento antecipado] |
-| IPTU e taxa de lixo | Por conta do(a) locatário(a) — [pagamento direto das guias / reembolso de R$ [valor] em [parcela única / nº parcelas]] |
-| Condomínio (se houver) | Despesas ordinárias por conta do(a) locatário(a) — valor atual R$ [valor] |
+| Garantia | [caução em dinheiro / fiança / seguro-fiança / sem garantia] |
+| IPTU e taxa de lixo | Por conta do(a) locatário(a) — [pagamento direto das guias / reembolso de R$ [valor] em parcela única anual, no primeiro vencimento e a cada renovação anual / reembolso em [nº] parcelas mensais com o aluguel] |
+| Condomínio | [Não é unidade em condomínio / Unidade em condomínio — despesas ordinárias por conta do(a) locatário(a) / Unidade em condomínio — despesas por conta da locadora] — valor atual R$ [valor] (opcional) |
 | Pintura de devolução | Paredes em [cor], tetos em [cor], tinta [marca / linha] ou de qualidade equivalente |
 | Multa por devolução antecipada | [3 (três)] aluguéis, proporcional ao tempo restante do contrato |
 
@@ -152,13 +152,16 @@ A locação vigorará pelo prazo de [12 (doze)] meses, com início em [dd/mm/aaa
 
 **CLÁUSULA 3ª — DO ALUGUEL, DO VENCIMENTO E DA FORMA DE PAGAMENTO**
 
-O aluguel mensal é de R$ [valor] ([valor por extenso]), vencendo todo dia [10] de cada mês, a ser pago pelo(a) LOCATÁRIO(A) à LOCADORA mediante [PIX / transferência bancária / boleto], conforme dados: [banco, agência, conta, chave PIX, titular].
+O aluguel mensal é de R$ [valor] ([valor por extenso]), vencendo todo dia [10] de cada mês, e será pago [pós-pago: ao final de cada período mensal de ocupação / pré-pago: antecipadamente, no início de cada período mensal de ocupação — somente na hipótese da Cláusula 7ª, opção D], [uma forma: mediante PIX para a chave [_____] / mediante boleto bancário emitido pela LOCADORA e enviado ao endereço eletrônico indicado no quadro-resumo / em dinheiro, [local], mediante recibo assinado pela LOCADORA] [mais de uma forma: por qualquer das seguintes formas, à escolha do(a) LOCATÁRIO(A): (i) ...; (ii) ...; (iii) ...].
 
-*Parágrafo primeiro* — O primeiro aluguel será cobrado de forma proporcional aos dias de ocupação, no valor de R$ [valor] ([valor por extenso]), referente ao período de [dd/mm/aaaa] a [dd/mm/aaaa], com vencimento em [dd/mm/aaaa]. Os aluguéis seguintes vencem a partir de [dd/mm/aaaa], sempre no dia [10] de cada mês.
+*Parágrafo primeiro* — [com proporcional] O primeiro aluguel será cobrado de forma proporcional aos dias de ocupação, à razão de 1/30 (um trinta avos) do aluguel mensal por dia, no valor de R$ [valor] ([valor por extenso]), referente ao período de [dd/mm/aaaa] a [dd/mm/aaaa], com vencimento em [dd/mm/aaaa]. O primeiro aluguel integral vence em [dd/mm/aaaa] e os seguintes no dia [10] de cada mês.
+[sem proporcional] Não haverá cobrança proporcional do período inicial. O primeiro aluguel, no valor integral, vence em [dd/mm/aaaa], e os seguintes vencem no dia [10] de cada mês.
 
-*Parágrafo segundo* — O aluguel é pago [no mês vencido, referente ao mês anterior de ocupação / antecipadamente, até o 6º (sexto) dia útil do mês a que se refere, exclusivamente na hipótese da Cláusula 7ª, opção D].
+*Parágrafo segundo* — O aluguel do último período será cobrado proporcionalmente aos dias de ocupação até a efetiva devolução das chaves.
 
-*Parágrafo terceiro* — O comprovante de pagamento emitido pela instituição financeira vale como recibo. A LOCADORA fornecerá recibo discriminado das importâncias pagas sempre que solicitado (art. 22, VI, da Lei nº 8.245/1991).
+*Parágrafo terceiro* — O comprovante do pagamento por [PIX / boleto] emitido pela instituição financeira vale como recibo. [se aceito dinheiro] O pagamento em dinheiro só se considera feito mediante recibo assinado pela LOCADORA. A LOCADORA fornecerá recibo discriminado das importâncias pagas sempre que solicitado (art. 22, VI, da Lei nº 8.245/1991).
+
+> Pré-pago com garantia é vedado: a lei só permite exigir aluguel antecipado em locação sem garantia (arts. 20 e 42) ou por temporada, e a cobrança fora dessas hipóteses é contravenção (art. 43, III).
 
 **CLÁUSULA 4ª — DO REAJUSTE**
 
@@ -181,13 +184,13 @@ O pagamento do aluguel ou de qualquer encargo após o vencimento sujeita o(a) LO
 Além do aluguel, correm por conta do(a) LOCATÁRIO(A), a partir da data de início da locação até a efetiva devolução das chaves:
 
 a) consumo de água e esgoto, energia elétrica, gás e telefone/internet;
-b) Imposto Predial e Territorial Urbano (IPTU) e taxa de coleta de lixo incidentes sobre o imóvel, [pagos diretamente pelo(a) LOCATÁRIO(A) nas guias emitidas pela Prefeitura, com envio do comprovante à LOCADORA em até 5 (cinco) dias do pagamento / reembolsados à LOCADORA no valor de R$ [valor] ([valor por extenso]), referente ao exercício de [aaaa], em [parcela única com vencimento em dd/mm/aaaa / nº parcelas mensais junto com o aluguel]];
-c) (quando aplicável) despesas ordinárias de condomínio, assim entendidas as do art. 23, §1º, da Lei nº 8.245/1991;
+b) Imposto Predial e Territorial Urbano (IPTU) e taxa de coleta de lixo incidentes sobre o imóvel, [pagos diretamente pelo(a) LOCATÁRIO(A) nas guias emitidas pela Prefeitura, com envio do comprovante à LOCADORA em até 5 (cinco) dias do pagamento / reembolsados à LOCADORA no valor de R$ [valor] ([valor por extenso]), referente ao exercício de [aaaa], [em parcela única anual, paga junto com o primeiro vencimento do contrato e, a cada renovação anual, junto com o primeiro vencimento do novo período, pelo valor lançado pela Prefeitura para o exercício / em [nº] parcelas mensais cobradas junto com o aluguel]];
+c) (quando a unidade estiver em condomínio e as despesas couberem ao(à) LOCATÁRIO(A)) despesas ordinárias de condomínio, assim entendidas as do art. 23, §1º, da Lei nº 8.245/1991[, atualmente de R$ [valor] por mês];
 d) (quando aplicável) prêmio de seguro contra incêndio do imóvel, nos termos da Cláusula 14ª.
 
 *Parágrafo primeiro* — O(A) LOCATÁRIO(A) obriga-se a transferir para seu nome, em até [30 (trinta)] dias do início da locação, as contas de energia elétrica e de água e esgoto, e a devolvê-las ao nome da LOCADORA, ou a solicitar seu desligamento, ao final da locação.
 
-*Parágrafo segundo* — Correm por conta da LOCADORA as despesas extraordinárias de condomínio (art. 22, X, e parágrafo único, da Lei nº 8.245/1991).
+*Parágrafo segundo (unidade em condomínio)* — [condomínio pago pelo(a) LOCATÁRIO(A)] Correm por conta da LOCADORA as despesas extraordinárias de condomínio (art. 22, X, e parágrafo único, da Lei nº 8.245/1991). [condomínio pago pela LOCADORA] As despesas de condomínio, ordinárias e extraordinárias[, atualmente de R$ [valor] por mês], correm por conta da LOCADORA, que as paga diretamente à administração do condomínio, sem acréscimo ao aluguel ajustado.
 
 *Parágrafo terceiro* — Encargo pago pela LOCADORA em lugar do(a) LOCATÁRIO(A) será reembolsado junto com o aluguel do mês seguinte, com os acréscimos da Cláusula 5ª contados da data em que a LOCADORA efetuou o pagamento.
 
@@ -201,7 +204,7 @@ d) (quando aplicável) prêmio de seguro contra incêndio do imóvel, nos termos
 
 **Opção C — Seguro-fiança.** O(A) LOCATÁRIO(A) contrata, às suas expensas, seguro de fiança locatícia junto a [seguradora], apólice nº [_____], tendo a LOCADORA como beneficiária, com cobertura de [aluguéis, encargos, danos ao imóvel e multa contratual], obrigando-se a mantê-lo vigente e renovado durante toda a locação e suas prorrogações.
 
-**Opção D — Sem garantia, com pagamento antecipado.** A locação não é garantida por nenhuma das modalidades do art. 37 da Lei nº 8.245/1991. Por isso, nos termos do art. 42 da mesma lei, o aluguel e os encargos de cada mês serão pagos antecipadamente, até o 6º (sexto) dia útil do mês a que se referem.
+**Opção D — Sem garantia.** A locação não é garantida por nenhuma das modalidades do art. 37 da Lei nº 8.245/1991. [se pré-pago] Por isso, nos termos do art. 42 da mesma lei, o aluguel e os encargos de cada mês serão pagos antecipadamente, até o 6º (sexto) dia útil do mês a que se referem.
 
 **CLÁUSULA 8ª — DA VISTORIA E DO ESTADO DO IMÓVEL**
 

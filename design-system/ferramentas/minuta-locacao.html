@@ -200,8 +200,8 @@ button{font-family:var(--sans);cursor:pointer;border-radius:2px}
 
 .legalnote{font-size:12px;color:var(--ink-3);line-height:1.55;border-top:1px solid var(--rule);padding-top:12px;margin:0}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-.modos.m4{grid-template-columns:repeat(2,1fr)}
-@media (max-width:640px){.modos.m4{grid-template-columns:1fr}}
+.modos.m2{grid-template-columns:repeat(2,1fr)}
+@media (max-width:640px){.modos.m2{grid-template-columns:1fr}}
 </style>
 
 <div class="wrap">
@@ -325,17 +325,45 @@ button{font-family:var(--sans);cursor:pointer;border-radius:2px}
               <option>IGP-M</option><option>IPCA</option><option>INPC</option>
             </select></div>
         </div>
-        <div class="row r2" id="box-prop">
-          <div class="f"><label for="propValor">Primeiro aluguel proporcional</label><input class="mono" id="propValor" inputmode="decimal" placeholder="calculado">
+        <div class="f" style="margin-bottom:14px">
+          <label id="lbl-momento">Momento do pagamento</label>
+          <div class="modos m2" role="radiogroup" aria-labelledby="lbl-momento">
+            <label class="modo" for="mom-pos"><input type="radio" name="momento" id="mom-pos" value="pos">
+              <span><b>Pós-pago</b><em>Pago ao fim de cada mês de ocupação</em></span></label>
+            <label class="modo" for="mom-pre"><input type="radio" name="momento" id="mom-pre" value="pre">
+              <span><b>Pré-pago</b><em>Pago no início de cada mês de ocupação</em></span></label>
+          </div>
+          <span class="hint" id="momento-hint"></span>
+        </div>
+
+        <label class="toggle" for="temProp" id="tgl-prop">
+          <input type="checkbox" id="temProp">
+          <span><b>Cobrar primeiro aluguel proporcional</b> — dias entre o início e o primeiro vencimento</span>
+        </label>
+        <div class="row r2">
+          <div class="f" id="box-prop"><label for="propValor">Valor proporcional</label><input class="mono" id="propValor" inputmode="decimal" placeholder="calculado">
             <span class="hint" id="prop-hint"></span></div>
-          <div class="f"></div>
+          <div class="f" id="box-primvenc"><label for="primVencData">Primeiro vencimento</label><input class="mono" id="primVencData" type="date">
+            <span class="hint" id="primvenc-hint"></span></div>
         </div>
 
         <div class="tally" id="tally"></div>
 
+        <div class="f" style="margin-bottom:14px">
+          <label id="lbl-formas">Formas de pagamento aceitas</label>
+          <div class="modos" role="group" aria-labelledby="lbl-formas">
+            <label class="modo" for="pagPix"><input type="checkbox" id="pagPix">
+              <span><b>PIX</b><em>Para a chave indicada no contrato</em></span></label>
+            <label class="modo" for="pagBoleto"><input type="checkbox" id="pagBoleto">
+              <span><b>Boleto</b><em>Emitido pela Defreitas e enviado por e-mail</em></span></label>
+            <label class="modo" for="pagDinheiro"><input type="checkbox" id="pagDinheiro">
+              <span><b>Dinheiro</b><em>Em espécie, mediante recibo</em></span></label>
+          </div>
+          <span class="hint bad" id="formas-hint"></span>
+        </div>
         <div class="row r2">
-          <div class="f"><label for="banco">Banco / agência / conta</label><input id="banco" placeholder="Banco Itaú (341), ag. 1234, c/c 56789-0"></div>
-          <div class="f"><label for="pix">Chave PIX</label><input class="mono" id="pix" placeholder="11.435.163/0001-13"></div>
+          <div class="f" id="box-pix"><label for="pix">Chave PIX</label><input class="mono" id="pix" placeholder="11.435.163/0001-13"></div>
+          <div class="f" id="box-dinheiro"><label for="pagLocal">Local do pagamento em dinheiro</label><input id="pagLocal" placeholder="na sede da LOCADORA"></div>
         </div>
       </fieldset>
 
@@ -355,20 +383,23 @@ button{font-family:var(--sans);cursor:pointer;border-radius:2px}
             <div class="f"><label for="iptuAno">Exercício</label><input class="mono" id="iptuAno" inputmode="numeric" placeholder="2026"></div>
             <div class="f"><label for="iptuForma">Forma</label>
               <select id="iptuForma">
-                <option value="unica">Parcela única</option>
-                <option value="parcelas">Parcelas junto com o aluguel</option>
-              </select></div>
+                <option value="unica">Parcela única anual</option>
+                <option value="parcelas">Parcelas mensais junto com o aluguel</option>
+              </select>
+              <span class="hint" id="iptuForma-hint"></span></div>
           </div>
-          <div class="row r2">
-            <div class="f" id="box-iptu-data"><label for="iptuData">Vencimento</label><input class="mono" id="iptuData" type="date"></div>
-            <div class="f" id="box-iptu-parc"><label for="iptuParcelas">Número de parcelas</label><input class="mono" id="iptuParcelas" inputmode="numeric" placeholder="10">
+          <div class="row r2" id="box-iptu-parc">
+            <div class="f"><label for="iptuParcelas">Número de parcelas</label><input class="mono" id="iptuParcelas" inputmode="numeric" placeholder="10">
               <span class="hint" id="iptu-hint"></span></div>
+            <div class="f"></div>
           </div>
         </div>
-        <div class="row r2">
+        <div class="row r3">
           <div class="f"><label for="temCond">Condomínio</label>
-            <select id="temCond"><option value="nao">Imóvel não sujeito a condomínio</option><option value="sim">Imóvel em condomínio</option></select></div>
-          <div class="f" id="box-cond"><label for="condValor">Condomínio atual (ordinárias)</label><input class="mono" id="condValor" inputmode="decimal" placeholder="R$ 0,00"></div>
+            <select id="temCond"><option value="nao">Não é unidade em condomínio</option><option value="sim">Unidade em condomínio</option></select></div>
+          <div class="f" id="box-cond-resp"><label for="condResp">Quem paga o condomínio</label>
+            <select id="condResp"><option value="locatario">Locatário</option><option value="locadora">Locadora (Defreitas)</option></select></div>
+          <div class="f" id="box-cond"><label for="condValor">Valor mensal atual</label><input class="mono" id="condValor" inputmode="decimal" placeholder="opcional"></div>
         </div>
         <label class="toggle" for="temSeguroInc">
           <input type="checkbox" id="temSeguroInc">
@@ -387,7 +418,7 @@ button{font-family:var(--sans);cursor:pointer;border-radius:2px}
           <span class="sec-note">uma única modalidade</span></div>
         <div class="f" style="margin-bottom:14px">
           <label id="lbl-garantia">Modalidade</label>
-          <div class="modos m4" role="radiogroup" aria-labelledby="lbl-garantia">
+          <div class="modos m2" role="radiogroup" aria-labelledby="lbl-garantia">
             <label class="modo" for="gar-caucao"><input type="radio" name="garantia" id="gar-caucao" value="caucao">
               <span><b>Caução em dinheiro</b><em>Até 3 aluguéis, depositados em poupança</em></span></label>
             <label class="modo" for="gar-fianca"><input type="radio" name="garantia" id="gar-fianca" value="fianca">
@@ -395,7 +426,7 @@ button{font-family:var(--sans);cursor:pointer;border-radius:2px}
             <label class="modo" for="gar-seguro"><input type="radio" name="garantia" id="gar-seguro" value="seguro">
               <span><b>Seguro-fiança</b><em>Apólice contratada pelo locatário</em></span></label>
             <label class="modo" for="gar-nenhuma"><input type="radio" name="garantia" id="gar-nenhuma" value="nenhuma">
-              <span><b>Sem garantia</b><em>Aluguel pago antecipadamente</em></span></label>
+              <span><b>Sem garantia</b><em>Sem fiador, caução ou seguro</em></span></label>
           </div>
         </div>
 
@@ -424,7 +455,7 @@ button{font-family:var(--sans);cursor:pointer;border-radius:2px}
         </div>
 
         <div class="cond" id="box-gar-nenhuma" hidden>
-          <p class="hint" style="margin:0 0 14px;font-size:12.5px;color:var(--ink-2)">Sem garantia, a lei permite cobrar o aluguel antecipadamente, até o 6º dia útil do mês a que se refere (art. 42). Com qualquer garantia, a cobrança antecipada é vedada (art. 20).</p>
+          <p class="hint" style="margin:0 0 14px;font-size:12.5px;color:var(--ink-2)">Sem garantia, a lei permite cobrar o aluguel pré-pago, até o 6º dia útil do mês a que se refere (art. 42). Com qualquer garantia, a cobrança antecipada é vedada (arts. 20 e 43, III).</p>
         </div>
       </fieldset>
 
@@ -702,10 +733,11 @@ const VAZIO={
   imovelCidade:'Montes Claros/MG', imovelCep:'',
   registroTipo:'matricula', matricula:'', cartorio:'',
   finalidade:'residencial', atividade:'',
-  prazoMeses:'12', dataInicio:'', diaVenc:'10', aluguel:'', indice:'IGP-M', propValor:'',
-  banco:'', pix:'11.435.163/0001-13',
-  iptuModo:'direto', iptuValor:'', iptuAno:'', iptuForma:'unica', iptuData:'', iptuParcelas:'',
-  contasPrazo:'30', temCond:'nao', condValor:'', temSeguroInc:false, seguroIncValor:'',
+  prazoMeses:'12', dataInicio:'', diaVenc:'10', aluguel:'', indice:'IGP-M',
+  momento:'pos', temProp:true, propValor:'', primVencData:'',
+  pagPix:true, pagBoleto:false, pagDinheiro:false, pix:'11.435.163/0001-13', pagLocal:'na sede da LOCADORA',
+  iptuModo:'direto', iptuValor:'', iptuAno:'', iptuForma:'unica', iptuParcelas:'',
+  contasPrazo:'30', temCond:'nao', condResp:'locatario', condValor:'', temSeguroInc:false, seguroIncValor:'',
   garantia:'caucao', caucaoValor:'', caucaoPrazo:'30',
   fiadores:[{}],
   seguradora:'', apolice:'', seguroCobertura:'aluguéis, encargos, danos ao imóvel e multa contratual',
@@ -767,10 +799,10 @@ function blocosObs(d,chave){
 }
 
 const CAMPOS=Object.keys(VAZIO).filter(function(k){
-  return k!=='locatarios'&&k!=='fiadores'&&k!=='garantia';
+  return k!=='locatarios'&&k!=='fiadores'&&k!=='garantia'&&k!=='momento';
 });
 let locatarios=[], fiadores=[];
-const LS='defreitas-minuta-locacao-v1';
+const LS='defreitas-minuta-locacao-v2';
 
 function normaliza(campos,c,pj){
   c=c||{};
@@ -804,6 +836,8 @@ function lerForm(){
   });
   const rg=document.querySelector('input[name="garantia"]:checked');
   d.garantia=rg?rg.value:'caucao';
+  const rm=document.querySelector('input[name="momento"]:checked');
+  d.momento=rm?rm.value:'pos';
   d.locatarios=lerPartes(locatarios,CAMPOS_LOCATARIO,'l',normalizaLocatario);
   d.fiadores=lerPartes(fiadores,CAMPOS_FIADOR,'f',normalizaFiador);
   return d;
@@ -824,6 +858,8 @@ function escreverForm(d){
   });
   const rb=document.getElementById('gar-'+(d.garantia||'caucao'));
   if(rb) rb.checked=true;
+  const rmo=document.getElementById('mom-'+(d.momento==='pre'?'pre':'pos'));
+  if(rmo) rmo.checked=true;
   locatarios=(d.locatarios&&d.locatarios.length?d.locatarios:[{}]).map(normalizaLocatario);
   fiadores=(d.fiadores&&d.fiadores.length?d.fiadores:[{}]).map(normalizaFiador);
   renderLocatarios();
@@ -922,11 +958,13 @@ function renderFiadores(){
 function cent(v){return Math.round((numOf(v)||0)*100);}
 
 /* Cada período de aluguel vai do dia do vencimento até a véspera do mesmo
-   dia no mês seguinte. Se as chaves são entregues noutro dia, o primeiro
-   período é parcial e cobrado pelo mês comercial de 30 dias. Sem garantia,
-   cada período é pago no seu início (art. 42); com garantia, no seu fim. */
+   dia no mês seguinte. Se as chaves são entregues noutro dia e o
+   proporcional é cobrado, o primeiro período é parcial e cobrado pelo mês
+   comercial de 30 dias. Pré-pago: cada período é pago no seu início;
+   pós-pago: no seu fim. Sem proporcional, o primeiro vencimento é o que a
+   Defreitas definir, com sugestão calculada. */
 function calcDatas(d){
-  const r={antecipado:d.garantia==='nenhuma'};
+  const r={antecipado:d.momento==='pre'};
   r.dia=Math.min(28,Math.max(1,intOf(d.diaVenc)||10));
   r.meses=intOf(d.prazoMeses);
   r.aluguelC=cent(d.aluguel);
@@ -934,11 +972,10 @@ function calcDatas(d){
   const ini=d.dataInicio, p=ini.split('-').map(Number);
   r.ini=ini;
   if(r.meses>0) r.fim=addDias(addMeses(ini,r.meses),-1);
-  if(p[2]===r.dia){
-    r.temProp=false;
-    r.primVenc=r.antecipado?ini:addMeses(ini,1);
-  }else{
-    const prox=p[2]<r.dia ? utcIso(Date.UTC(p[0],p[1]-1,r.dia)) : utcIso(Date.UTC(p[0],p[1],r.dia));
+  r.difere=p[2]!==r.dia;
+  const prox=!r.difere ? ini
+    : p[2]<r.dia ? utcIso(Date.UTC(p[0],p[1]-1,r.dia)) : utcIso(Date.UTC(p[0],p[1],r.dia));
+  if(r.difere && d.temProp){
     r.temProp=true;
     r.propFim=addDias(prox,-1);
     r.propDias=difDias(ini,prox);
@@ -946,8 +983,27 @@ function calcDatas(d){
     r.propC=String(d.propValor||'').trim()?cent(d.propValor):r.propCalcC;
     r.propVenc=r.antecipado?ini:prox;
     r.primVenc=r.antecipado?prox:addMeses(prox,1);
+    r.primeiroPag=r.propVenc;
+  }else{
+    r.temProp=false;
+    /* sugestão: pré-pago paga na entrega das chaves; pós-pago, no primeiro
+       dia de vencimento após a entrega */
+    r.primVencSug=r.antecipado ? ini : (r.difere ? prox : addMeses(ini,1));
+    r.primVenc=isoValido(d.primVencData)?d.primVencData:r.primVencSug;
+    r.primeiroPag=r.primVenc;
   }
   return r;
+}
+/* Formas de pagamento marcadas, já redigidas para a cláusula. */
+function formasPag(d){
+  const f=[];
+  if(d.pagPix) f.push({k:'pix',curto:'PIX — chave '+ou(d.pix,'[chave PIX]'),
+    texto:'mediante PIX para a chave '+ou(d.pix,'[chave PIX]')});
+  if(d.pagBoleto) f.push({k:'boleto',curto:'Boleto bancário',
+    texto:'mediante boleto bancário emitido pela LOCADORA e enviado ao endereço eletrônico indicado no quadro-resumo'});
+  if(d.pagDinheiro) f.push({k:'dinheiro',curto:'Dinheiro — '+ou(d.pagLocal,'na sede da LOCADORA'),
+    texto:'em dinheiro, '+ou(d.pagLocal,'na sede da LOCADORA')+', mediante recibo assinado pela LOCADORA'});
+  return f;
 }
 function iptuParcelas(d){
   const n=intOf(d.iptuParcelas), tot=cent(d.iptuValor);
@@ -967,15 +1023,24 @@ function renderTally(d){
       L('Proporcional · '+dataCurta(r.ini)+' a '+dataCurta(r.propFim)+' · '+r.propDias+' dias',brl(r.propC/100));
       L('Vencimento do proporcional',dataCurta(r.propVenc));
     }
-    L('Primeiro aluguel integral',dataCurta(r.primVenc));
+    L(r.temProp?'Primeiro aluguel integral':'Primeiro vencimento (integral)',dataCurta(r.primVenc));
+    if(d.iptuModo==='reembolso'&&d.iptuForma==='unica'&&cent(d.iptuValor)>0)
+      L('IPTU e lixo, junto com o 1º pagamento',brl(cent(d.iptuValor)/100));
     if(r.fim) L('Término do prazo',dataCurta(r.fim));
   }
   if(r.meses>0) linhas.push('<div class="tally-row sum"><span>'+r.meses+' aluguéis no prazo</span><span>'+escH(brl(r.meses*r.aluguelC/100))+'</span></div>');
 
   if(r.aluguelC<=0) flags.push(['off','Informe o valor do aluguel.']);
   if(!r.ini) flags.push(['off','Informe a data de início para calcular vencimentos e término.']);
-  if(r.antecipado && r.dia>6)
-    flags.push(['off','Sem garantia, o aluguel antecipado só pode ser exigido até o 6º dia útil do mês (art. 42). Use vencimento até o dia 6 ou escolha uma garantia.']);
+  if(r.antecipado && d.garantia!=='nenhuma')
+    flags.push(['off','Pré-pago com garantia: a lei só permite exigir aluguel antecipado em locação sem garantia (arts. 20 e 42). A cobrança antecipada fora dessa hipótese é contravenção (art. 43, III). Escolha pós-pago ou retire a garantia.']);
+  else if(r.antecipado && r.dia>6)
+    flags.push(['off','Sem garantia, o aluguel pré-pago só pode ser exigido até o 6º dia útil do mês (art. 42). Use vencimento até o dia 6.']);
+  if(r.ini && !r.temProp && isoValido(d.primVencData) && diaDoMes(r.primVenc)!==r.dia)
+    flags.push(['off','O primeiro vencimento cai num dia diferente do vencimento mensal (dia '+r.dia+'). Confira se é o que foi combinado.']);
+  if(r.ini && r.primVenc && r.primVenc<r.ini)
+    flags.push(['off','O primeiro vencimento está antes do início da locação.']);
+  if(!formasPag(d).length) flags.push(['off','Marque ao menos uma forma de pagamento.']);
   if(d.garantia==='caucao'){
     const c=cent(d.caucaoValor);
     if(c>0&&r.aluguelC>0&&c>3*r.aluguelC) flags.push(['off','A caução passa do limite legal de 3 aluguéis (art. 38, §2º).']);
@@ -1067,7 +1132,9 @@ function construirDoc(d){
     : 'registrado sob a matrícula nº '+regNum+' do '+regOrgao;
   const enderecoCheio=[ou(d.imovelEndereco,'[endereço]'),ou(d.imovelBairro,'[bairro]'),cidadeImovel,
     String(d.imovelCep||'').trim()?'CEP '+d.imovelCep.trim():''].filter(Boolean).join(', ');
-  const dadosPag=[String(d.banco||'').trim(),String(d.pix||'').trim()?'chave PIX '+d.pix.trim():''].filter(Boolean).join('; ');
+  const formas=formasPag(d);
+  const condLoc=cond&&d.condResp!=='locadora';
+  const condValor=cent(d.condValor)>0?brl(cent(d.condValor)/100):'';
   const pintura='paredes em '+ou(d.pinturaParedes,'[cor]')+' e tetos em '+ou(d.pinturaTetos,'[cor]')+
     ', em tinta '+ou(d.pinturaMarca,'[marca / linha]')+' ou de qualidade equivalente, '+
     (d.pinturaAbrang==='ambas'?'interna e externa':'somente interna');
@@ -1088,21 +1155,23 @@ function construirDoc(d){
   q.push(['Prazo',(r.meses>0?qtdExt(r.meses)+' meses':'[nº] meses')+
     (r.ini?' — de '+dataCurta(r.ini)+' a '+(r.fim?dataCurta(r.fim):'[dd/mm/aaaa]'):'')]);
   q.push(['Aluguel mensal',valorExt(aluguel)]);
-  q.push(['Vencimento','Todo dia '+dia+' de cada mês'+(r.antecipado?', pago antecipadamente':'')]);
+  q.push(['Vencimento','Todo dia '+dia+' de cada mês — '+(r.antecipado?'pré-pago, no início de cada mês de ocupação':'pós-pago, ao fim de cada mês de ocupação')]);
   if(r.temProp) q.push(['Primeiro aluguel (proporcional)',brl(r.propC/100)+', de '+dataCurta(r.ini)+' a '+
     dataCurta(r.propFim)+' ('+r.propDias+' dias), vencimento em '+dataCurta(r.propVenc)]);
-  if(dadosPag) q.push(['Pagamento',dadosPag]);
+  else if(r.ini) q.push(['Primeiro vencimento',dataCurta(r.primVenc)+' — aluguel integral']);
+  q.push(['Forma de pagamento',formas.length?formas.map(function(f){return f.curto;}).join('; '):'[forma de pagamento]']);
   q.push(['Reajuste','Anual, pelo '+indice]);
   q.push(['Garantia',
     d.garantia==='caucao'?'Caução em dinheiro — '+brl(cent(d.caucaoValor)/100):
     d.garantia==='fianca'?'Fiança — '+fs.map(function(f){return ou(f.nome,'[fiador]');}).join('; '):
     d.garantia==='seguro'?'Seguro-fiança — '+ou(d.seguradora,'[seguradora]'):
-    'Sem garantia — aluguel pago antecipadamente (art. 42 da Lei nº 8.245/1991)']);
+    'Sem garantia'+(r.antecipado?' — aluguel pré-pago (art. 42 da Lei nº 8.245/1991)':'')]);
   q.push(['IPTU e taxa de lixo',d.iptuModo==='reembolso'
-    ? 'Reembolso à locadora — '+brl(cent(d.iptuValor)/100)+(String(d.iptuAno||'').trim()?' (exercício '+d.iptuAno.trim()+')':'')
+    ? 'Reembolso à locadora — '+brl(cent(d.iptuValor)/100)+(String(d.iptuAno||'').trim()?' (exercício '+d.iptuAno.trim()+')':'')+
+      (d.iptuForma==='parcelas'?', em parcelas mensais com o aluguel':', em parcela única anual, no primeiro vencimento e a cada renovação anual')
     : 'Pagos pelo locatário diretamente à Prefeitura']);
-  if(cond) q.push(['Condomínio','Despesas ordinárias por conta do locatário'+
-    (cent(d.condValor)>0?' — valor atual '+brl(cent(d.condValor)/100):'')]);
+  if(cond) q.push(['Condomínio',(condLoc?'Unidade em condomínio — despesas ordinárias por conta do locatário':'Unidade em condomínio — despesas por conta da locadora')+
+    (condValor?' — valor atual '+condValor+' por mês':'')]);
   q.push(['Pintura de devolução',pintura.charAt(0).toUpperCase()+pintura.slice(1)]);
   q.push(['Multa por devolução antecipada',qtdExt(multaResc)+' aluguéis, proporcional ao tempo restante']);
   B.push({t:'quadro',rows:q});
@@ -1171,11 +1240,16 @@ function construirDoc(d){
 
   /* --- aluguel --- */
   H('aluguel','DO ALUGUEL, DO VENCIMENTO E DA FORMA DE PAGAMENTO');
+  let formaTxt;
+  if(formas.length===1) formaTxt=', '+formas[0].texto;
+  else if(formas.length>1) formaTxt=', por qualquer das seguintes formas, à escolha '+doLOC+': '+
+    formas.map(function(f,i){return '('+['i','ii','iii'][i]+') '+f.texto;}).join('; ');
+  else formaTxt=', na forma de pagamento [PIX / boleto / dinheiro]';
   P('O aluguel mensal é de '+valorExt(aluguel)+', vencendo todo dia '+dia+' de cada mês, '+
     (r.antecipado
-      ? 'e será pago antecipadamente, no início de cada período mensal de ocupação, nos termos do art. 42 da Lei nº 8.245/1991, por não estar a locação garantida por nenhuma das modalidades do art. 37 da mesma lei'
-      : 'e será pago ao final de cada período mensal de ocupação')+
-    (dadosPag?', mediante transferência bancária ou PIX, conforme os dados: '+dadosPag:'')+'.');
+      ? 'e será pago antecipadamente, no início de cada período mensal de ocupação'+
+        (d.garantia==='nenhuma'?', nos termos do art. 42 da Lei nº 8.245/1991, por não estar a locação garantida por nenhuma das modalidades do art. 37 da mesma lei':'')
+      : 'e será pago ao final de cada período mensal de ocupação')+formaTxt+'.');
   const al=[];
   if(r.temProp){
     al.push('O primeiro aluguel será cobrado de forma proporcional aos dias de ocupação, à razão de 1/30 (um trinta avos) do aluguel mensal por dia, no valor de '+
@@ -1183,10 +1257,15 @@ function construirDoc(d){
       ', com vencimento em '+dataExtensa(r.propVenc)+'. O primeiro aluguel integral vence em '+dataExtensa(r.primVenc)+
       ' e os seguintes no dia '+dia+' de cada mês.');
   }else if(r.ini){
-    al.push('O primeiro aluguel vence em '+dataExtensa(r.primVenc)+' e os seguintes no dia '+dia+' de cada mês.');
+    al.push('Não haverá cobrança proporcional do período inicial. O primeiro aluguel, no valor integral, vence em '+dataExtensa(r.primVenc)+
+      ', e os seguintes vencem no dia '+dia+' de cada mês.');
   }
   al.push('O aluguel do último período será cobrado proporcionalmente aos dias de ocupação até a efetiva devolução das chaves.');
-  al.push('O comprovante de pagamento emitido pela instituição financeira vale como recibo. A LOCADORA fornecerá recibo discriminado das importâncias pagas sempre que solicitado (art. 22, VI, da Lei nº 8.245/1991).');
+  const eletr=formas.filter(function(f){return f.k!=='dinheiro';}).map(function(f){return f.k==='pix'?'PIX':'boleto';});
+  let recibo='';
+  if(eletr.length) recibo+='O comprovante do pagamento por '+eletr.join(' ou ')+' emitido pela instituição financeira vale como recibo. ';
+  if(d.pagDinheiro) recibo+='O pagamento em dinheiro só se considera feito mediante recibo assinado pela LOCADORA. ';
+  al.push(recibo+'A LOCADORA fornecerá recibo discriminado das importâncias pagas sempre que solicitado (art. 22, VI, da Lei nº 8.245/1991).');
   paragrafos(al);
   obs('aluguel');
 
@@ -1226,24 +1305,29 @@ function construirDoc(d){
             : ', em '+qtdExt(ip.n)+' parcelas mensais, a primeira de '+brl(ip.primeiraC/100)+' e as demais de '+brl(ip.demaisC/100))+
           ', cobradas junto com o aluguel a partir do primeiro vencimento'
         : ', em [nº] parcelas mensais cobradas junto com o aluguel';
+      iptu+=' — e, nos exercícios seguintes, pelo valor lançado pela Prefeitura, na mesma forma';
     }else{
-      iptu+=', em parcela única com vencimento em '+(isoValido(d.iptuData)?dataExtensa(d.iptuData):'[data]');
+      iptu+=', em parcela única anual, paga junto com o primeiro vencimento do contrato'+
+        (r.primeiroPag?', em '+dataExtensa(r.primeiroPag):'')+
+        ', e, a cada renovação anual, junto com o primeiro vencimento do novo período, pelo valor lançado pela Prefeitura para o exercício';
     }
-    iptu+=' — e, nos exercícios seguintes, pelo valor lançado pela Prefeitura, na mesma forma';
   }else{
     iptu='Imposto Predial e Territorial Urbano (IPTU) e taxa de coleta de lixo incidentes sobre o imóvel, pagos diretamente '+V('pelo(a) LOCATÁRIO(A)','pelos LOCATÁRIOS')+
       ' nas guias emitidas pela Prefeitura, com envio do comprovante à LOCADORA em até 5 (cinco) dias do pagamento';
   }
   LI(letras[li++]+') '+iptu+';');
-  if(cond) LI(letras[li++]+') despesas ordinárias de condomínio, assim entendidas as do art. 23, §1º, da Lei nº 8.245/1991'+
-    (cent(d.condValor)>0?', atualmente de '+brl(cent(d.condValor)/100)+' por mês':'')+';');
+  if(condLoc) LI(letras[li++]+') despesas ordinárias de condomínio, assim entendidas as do art. 23, §1º, da Lei nº 8.245/1991'+
+    (condValor?', atualmente de '+condValor+' por mês':'')+';');
   if(d.temSeguroInc) LI(letras[li++]+') prêmio do seguro contra incêndio do imóvel, nos termos da Cláusula '+N.seguro+';');
   /* troca o ponto e vírgula do último item por ponto final */
   const ult=B[B.length-1]; ult.text=ult.text.replace(/;$/,'.');
   paragrafos([
     OLOC+' '+V('obriga-se','obrigam-se')+' a transferir para seu nome, em até '+qtdExt(intOf(d.contasPrazo)||30)+
       ' dias do início da locação, as contas de energia elétrica e de água e esgoto, e a devolvê-las ao nome da LOCADORA, ou a solicitar seu desligamento, ao final da locação.',
-    cond?'Correm por conta da LOCADORA as despesas extraordinárias de condomínio (art. 22, X, e parágrafo único, da Lei nº 8.245/1991).':'',
+    !cond?'':condLoc
+      ? 'Correm por conta da LOCADORA as despesas extraordinárias de condomínio (art. 22, X, e parágrafo único, da Lei nº 8.245/1991).'
+      : 'As despesas de condomínio, ordinárias e extraordinárias'+(condValor?', atualmente de '+condValor+' por mês':'')+
+        ', correm por conta da LOCADORA, que as paga diretamente à administração do condomínio, sem acréscimo ao aluguel ajustado.',
     'Encargo pago pela LOCADORA em lugar '+doLOC+' será reembolsado junto com o aluguel do mês seguinte, com os acréscimos da Cláusula '+N.mora+' contados da data em que a LOCADORA efetuou o pagamento.'
   ]);
   obs('encargos');
@@ -1272,7 +1356,8 @@ function construirDoc(d){
       ', e '+V('obriga-se','obrigam-se')+' a mantê-lo vigente e renovado durante toda a locação e suas prorrogações.');
     paragrafos(['A falta de renovação do seguro ou o seu cancelamento autoriza a LOCADORA a exigir nova garantia em até 30 (trinta) dias da notificação, sob pena de rescisão do contrato (art. 40, parágrafo único, da Lei nº 8.245/1991).']);
   }else{
-    P('A locação não é garantida por nenhuma das modalidades do art. 37 da Lei nº 8.245/1991. Por isso, nos termos do art. 42 da mesma lei, o aluguel e os encargos de cada mês serão pagos antecipadamente, até o 6º (sexto) dia útil do mês a que se referem.');
+    P('A locação não é garantida por nenhuma das modalidades do art. 37 da Lei nº 8.245/1991.'+
+      (r.antecipado?' Por isso, nos termos do art. 42 da mesma lei, o aluguel e os encargos de cada mês serão pagos antecipadamente, até o 6º (sexto) dia útil do mês a que se referem.':''));
   }
   obs('garantia');
 
@@ -1807,9 +1892,14 @@ function aplicarVisibilidade(d){
   });
   document.getElementById('box-atividade').hidden=(d.finalidade!=='naoresidencial');
   document.getElementById('box-iptu').hidden=(d.iptuModo!=='reembolso');
-  document.getElementById('box-iptu-data').hidden=(d.iptuForma!=='unica');
   document.getElementById('box-iptu-parc').hidden=(d.iptuForma!=='parcelas');
+  document.getElementById('iptuForma-hint').textContent=d.iptuForma==='unica'
+    ? 'Paga no primeiro vencimento do contrato e a cada renovação anual.'
+    : 'Cobradas junto com o aluguel a partir do primeiro vencimento.';
   document.getElementById('box-cond').hidden=(d.temCond!=='sim');
+  document.getElementById('box-cond-resp').hidden=(d.temCond!=='sim');
+  document.getElementById('box-pix').hidden=!d.pagPix;
+  document.getElementById('box-dinheiro').hidden=!d.pagDinheiro;
   document.getElementById('box-seguro-inc').hidden=!d.temSeguroInc;
   const ins=d.registroTipo==='inscricao';
   document.getElementById('lbl-matricula').textContent=ins?'Inscrição imobiliária nº':'Matrícula nº';
@@ -1839,9 +1929,20 @@ function atualizar(){
   document.getElementById('prazo-hint').textContent=
     r.fim?'meses · término em '+dataCurta(r.fim):'meses';
   document.getElementById('venc-hint').textContent=r.antecipado
-    ? 'Pago no início de cada período (sem garantia).'
-    : 'Pago ao fim de cada período mensal.';
+    ? 'Pré-pago: no início de cada mês de ocupação.'
+    : 'Pós-pago: ao fim de cada mês de ocupação.';
+  document.getElementById('momento-hint').textContent=r.antecipado&&d.garantia!=='nenhuma'
+    ? 'Pré-pago só é permitido em locação sem garantia (art. 42).' : '';
+  document.getElementById('momento-hint').className='hint bad';
+  /* início no próprio dia do vencimento: não há fração a cobrar */
+  document.getElementById('tgl-prop').hidden=!!r.ini&&!r.difere;
   document.getElementById('box-prop').hidden=!r.temProp;
+  document.getElementById('box-primvenc').hidden=r.temProp;
+  if(!r.temProp){
+    document.getElementById('primvenc-hint').textContent=r.primVencSug
+      ? 'Sugerido: '+dataCurta(r.primVencSug)+'. Preencha só para alterar.' : 'Informe o início da locação.';
+  }
+  document.getElementById('formas-hint').textContent=formasPag(d).length?'':'Marque ao menos uma forma.';
   if(r.temProp){
     document.getElementById('prop-hint').textContent=
       r.propDias+' dias × 1/30 do aluguel = '+brl(r.propCalcC/100)+'. Preencha só para ajustar.';
@@ -1885,6 +1986,11 @@ document.addEventListener('focusout',function(ev){
 },true);
 document.addEventListener('change',function(ev){
   if(!ev.target) return;
+  /* sugere o momento conforme a garantia; a escolha final continua livre */
+  if(ev.target.name==='garantia'){
+    const m=document.getElementById(ev.target.value==='nenhuma'?'mom-pre':'mom-pos');
+    if(m) m.checked=true;
+  }
   aplicarVisibilidade(lerForm());
   agendar();
 });
