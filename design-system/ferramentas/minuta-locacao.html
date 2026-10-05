@@ -1,0 +1,1947 @@
+<title>Defreitas - Minuta de Locação</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+/* Formulário à esquerda, minuta viva à direita: mesma grade da minuta de compra e venda. */
+:root{
+  --brown-900:#2E2118; --brown-800:#3A2A1F; --brown-700:#6B4A34; --brown-600:#8B6449;
+  --orange:#C1622D;
+  --ink:#2B2723; --ink-2:#55504A; --ink-3:#8B8479;
+  --rule:#D9D3C8; --rule-strong:#3A2A1F;
+  --paper:#F4F1EC; --ground:#FFFFFF; --panel:#FBF9F6; --field:#FFFFFF;
+  --ok:#3F6B45; --warn:#9A5B12;
+  --btn-fg:#F4F1EC;
+  --serif:'Source Serif 4',Georgia,serif;
+  --sans:'Work Sans',system-ui,-apple-system,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+  --shadow:0 1px 2px rgba(46,33,24,.06),0 8px 24px rgba(46,33,24,.06);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --brown-800:#E8DFD4; --brown-700:#C9AF98; --brown-600:#C97A3F;
+    --orange:#D98C4F;
+    --ink:#F4F1EC; --ink-2:#CFC6B9; --ink-3:#9B9184;
+    --rule:#4A3A2C; --rule-strong:#6B4A34;
+    --paper:#241A13; --ground:#1C1410; --panel:#241A13; --field:#2E2118;
+    --ok:#8FC194; --warn:#E0A860;
+    --btn-fg:#241A13;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --brown-800:#E8DFD4; --brown-700:#C9AF98; --brown-600:#C97A3F;
+  --orange:#D98C4F;
+  --ink:#F4F1EC; --ink-2:#CFC6B9; --ink-3:#9B9184;
+  --rule:#4A3A2C; --rule-strong:#6B4A34;
+  --paper:#241A13; --ground:#1C1410; --panel:#241A13; --field:#2E2118;
+  --ok:#8FC194; --warn:#E0A860;
+  --btn-fg:#241A13;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6}
+.wrap{max-width:1380px;margin:0 auto;padding-inline:20px;padding-block:0 64px}
+
+/* ---------- topo ---------- */
+.masthead{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;
+  padding-block:26px 16px;border-bottom:2px solid var(--rule-strong);margin-bottom:22px}
+.brand{font-family:var(--serif);font-weight:700;font-size:23px;letter-spacing:.04em;color:var(--brown-800);line-height:1}
+.brand-sub{font-family:var(--mono);font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--brown-600);margin-top:5px}
+.masthead h1{font-family:var(--serif);font-weight:600;font-size:17px;margin:0;color:var(--ink);text-wrap:balance}
+.masthead p{margin:3px 0 0;font-size:13px;color:var(--ink-3);max-width:56ch}
+
+.seed{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--panel);border:1px solid var(--rule);
+  border-left:3px solid var(--orange);padding:10px 14px;margin-bottom:22px;font-size:13px;color:var(--ink-2)}
+.seed strong{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);font-weight:500}
+
+/* ---------- grade ---------- */
+.grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:36px;align-items:start}
+@media (max-width:1000px){.grid{grid-template-columns:1fr;gap:28px}}
+
+/* ---------- formulário ---------- */
+fieldset{border:0;margin:0 0 30px;padding:0;min-width:0}
+.sec-head{display:flex;align-items:baseline;gap:11px;padding-bottom:8px;margin-bottom:16px;border-bottom:1px solid var(--rule);flex-wrap:wrap}
+.sec-num{font-family:var(--mono);font-size:11px;color:var(--orange);font-weight:500}
+legend{padding:0}
+.sec-title{font-family:var(--serif);font-weight:600;font-size:16px;color:var(--brown-800)}
+.sec-note{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--ink-3);letter-spacing:.04em}
+.sub-head{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--brown-600);
+  margin:20px 0 10px;padding-top:12px;border-top:1px dashed var(--rule)}
+
+.row{display:grid;gap:14px;margin-bottom:14px}
+.r2{grid-template-columns:1fr 1fr}
+.r3{grid-template-columns:1fr 1fr 1fr}
+.r4{grid-template-columns:repeat(4,1fr)}
+.r21{grid-template-columns:2fr 1fr}
+.r12{grid-template-columns:1fr 2fr}
+.r211{grid-template-columns:2fr 1fr 1fr}
+@media (max-width:640px){.r4,.r211{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.r2,.r3,.r4,.r21,.r12,.r211{grid-template-columns:1fr}}
+
+.f{display:flex;flex-direction:column;gap:5px;min-width:0}
+.f label{font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--brown-600)}
+.f input,.f select,.f textarea{
+  font-family:var(--sans);font-size:14px;color:var(--ink);background:var(--field);
+  border:1px solid var(--rule);border-radius:2px;padding:9px 10px;width:100%;min-width:0}
+.f input.mono,.f select.mono{font-family:var(--mono);font-size:13.5px;font-variant-numeric:tabular-nums}
+.f textarea{resize:vertical;min-height:74px;line-height:1.55}
+.f input:focus-visible,.f select:focus-visible,.f textarea:focus-visible{
+  outline:2px solid var(--orange);outline-offset:1px;border-color:var(--orange)}
+.f .hint{font-size:11.5px;color:var(--ink-3);line-height:1.45}
+.f .hint.bad{color:var(--warn)}
+.f .hint.good{color:var(--ok)}
+
+.toggle{display:flex;align-items:center;gap:9px;padding:11px 13px;background:var(--panel);
+  border:1px solid var(--rule);border-radius:2px;margin-bottom:14px;cursor:pointer;font-size:13.5px}
+.toggle input{width:16px;height:16px;accent-color:var(--orange);cursor:pointer;flex:none}
+.toggle span{color:var(--ink-2)}
+.toggle b{color:var(--ink);font-weight:500}
+.cond{padding-left:14px;border-left:2px solid var(--rule)}
+
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:2px;overflow:hidden}
+.seg-b{background:var(--field);border:0;padding:5px 11px;font-size:11.5px;color:var(--ink-3);
+  font-family:var(--mono);letter-spacing:.03em}
+.seg-b+.seg-b{border-left:1px solid var(--rule)}
+.seg-b.on{background:var(--brown-600);color:var(--ground)}
+.seg-b:focus-visible{outline:2px solid var(--orange);outline-offset:-2px}
+.seg-line{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.seg-line .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--brown-600)}
+
+.locked{background:var(--panel);border:1px solid var(--rule);padding:12px 14px;margin-bottom:14px}
+.locked .lk{font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--brown-600);margin-bottom:6px}
+.locked dl{display:grid;grid-template-columns:auto 1fr;gap:3px 14px;margin:0;font-size:12.5px}
+.locked dt{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);white-space:nowrap}
+.locked dd{margin:0;color:var(--ink-2);min-width:0}
+.locked dd b{color:var(--orange);font-weight:500}
+
+.party{border:1px solid var(--rule);border-left:3px solid var(--brown-600);padding:14px;margin-bottom:12px;background:var(--panel)}
+.party-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.party-top>span{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--brown-600)}
+
+button{font-family:var(--sans);cursor:pointer;border-radius:2px}
+.btn-ghost{background:none;border:1px solid var(--rule);color:var(--ink-2);font-size:12.5px;padding:6px 12px}
+.btn-ghost:hover{border-color:var(--brown-600);color:var(--brown-700)}
+.btn-ghost:focus-visible{outline:2px solid var(--orange);outline-offset:1px}
+
+/* conferência de percentuais */
+.tally{border:1px solid var(--rule);padding:13px 15px;margin:4px 0 14px;background:var(--panel)}
+.tally-row{display:flex;justify-content:space-between;gap:16px;font-family:var(--mono);font-size:12px;
+  font-variant-numeric:tabular-nums;padding:3px 0;color:var(--ink-2)}
+.tally-row.sum{border-top:1px solid var(--rule);margin-top:6px;padding-top:8px;color:var(--ink);font-weight:500}
+.tally-row .lbl{color:var(--ink-3);min-width:0;overflow-wrap:anywhere}
+.tally-flag{margin-top:9px;font-size:12.5px;font-family:var(--sans);display:flex;gap:7px;align-items:flex-start}
+.tally-flag.ok{color:var(--ok)}
+.tally-flag.off{color:var(--warn)}
+.tally-flag .dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex:none;margin-top:6px}
+
+/* ---------- painel direito ---------- */
+.side{position:sticky;top:20px;display:flex;flex-direction:column;gap:14px;min-width:0}
+@media (max-width:1000px){.side{position:static}}
+.side-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+  padding-bottom:8px;border-bottom:1px solid var(--rule)}
+.side-head h2{font-family:var(--serif);font-weight:600;font-size:15px;margin:0;color:var(--brown-800)}
+.side-head .meta{font-family:var(--mono);font-size:10px;color:var(--ink-3);letter-spacing:.05em}
+
+.export{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:420px){.export{grid-template-columns:1fr}}
+.btn-x{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:12px 14px;
+  border:1px solid var(--rule-strong);background:var(--brown-800);color:var(--btn-fg);text-align:left}
+.btn-x .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;opacity:.72}
+.btn-x .n{font-family:var(--sans);font-size:14px;font-weight:500}
+.btn-x:hover{background:var(--brown-700)}
+.btn-x:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+.btn-x[disabled]{background:var(--panel);border-color:var(--rule);color:var(--ink-3);cursor:not-allowed}
+.export-note{font-size:12px;color:var(--ink-3);line-height:1.5;margin:0}
+.export-note.err{color:var(--warn)}
+
+/* minuta */
+.minuta{background:var(--paper);border:1px solid var(--rule);padding:26px 30px;max-height:min(70vh,820px);
+  overflow-y:auto;overflow-x:auto;box-shadow:var(--shadow)}
+@media (max-width:1000px){.minuta{max-height:none}}
+@media (max-width:520px){.minuta{padding:18px 16px}}
+.m-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;
+  padding-bottom:11px;border-bottom:2px solid var(--rule-strong);margin-bottom:17px}
+.m-brand{font-family:var(--serif);font-weight:700;font-size:14px;letter-spacing:.04em;color:var(--brown-800)}
+.m-brand-sub{font-family:var(--mono);font-size:7px;letter-spacing:.22em;text-transform:uppercase;color:var(--brown-600);margin-top:2px}
+.m-kind{font-family:var(--mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);text-align:right}
+.m-num{font-family:var(--mono);font-size:9px;color:var(--ink-2);text-align:right;margin-top:2px}
+.m-title{font-family:var(--serif);font-weight:700;font-size:15px;text-align:center;color:var(--brown-800);
+  margin:0 0 4px;text-wrap:balance;letter-spacing:.01em}
+.m-subtitle{font-family:var(--mono);font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;text-align:center;color:var(--brown-600);margin:0 0 16px}
+.m-qtitle{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--orange);margin:12px 0 6px}
+.m-quadro{width:100%;border-collapse:collapse;margin:0 0 18px;font-size:11px;table-layout:fixed}
+.m-quadro td{border-bottom:1px solid var(--rule);padding:5px 8px 5px 0;vertical-align:top;overflow-wrap:anywhere}
+.m-quadro td.l{font-family:var(--mono);font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--brown-600);width:31%}
+.m-quadro td.v{color:var(--ink);font-variant-numeric:tabular-nums}
+.m-quadro td.full{color:var(--ink-2);line-height:1.6}
+.m-quadro tr.sec td{border-bottom:1.5px solid var(--rule-strong);padding-top:13px;font-weight:600;color:var(--brown-800);font-size:10.5px;letter-spacing:.02em}
+.m-quadro tr.sec .qn{font-family:var(--mono);font-weight:500;color:var(--orange);margin-right:8px}
+.m-p{font-size:11.8px;line-height:1.72;color:var(--ink-2);margin:0 0 8px;text-align:justify;hyphens:auto}
+.m-p b,.m-it b{color:var(--ink);font-weight:600}
+.m-h{font-family:var(--sans);font-weight:600;font-size:11px;color:var(--brown-800);margin:18px 0 7px;letter-spacing:.03em;text-transform:uppercase}
+.m-h .n{color:var(--orange);margin-right:6px}
+.m-it{font-size:11.5px;line-height:1.7;color:var(--ink-2);margin:0 0 7px;text-align:justify;hyphens:auto}
+.m-it.sub{margin-left:18px}
+.m-city{font-size:11.8px;color:var(--ink-2);margin:18px 0 10px}
+.m-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--brown-600);margin:18px 0 0}
+.m-sig{margin:0 0 16px;padding-top:24px}
+.m-sig-line{border-top:1px solid var(--ink);padding-top:5px;max-width:330px}
+.m-sig-role{font-family:var(--mono);font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--brown-600)}
+.m-sig-name{font-size:11.5px;color:var(--ink);margin-top:1px}
+.m-sig-sub{font-size:10.5px;color:var(--ink-3);margin-top:1px}
+.m-break{border:0;border-top:1px dashed var(--rule);margin:26px 0 22px;position:relative;overflow:visible}
+.m-break::after{content:'nova página';position:absolute;right:0;top:-8px;background:var(--paper);padding-left:8px;
+  font-family:var(--mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.m-anexo{font-family:var(--serif);font-weight:700;font-size:13.5px;text-align:center;color:var(--brown-800);margin:0 0 2px}
+.m-anexo-sub{font-family:var(--mono);font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;text-align:center;color:var(--brown-600);margin:0 0 16px}
+.m-frame{border:1px solid var(--rule);height:120px;margin:4px 0 8px}
+.m-foot{border-top:1px solid var(--rule);margin-top:20px;padding-top:9px;display:flex;justify-content:space-between;
+  gap:12px;font-family:var(--mono);font-size:7.5px;letter-spacing:.05em;color:var(--ink-3)}
+
+.legalnote{font-size:12px;color:var(--ink-3);line-height:1.55;border-top:1px solid var(--rule);padding-top:12px;margin:0}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <div>
+      <div class="brand">DEFREITAS</div>
+      <div class="brand-sub">Imóveis Próprios</div>
+    </div>
+    <div style="flex:1 1 320px">
+      <h1>Minuta de locação</h1>
+      <p>Contrato padrão de locação da Defreitas: preencha o quadro-resumo e gere o contrato em PDF e Word, com as cláusulas do modelo e foro em Montes Claros/MG.</p>
+    </div>
+  </header>
+
+  <div class="seed" id="draft-banner" hidden>
+    <strong>Rascunho</strong>
+    <span>Restauramos o que você tinha preenchido neste navegador.</span>
+    <button type="button" class="btn-ghost" id="btn-clear" style="margin-left:auto">Limpar tudo</button>
+  </div>
+
+  <div class="grid">
+    <form id="form" autocomplete="off">
+
+      <fieldset>
+        <div class="sec-head"><span class="sec-num">01</span><legend class="sec-title">Identificação do contrato</legend>
+          <span class="sec-note">itens VI e VIII</span></div>
+        <div class="row r3">
+          <div class="f"><label for="num">Número</label><input class="mono" id="num" placeholder="001/2026"></div>
+          <div class="f"><label for="cidade">Local de assinatura</label><input id="cidade" placeholder="Montes Claros/MG"></div>
+          <div class="f"><label for="dataAss">Data de assinatura</label><input class="mono" id="dataAss" type="date"></div>
+        </div>
+        <div class="row r12">
+          <div class="f"><label for="finalidade">Finalidade</label>
+            <select id="finalidade">
+              <option value="nao">Não residencial</option>
+              <option value="res">Residencial</option>
+            </select></div>
+          <div class="f"><label for="apelido">Identificação do imóvel no título</label><input id="apelido" placeholder="Casa no Portal das Aroeiras">
+            <span class="hint">Aparece abaixo do título, como no cabeçalho do modelo.</span></div>
+        </div>
+        <div class="locked">
+          <div class="lk">Cláusulas fixas do modelo</div>
+          <dl>
+            <dt>Foro</dt><dd><b>Comarca de Montes Claros/MG</b></dd>
+            <dt>Reajuste</dt><dd>Anual, pelo IPCA ou IGP-M (variação positiva, aplicado o maior índice)</dd>
+            <dt>Rescisão antecipada</dt><dd>Multa compensatória de 3 (três) meses de aluguel</dd>
+          </dl>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <div class="sec-head"><span class="sec-num">02</span><legend class="sec-title">Locador</legend>
+          <span class="sec-note">item I</span></div>
+        <input type="hidden" id="locadorTipo">
+        <div class="seg-line">
+          <span class="lbl">Locador</span>
+          <div class="seg">
+            <button type="button" class="seg-b" data-locador="defreitas">Defreitas</button>
+            <button type="button" class="seg-b" data-locador="outro">Outro (pessoa física, espólio)</button>
+          </div>
+        </div>
+        <div id="box-loc-defreitas">
+          <div class="locked">
+            <div class="lk">Defreitas — qualificação institucional</div>
+            <dl>
+              <dt>Razão social</dt><dd>Defreitas Compra, Venda, Incorporação e Locação de Bens Imóveis Próprios Ltda</dd>
+              <dt>CNPJ</dt><dd>11.435.163/0001-13</dd>
+              <dt>Sede</dt><dd>R. Lafeta, 116, Sala 105, Centro, Montes Claros/MG, CEP 39.400-045</dd>
+            </dl>
+          </div>
+          <div class="row r3">
+            <div class="f"><label for="repNome">Representante — nome</label><input id="repNome" placeholder="Nome completo"></div>
+            <div class="f"><label for="repCargo">Cargo / poderes</label><input id="repCargo" placeholder="sócia-administradora"></div>
+            <div class="f"><label for="repCpf">CPF</label><input class="mono" id="repCpf" inputmode="numeric" placeholder="000.000.000-00">
+              <span class="hint" id="repCpf-hint"></span></div>
+          </div>
+        </div>
+        <div id="box-loc-outro" hidden>
+          <div class="row">
+            <div class="f"><label for="locQualif">Qualificação completa do locador</label>
+              <textarea id="locQualif" placeholder="ESPÓLIO DE [NOME], representado por [inventariante], brasileira, casada, administradora de empresas, portadora da CI nº [__], inscrita no CPF sob o nº [__], residente à [endereço]"></textarea>
+              <span class="hint">Entra no item I do quadro-resumo exatamente como escrita.</span></div>
+          </div>
+          <div class="row r2">
+            <div class="f"><label for="locNome">Nome na assinatura</label><input id="locNome" placeholder="Patrícia Leal de Freitas Froes"></div>
+            <div class="f"><label for="locAssSub">Qualidade de quem assina</label><input id="locAssSub" placeholder="Inventariante — Espólio"></div>
+          </div>
+        </div>
+
+        <div class="sub-head">Dados para notificação</div>
+        <div class="row r2">
+          <div class="f"><label for="notAt">Aos cuidados de</label><input id="notAt" placeholder="em branco: o representante"></div>
+          <div class="f"><label for="notTel">Telefone</label><input class="mono" id="notTel" placeholder="(38) 99999-0000"></div>
+        </div>
+        <div class="row r21">
+          <div class="f"><label for="notEnd">Endereço</label><input id="notEnd" placeholder="em branco: a sede da Defreitas"></div>
+          <div class="f"><label for="notEmail">E-mail</label><input id="notEmail" type="email"></div>
+        </div>
+
+        <div class="sub-head">Setor jurídico</div>
+        <div class="row r2">
+          <div class="f"><label for="jurNome">Advogado(a) e OAB</label><input id="jurNome"></div>
+          <div class="f"><label for="jurTel">Telefone</label><input class="mono" id="jurTel"></div>
+        </div>
+        <div class="row r21">
+          <div class="f"><label for="jurEnd">Endereço</label><input id="jurEnd"></div>
+          <div class="f"><label for="jurEmail">E-mail</label><input id="jurEmail" type="email"></div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <div class="sec-head"><span class="sec-num">03</span><legend class="sec-title">Locatário(s)</legend>
+          <span class="sec-note" id="cnt-locatarios">item II</span></div>
+        <div id="locatarios"></div>
+        <button type="button" class="btn-ghost" id="btn-add-loc">+ Adicionar locatário</button>
+      </fieldset>
+
+      <fieldset>
+        <div class="sec-head"><span class="sec-num">04</span><legend class="sec-title">Fiadores</legend>
+          <span class="sec-note">item II.I e cláusula 9</span></div>
+        <div id="fiador1"></div>
+        <label class="toggle" for="temF2">
+          <input type="checkbox" id="temF2">
+          <span><b>Segundo fiador</b> — incluir Fiador 2 no quadro e nas assinaturas</span>
+        </label>
+        <div id="fiador2" hidden></div>
+      </fieldset>
+
+      <fieldset>
+        <div class="sec-head"><span class="sec-num">05</span><legend class="sec-title">Imóvel</legend>
+          <span class="sec-note">item III</span></div>
+        <div class="row r21">
+          <div class="f"><label for="imEnd">Endereço</label><input id="imEnd" placeholder="Vereda José Alphonsus Guimarães, 172"></div>
+          <div class="f"><label for="imBairro">Bairro</label><input id="imBairro" placeholder="Ibituruna"></div>
+        </div>
+        <div class="row r211">
+          <div class="f"><label for="imCidade">Cidade</label><input id="imCidade" placeholder="Montes Claros"></div>
+          <div class="f"><label for="imUf">Estado</label><input id="imUf" placeholder="MG"></div>
+          <div class="f"><label for="imCep">CEP</label><input class="mono" id="imCep" inputmode="numeric" placeholder="39.401-000"></div>
+        </div>
+        <div class="row r12">
+          <div class="f"><label for="imMatricula">Matrícula(s)</label><input class="mono" id="imMatricula" placeholder="12.345"></div>
+          <div class="f"><label for="imCartorio">Cartório</label><input id="imCartorio" placeholder="1º Ofício de Registro de Imóveis de Montes Claros/MG"></div>
+        </div>
+        <div class="row">
+          <div class="f"><label for="imDesc">Descrição conforme matrícula</label>
+            <textarea id="imDesc" placeholder="Lote nº __ da quadra __, com área de ___ m², e a casa nele edificada…"></textarea></div>
+        </div>
+        <div class="row r4">
+          <div class="f"><label for="imIptu">Número IPTU</label><input class="mono" id="imIptu"></div>
+          <div class="f"><label for="imContrib">Nº do contribuinte</label><input class="mono" id="imContrib"></div>
+          <div class="f"><label for="imLocal">Localização</label>
+            <select id="imLocal"><option>Zona Urbana</option><option>Zona Rural</option></select></div>
+          <div class="f"><label for="imArea">Espaço alugado (m²)</label><input class="mono" id="imArea" inputmode="decimal" placeholder="400"></div>
+        </div>
+        <div class="row">
+          <div class="f"><label for="atividade">Atividade do locatário no imóvel</label><input id="atividade" placeholder="agências de publicidade">
+            <span class="hint">Completa a cláusula 1.2: “O imóvel será utilizado para a atividade de …, pelo LOCATÁRIO.”</span></div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <div class="sec-head"><span class="sec-num">06</span><legend class="sec-title">Aluguel e prazo</legend>
+          <span class="sec-note">itens IV e VI</span></div>
+        <div class="row r21">
+          <div class="f"><label for="aluguel">Valor mensal do aluguel</label><input class="mono" id="aluguel" inputmode="decimal" placeholder="R$ 0,00">
+            <span class="hint" id="aluguel-extenso"></span></div>
+          <div class="f"><label for="prazoMeses">Prazo (meses)</label><input class="mono" id="prazoMeses" inputmode="numeric" placeholder="12"></div>
+        </div>
+        <div class="row r3">
+          <div class="f"><label for="dataInicio">Início da locação</label><input class="mono" id="dataInicio" type="date">
+            <span class="hint" id="fim-hint"></span></div>
+          <div class="f"><label for="dataVenc1">1º vencimento</label><input class="mono" id="dataVenc1" type="date">
+            <span class="hint" id="venc-hint"></span></div>
+          <div class="f"><label for="dataBase">Data-base do reajuste</label><input class="mono" id="dataBase" type="date">
+            <span class="hint">Em branco: o início da locação.</span></div>
+        </div>
+        <div class="row r3">
+          <div class="f"><label for="carencia">Carência (dias)</label><input class="mono" id="carencia" inputmode="numeric" placeholder="0"></div>
+          <div class="f"></div><div class="f"></div>
+        </div>
+        <label class="toggle" for="temDesc">
+          <input type="checkbox" id="temDesc">
+          <span><b>Desconto no aluguel</b> — por um período determinado</span>
+        </label>
+        <div class="cond" id="box-desc" hidden>
+          <div class="row r2">
+            <div class="f"><label for="descValor">Desconto por vencimento</label><input class="mono" id="descValor" inputmode="decimal" placeholder="0,00">
+              <span class="hint" id="desc-hint"></span></div>
+            <div class="f"><label for="descRotulo">Descontos — como consta no quadro</label><input id="descRotulo" placeholder="Primeiro ano"></div>
+          </div>
+          <div class="row r2">
+            <div class="f"><label for="descDe">Vencimentos de</label><input class="mono" id="descDe" type="date"></div>
+            <div class="f"><label for="descAte">até</label><input class="mono" id="descAte" type="date"></div>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <div class="sec-head"><span class="sec-num">07</span><legend class="sec-title">Forma de pagamento</legend>
+          <span class="sec-note">item V</span></div>
+        <div class="row r2">
+          <div class="f"><label for="formaPag">Forma de pagamento</label>
+            <select id="formaPag">
+              <option>Depósito Bancário</option>
+              <option>Transferência bancária ou PIX</option>
+              <option>Boleto bancário</option>
+            </select></div>
+          <div class="f"><label for="multa">Multa moratória (%)</label><input class="mono" id="multa" inputmode="decimal" placeholder="20">
+            <span class="hint">Mais juros de mora de 1% ao mês, pro rata die.</span></div>
+        </div>
+        <div id="recebedores"></div>
+        <button type="button" class="btn-ghost" id="btn-add-rec" style="margin-bottom:14px">+ Adicionar recebedor</button>
+        <div class="tally" id="tally"></div>
+      </fieldset>
+
+      <fieldset>
+        <div class="sec-head"><span class="sec-num">08</span><legend class="sec-title">Anexos</legend>
+          <span class="sec-note">item VII</span></div>
+        <div class="row r2">
+          <div class="f"><label for="anexoA">Anexo A</label><input id="anexoA" placeholder="Laudo de Vistoria"></div>
+          <div class="f"><label for="anexoB">Anexo B</label><input id="anexoB"></div>
+        </div>
+        <label class="toggle" for="incAnexos">
+          <input type="checkbox" id="incAnexos">
+          <span><b>Incluir as folhas dos anexos</b> — matrícula, memorial descritivo e croqui</span>
+        </label>
+        <div class="cond" id="box-anexos" hidden>
+          <div class="row">
+            <div class="f"><label for="memorial">Memorial descritivo do espaço alugado</label>
+              <textarea id="memorial" placeholder="Em branco: a folha sai com o espaço para preenchimento à mão."></textarea></div>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <div class="sec-head"><span class="sec-num">09</span><legend class="sec-title">Testemunhas</legend></div>
+        <div class="row r211">
+          <div class="f"><label for="t1Nome">Testemunha 1 — nome</label><input id="t1Nome"></div>
+          <div class="f"><label for="t1Rg">RG</label><input class="mono" id="t1Rg"></div>
+          <div class="f"><label for="t1End">Endereço</label><input id="t1End"></div>
+        </div>
+        <div class="row r211">
+          <div class="f"><label for="t2Nome">Testemunha 2 — nome</label><input id="t2Nome"></div>
+          <div class="f"><label for="t2Rg">RG</label><input class="mono" id="t2Rg"></div>
+          <div class="f"><label for="t2End">Endereço</label><input id="t2End"></div>
+        </div>
+      </fieldset>
+    </form>
+
+    <aside class="side">
+      <div class="side-head">
+        <h2>Minuta</h2>
+        <span class="meta" id="side-meta"></span>
+      </div>
+      <div class="export">
+        <button type="button" class="btn-x" id="btn-pdf"><span class="k">Exportar</span><span class="n">Contrato em PDF</span></button>
+        <button type="button" class="btn-x" id="btn-docx"><span class="k">Exportar</span><span class="n">Contrato em Word</span></button>
+      </div>
+      <p class="export-note" id="export-note">O PDF sai paginado para impressão e assinatura. O Word sai editável, caso o jurídico precise ajustar alguma cláusula.</p>
+      <div class="minuta" id="minuta"></div>
+      <p class="legalnote">Contrato padrão de locação da Defreitas, com as cláusulas do modelo em uso e foro em Montes Claros/MG. Toda minuta preenchida deve passar por revisão jurídica antes da assinatura.</p>
+    </aside>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+/* ===================== utilidades de número e texto ===================== */
+const UNI=['','um','dois','três','quatro','cinco','seis','sete','oito','nove'];
+const DEZ_ESP=['dez','onze','doze','treze','quatorze','quinze','dezesseis','dezessete','dezoito','dezenove'];
+const DEZ=['','','vinte','trinta','quarenta','cinquenta','sessenta','setenta','oitenta','noventa'];
+const CEM=['','cento','duzentos','trezentos','quatrocentos','quinhentos','seiscentos','setecentos','oitocentos','novecentos'];
+
+function tres(n){
+  if(n===100) return 'cem';
+  const c=Math.floor(n/100), r=n%100, p=[];
+  if(c) p.push(CEM[c]);
+  if(r){
+    if(r<10) p.push(UNI[r]);
+    else if(r<20) p.push(DEZ_ESP[r-10]);
+    else{const d=Math.floor(r/10),u=r%10; p.push(u?DEZ[d]+' e '+UNI[u]:DEZ[d]);}
+  }
+  return p.join(' e ');
+}
+function extensoInt(n){
+  n=Math.floor(Math.abs(n));
+  if(n===0) return 'zero';
+  if(n>999999999) return String(n);
+  const g=[]; let i=0, x=n;
+  while(x>0){g.unshift({v:x%1000,i:i}); x=Math.floor(x/1000); i++;}
+  const nomes={2:['milhão','milhões'],3:['bilhão','bilhões']};
+  const partes=[];
+  let ultimo=0;
+  g.forEach(function(it){
+    if(it.v===0) return;
+    ultimo=it.v;
+    if(it.i===0) partes.push(tres(it.v));
+    else if(it.i===1) partes.push(it.v===1?'mil':tres(it.v)+' mil');
+    else partes.push(tres(it.v)+' '+(it.v===1?nomes[it.i][0]:nomes[it.i][1]));
+  });
+  if(partes.length===1) return partes[0];
+  const liga=(ultimo<100||ultimo%100===0)?' e ':', ';
+  return partes.slice(0,-1).join(', ')+liga+partes[partes.length-1];
+}
+function extensoMoeda(v){
+  if(!isFinite(v)) return '';
+  const i=Math.floor(Math.abs(v)+1e-9), c=Math.round((Math.abs(v)-i)*100);
+  let s='';
+  if(i>0) s = (i===1?'um real':extensoInt(i)+(i%1000000===0?' de reais':' reais'));
+  if(c>0) s += (s?' e ':'') + (c===1?'um centavo':extensoInt(c)+' centavos');
+  return s||'zero real';
+}
+function brl(v){
+  if(!isFinite(v)) v=0;
+  return 'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+/* Aceita 4500 · 4.500 · 4.500,00 · 4500.00 — sem multiplicar nem dividir por engano. */
+function numOf(s){
+  if(typeof s==='number') return isFinite(s)?s:0;
+  let t=String(s==null?'':s).replace(/[^\d.,-]/g,'').trim();
+  if(!t) return 0;
+  const neg=/^-/.test(t);
+  t=t.replace(/-/g,'');
+  if(t.indexOf(',')>=0){
+    t=t.replace(/\./g,'').replace(/,/g,'.');
+  }else if(t.indexOf('.')>=0){
+    const partes=t.split('.');
+    const ultima=partes[partes.length-1];
+    if(!(partes.length===2 && ultima.length>0 && ultima.length<=2)) t=partes.join('');
+  }
+  const n=parseFloat(t);
+  if(!isFinite(n)) return 0;
+  return neg?-n:n;
+}
+function intOf(s){const n=parseInt(String(s||'').replace(/\D/g,''),10); return isFinite(n)?n:0;}
+function cent(v){return Math.round((numOf(v)||0)*100);}
+
+const MESES=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+function partesData(iso){
+  const p=String(iso||'').split('-');
+  if(p.length!==3) return null;
+  const y=parseInt(p[0],10), m=parseInt(p[1],10), d=parseInt(p[2],10);
+  return (y&&m&&d)?{y:y,m:m,d:d}:null;
+}
+function dataCurta(iso){
+  const p=partesData(iso); if(!p) return '';
+  return String(p.d).padStart(2,'0')+'/'+String(p.m).padStart(2,'0')+'/'+p.y;
+}
+function dataExtensa(iso){
+  const p=partesData(iso); if(!p) return '';
+  return p.d+' de '+MESES[p.m-1]+' de '+p.y;
+}
+function diaDoMes(iso){const p=partesData(iso); return p?p.d:0;}
+/* Mesmo dia N meses depois; dia 31 em mês curto cai no último dia do mês. */
+function somaMeses(iso,n){
+  const p=partesData(iso); if(!p||!n) return '';
+  const t=(p.m-1)+n, y=p.y+Math.floor(t/12), m=t%12+1;
+  const ultimo=new Date(Date.UTC(y,m,0)).getUTCDate();
+  return y+'-'+String(m).padStart(2,'0')+'-'+String(Math.min(p.d,ultimo)).padStart(2,'0');
+}
+function qtdExt(n){return n>0? n+' ('+extensoInt(n)+')' : '';}
+function valorExt(v){return brl(v)+' ('+extensoMoeda(v)+')';}
+function pctTxt(v){return (Math.round(v*100)/100).toLocaleString('pt-BR')+'%';}
+
+function maskCPF(v){
+  const d=String(v||'').replace(/\D/g,'').slice(0,11);
+  if(d.length>9) return d.slice(0,3)+'.'+d.slice(3,6)+'.'+d.slice(6,9)+'-'+d.slice(9);
+  if(d.length>6) return d.slice(0,3)+'.'+d.slice(3,6)+'.'+d.slice(6);
+  if(d.length>3) return d.slice(0,3)+'.'+d.slice(3);
+  return d;
+}
+function maskCNPJ(v){
+  const d=String(v||'').replace(/\D/g,'').slice(0,14);
+  if(d.length>12) return d.slice(0,2)+'.'+d.slice(2,5)+'.'+d.slice(5,8)+'/'+d.slice(8,12)+'-'+d.slice(12);
+  if(d.length>8)  return d.slice(0,2)+'.'+d.slice(2,5)+'.'+d.slice(5,8)+'/'+d.slice(8);
+  if(d.length>5)  return d.slice(0,2)+'.'+d.slice(2,5)+'.'+d.slice(5);
+  if(d.length>2)  return d.slice(0,2)+'.'+d.slice(2);
+  return d;
+}
+function validaCNPJ(v){
+  const d=String(v||'').replace(/\D/g,'');
+  if(d.length!==14||/^(\d)\1{13}$/.test(d)) return false;
+  function dv(pesos){
+    let s=0;
+    for(let i=0;i<pesos.length;i++) s+=parseInt(d[i],10)*pesos[i];
+    const r=s%11;
+    return r<2?0:11-r;
+  }
+  if(dv([5,4,3,2,9,8,7,6,5,4,3,2])!==parseInt(d[12],10)) return false;
+  return dv([6,5,4,3,2,9,8,7,6,5,4,3,2])===parseInt(d[13],10);
+}
+function validaCPF(v){
+  const d=String(v||'').replace(/\D/g,'');
+  if(d.length!==11||/^(\d)\1{10}$/.test(d)) return false;
+  let s=0;
+  for(let i=0;i<9;i++) s+=parseInt(d[i],10)*(10-i);
+  let r=(s*10)%11; if(r===10) r=0;
+  if(r!==parseInt(d[9],10)) return false;
+  s=0;
+  for(let i=0;i<10;i++) s+=parseInt(d[i],10)*(11-i);
+  r=(s*10)%11; if(r===10) r=0;
+  return r===parseInt(d[10],10);
+}
+function maskCEP(v){
+  const d=String(v||'').replace(/\D/g,'').slice(0,8);
+  return d.replace(/^(\d{2})(\d)/,'$1.$2').replace(/^(\d{2})\.(\d{3})(\d)/,'$1.$2-$3');
+}
+function fmtMoeda(v){
+  if(!String(v==null?'':v).trim()) return '';
+  return numOf(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+const CAMPOS_MOEDA=['aluguel','descValor'];
+
+function escH(s){
+  return String(s==null?'':s).replace(/[&<>"']/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+function escX(s){
+  return String(s==null?'':s)
+    .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g,'')
+    .replace(/[&<>"']/g,function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c];
+    });
+}
+function tem(v){return String(v==null?'':v).trim().length>0;}
+function ou(v,fallback){return tem(v)?String(v).trim():fallback;}
+
+/* ===================== dados fixos ===================== */
+const DEFREITAS={
+  razao:'DEFREITAS COMPRA, VENDA, INCORPORAÇÃO E LOCAÇÃO DE BENS IMÓVEIS PRÓPRIOS LTDA',
+  razaoTitulo:'Defreitas Compra, Venda, Incorporação e Locação de Bens Imóveis Próprios Ltda',
+  cnpj:'11.435.163/0001-13',
+  sede:'R. Lafeta, 116, Sala 105, Centro, Montes Claros/MG, CEP 39.400-045'
+};
+const FORO='Montes Claros/MG';
+const INDICE='IPCA ou IGP-M (variação positiva, devendo ser aplicado o maior índice)';
+
+/* ===================== estado ===================== */
+const CAMPOS_LOC=['nome','cpf','rg','razaoSocial','cnpj','repNome','repCpf',
+  'endereco','bairro','cep','cidade','uf','tel','telCom','email'];
+const CAMPOS_REC=['nome','doc','banco','agencia','conta','pix','pct'];
+const CAMPOS_FIADOR=['Nome','Nac','EstadoCivil','Rg','Cpf','Email','End','Cidade','Cep','ConjNome','ConjCpf','ConjRg'];
+
+function locVazio(){
+  const o={tipo:'pf'}; CAMPOS_LOC.forEach(function(f){o[f]='';});
+  o.cidade='Montes Claros'; o.uf='MG'; return o;
+}
+function recVazio(pct){
+  const o={}; CAMPOS_REC.forEach(function(f){o[f]='';}); o.pct=pct||''; return o;
+}
+
+const VAZIO={
+  num:'', cidade:'Montes Claros/MG', dataAss:'', finalidade:'nao', apelido:'',
+  locadorTipo:'defreitas', repNome:'', repCargo:'', repCpf:'',
+  locQualif:'', locNome:'', locAssSub:'',
+  notAt:'', notTel:'', notEnd:'', notEmail:'',
+  jurNome:'Dr. Lucelho Marques Diniz – OAB/MG 121.343',
+  jurEnd:'Rua Barão do Rio Branco, nº 439 – Sala 201 – bairro Centro, Montes Claros/MG',
+  jurTel:'(38) 9.9982-0321 – 2101-3709',
+  jurEmail:'lucelho@hotmail.com',
+  temF2:false,
+  imEnd:'', imBairro:'', imCidade:'Montes Claros', imUf:'MG', imCep:'',
+  imMatricula:'', imCartorio:'', imDesc:'', imIptu:'', imContrib:'', imLocal:'Zona Urbana', imArea:'',
+  atividade:'',
+  aluguel:'', prazoMeses:'12', dataInicio:'', dataVenc1:'', dataBase:'', carencia:'',
+  temDesc:false, descValor:'', descRotulo:'', descDe:'', descAte:'',
+  formaPag:'Depósito Bancário', multa:'20',
+  anexoA:'Laudo de Vistoria', anexoB:'', incAnexos:true, memorial:'',
+  t1Nome:'', t1Rg:'', t1End:'', t2Nome:'', t2Rg:'', t2End:'',
+  locatarios:[locVazio()], recebedores:[recVazio('100')]
+};
+[1,2].forEach(function(n){
+  CAMPOS_FIADOR.forEach(function(f){VAZIO['f'+n+f]='';});
+  VAZIO['f'+n+'Nac']='brasileiro(a)';
+  VAZIO['f'+n+'EstadoCivil']='casado(a)';
+  VAZIO['f'+n+'Cidade']='Montes Claros/MG';
+});
+
+const CAMPOS=Object.keys(VAZIO).filter(function(k){return k!=='locatarios'&&k!=='recebedores';});
+let locatarios=[], recebedores=[];
+const LS='defreitas-locacao-v1';
+
+function normaliza(o,campos,base){
+  o=o||{};
+  const out=base();
+  if(o.tipo) out.tipo=o.tipo==='pj'?'pj':'pf';
+  campos.forEach(function(f){if(o[f]!=null) out[f]=String(o[f]);});
+  return out;
+}
+function lerLista(prefixo,lista,campos,base){
+  return lista.map(function(c,i){
+    const out=normaliza(c,campos,base);
+    campos.forEach(function(f){
+      const e=document.getElementById(prefixo+i+'-'+f);
+      if(e) out[f]=e.value;
+    });
+    return out;
+  });
+}
+function lerForm(){
+  const d={};
+  CAMPOS.forEach(function(k){
+    const el=document.getElementById(k);
+    if(!el) return;
+    d[k]= el.type==='checkbox' ? el.checked : el.value;
+  });
+  d.locatarios=lerLista('L',locatarios,CAMPOS_LOC,locVazio);
+  d.recebedores=lerLista('R',recebedores,CAMPOS_REC,function(){return recVazio('');});
+  return d;
+}
+function escreverForm(d){
+  CAMPOS.forEach(function(k){
+    const el=document.getElementById(k);
+    if(!el) return;
+    if(el.type==='checkbox'){el.checked=!!d[k]; return;}
+    const v=d[k]==null?'':String(d[k]);
+    if(el.tagName==='SELECT'){
+      const existe=Array.prototype.some.call(el.options,function(o){return o.value===v;});
+      el.value=existe?v:el.options[0].value;
+      return;
+    }
+    el.value=v;
+  });
+  if(d.locadorTipo!=='outro') document.getElementById('locadorTipo').value='defreitas';
+  locatarios=(d.locatarios&&d.locatarios.length?d.locatarios:[{}]).map(function(c){return normaliza(c,CAMPOS_LOC,locVazio);});
+  recebedores=(d.recebedores&&d.recebedores.length?d.recebedores:[{pct:'100'}]).map(function(c){return normaliza(c,CAMPOS_REC,function(){return recVazio('');});});
+  renderLocatarios(); renderRecebedores();
+}
+
+/* ===================== blocos do formulário gerados ===================== */
+const ESTADOS_CIVIS=['solteiro(a)','casado(a)','convivente em união estável','divorciado(a)','separado(a) judicialmente','viúvo(a)'];
+function temConjuge(ec){return ec==='casado(a)'||ec==='convivente em união estável';}
+
+function htmlFiador(n){
+  const p='f'+n;
+  return '<div class="party"><div class="party-top"><span>Fiador '+n+'</span></div>'+
+    '<div class="row r21">'+
+      '<div class="f"><label for="'+p+'Nome">Nome completo</label><input id="'+p+'Nome"></div>'+
+      '<div class="f"><label for="'+p+'Nac">Nacionalidade</label><input id="'+p+'Nac"></div>'+
+    '</div>'+
+    '<div class="row r3">'+
+      '<div class="f"><label for="'+p+'EstadoCivil">Estado civil</label><select id="'+p+'EstadoCivil">'+
+        ESTADOS_CIVIS.map(function(e){return '<option>'+e+'</option>';}).join('')+'</select></div>'+
+      '<div class="f"><label for="'+p+'Cpf">CPF</label><input class="mono" id="'+p+'Cpf" inputmode="numeric" placeholder="000.000.000-00"><span class="hint" id="'+p+'Cpf-hint"></span></div>'+
+      '<div class="f"><label for="'+p+'Rg">RG</label><input class="mono" id="'+p+'Rg" placeholder="MG-00.000.000"></div>'+
+    '</div>'+
+    '<div class="row r211">'+
+      '<div class="f"><label for="'+p+'End">Endereço (rua, nº, bairro)</label><input id="'+p+'End"></div>'+
+      '<div class="f"><label for="'+p+'Cidade">Cidade/UF</label><input id="'+p+'Cidade"></div>'+
+      '<div class="f"><label for="'+p+'Cep">CEP</label><input class="mono" id="'+p+'Cep" inputmode="numeric"></div>'+
+    '</div>'+
+    '<div class="row"><div class="f"><label for="'+p+'Email">E-mail</label><input id="'+p+'Email" type="email"></div></div>'+
+    '<div class="cond" id="'+p+'-conj">'+
+      '<div class="row r211">'+
+        '<div class="f"><label for="'+p+'ConjNome">Cônjuge — nome</label><input id="'+p+'ConjNome"><span class="hint">Assina como cônjuge do fiador (outorga do art. 1.647, III, do Código Civil).</span></div>'+
+        '<div class="f"><label for="'+p+'ConjCpf">CPF do cônjuge</label><input class="mono" id="'+p+'ConjCpf" inputmode="numeric" placeholder="000.000.000-00"><span class="hint" id="'+p+'ConjCpf-hint"></span></div>'+
+        '<div class="f"><label for="'+p+'ConjRg">RG do cônjuge</label><input class="mono" id="'+p+'ConjRg"></div>'+
+      '</div>'+
+    '</div>'+
+  '</div>';
+}
+
+function renderLocatarios(){
+  const box=document.getElementById('locatarios');
+  box.textContent='';
+  const many=locatarios.length>1;
+  locatarios.forEach(function(c,i){
+    const pj=c.tipo==='pj';
+    const P='L'+i+'-';
+    const div=document.createElement('div');
+    div.className='party';
+    let h='<div class="party-top"><span>'+(many?'Locatário '+(i+1):'Locatário(a)')+'</span>'+
+      '<div style="display:flex;gap:8px;align-items:center;margin-left:auto;flex-wrap:wrap">'+
+      '<div class="seg">'+
+        '<button type="button" class="seg-b'+(pj?'':' on')+'" data-tipo="'+i+':pf" aria-pressed="'+(!pj)+'">Pessoa física</button>'+
+        '<button type="button" class="seg-b'+(pj?' on':'')+'" data-tipo="'+i+':pj" aria-pressed="'+pj+'">Pessoa jurídica</button>'+
+      '</div>'+
+      (many?'<button type="button" class="btn-ghost" data-rm-loc="'+i+'">Remover</button>':'')+
+      '</div></div>';
+    if(pj){
+      h+='<div class="row r21">'+
+          '<div class="f"><label for="'+P+'razaoSocial">Razão social</label><input id="'+P+'razaoSocial"></div>'+
+          '<div class="f"><label for="'+P+'cnpj">CNPJ</label><input class="mono" id="'+P+'cnpj" inputmode="numeric" placeholder="00.000.000/0000-00"><span class="hint" id="'+P+'cnpj-hint"></span></div>'+
+        '</div>'+
+        '<div class="row r2">'+
+          '<div class="f"><label for="'+P+'repNome">Representante — nome</label><input id="'+P+'repNome"></div>'+
+          '<div class="f"><label for="'+P+'repCpf">CPF do representante</label><input class="mono" id="'+P+'repCpf" inputmode="numeric" placeholder="000.000.000-00"><span class="hint" id="'+P+'repCpf-hint"></span></div>'+
+        '</div>';
+    }else{
+      h+='<div class="row"><div class="f"><label for="'+P+'nome">Nome completo</label><input id="'+P+'nome"></div></div>'+
+        '<div class="row r2">'+
+          '<div class="f"><label for="'+P+'cpf">CPF</label><input class="mono" id="'+P+'cpf" inputmode="numeric" placeholder="000.000.000-00"><span class="hint" id="'+P+'cpf-hint"></span></div>'+
+          '<div class="f"><label for="'+P+'rg">RG</label><input class="mono" id="'+P+'rg" placeholder="MG-00.000.000 SSP/MG"></div>'+
+        '</div>';
+    }
+    h+='<div class="row r21">'+
+        '<div class="f"><label for="'+P+'endereco">'+(pj?'Sede — endereço':'Endereço')+'</label><input id="'+P+'endereco"></div>'+
+        '<div class="f"><label for="'+P+'bairro">Bairro</label><input id="'+P+'bairro"></div>'+
+      '</div>'+
+      '<div class="row r211">'+
+        '<div class="f"><label for="'+P+'cidade">Cidade</label><input id="'+P+'cidade"></div>'+
+        '<div class="f"><label for="'+P+'uf">Estado</label><input id="'+P+'uf"></div>'+
+        '<div class="f"><label for="'+P+'cep">CEP</label><input class="mono" id="'+P+'cep" inputmode="numeric"></div>'+
+      '</div>'+
+      '<div class="row r3">'+
+        '<div class="f"><label for="'+P+'tel">Telefone</label><input class="mono" id="'+P+'tel"></div>'+
+        '<div class="f"><label for="'+P+'telCom">Tel. comercial</label><input class="mono" id="'+P+'telCom"></div>'+
+        '<div class="f"><label for="'+P+'email">E-mail</label><input id="'+P+'email" type="email"></div>'+
+      '</div>';
+    div.innerHTML=h;
+    box.appendChild(div);
+    CAMPOS_LOC.forEach(function(f){
+      const el=document.getElementById(P+f);
+      if(el) el.value=c[f]||'';
+    });
+    validarDoc(P+'cpf'); validarDoc(P+'cnpj'); validarDoc(P+'repCpf');
+  });
+  const pjs=locatarios.filter(function(c){return c.tipo==='pj';}).length;
+  document.getElementById('cnt-locatarios').textContent='item II · '+
+    locatarios.length+(locatarios.length===1?' parte':' partes')+(pjs?' · '+pjs+' PJ':'');
+}
+
+function renderRecebedores(){
+  const box=document.getElementById('recebedores');
+  box.textContent='';
+  const many=recebedores.length>1;
+  recebedores.forEach(function(c,i){
+    const P='R'+i+'-';
+    const div=document.createElement('div');
+    div.className='party';
+    div.innerHTML='<div class="party-top"><span>'+(many?'Recebedor '+(i+1):'Recebedor')+'</span>'+
+        (many?'<button type="button" class="btn-ghost" data-rm-rec="'+i+'">Remover</button>':'')+'</div>'+
+      '<div class="row r21">'+
+        '<div class="f"><label for="'+P+'nome">Nome do recebedor</label><input id="'+P+'nome"></div>'+
+        '<div class="f"><label for="'+P+'doc">CPF / CNPJ</label><input class="mono" id="'+P+'doc" inputmode="numeric"><span class="hint" id="'+P+'doc-hint"></span></div>'+
+      '</div>'+
+      '<div class="row r4">'+
+        '<div class="f"><label for="'+P+'banco">Banco</label><input id="'+P+'banco"></div>'+
+        '<div class="f"><label for="'+P+'agencia">Agência</label><input class="mono" id="'+P+'agencia"></div>'+
+        '<div class="f"><label for="'+P+'conta">Conta corrente</label><input class="mono" id="'+P+'conta"></div>'+
+        '<div class="f"><label for="'+P+'pct">Percentual (%)</label><input class="mono" id="'+P+'pct" inputmode="decimal" placeholder="100"></div>'+
+      '</div>'+
+      '<div class="row"><div class="f"><label for="'+P+'pix">Chave PIX</label><input class="mono" id="'+P+'pix" placeholder="opcional"></div></div>';
+    box.appendChild(div);
+    CAMPOS_REC.forEach(function(f){
+      const el=document.getElementById(P+f);
+      if(el) el.value=c[f]||'';
+    });
+    validarDoc(P+'doc');
+  });
+}
+
+/* ===================== cálculos do aluguel ===================== */
+function calculos(d){
+  const aluguelC=cent(d.aluguel);
+  const descC=d.temDesc?cent(d.descValor):0;
+  const prazo=intOf(d.prazoMeses);
+  const fim=somaMeses(d.dataInicio,prazo);
+  const recs=(d.recebedores||[]).map(function(r){
+    const pct=numOf(r.pct);
+    return {r:r,pct:pct,valorC:Math.round(aluguelC*pct/100),comDescC:Math.round((aluguelC-descC)*pct/100)};
+  });
+  const somaPct=recs.reduce(function(a,x){return a+x.pct;},0);
+  return {aluguel:aluguelC/100,aluguelC:aluguelC,desc:descC/100,descC:descC,prazo:prazo,fim:fim,
+    recs:recs,somaPct:Math.round(somaPct*100)/100};
+}
+
+function renderTally(d){
+  const k=calculos(d);
+  let html=k.recs.map(function(x,i){
+    return '<div class="tally-row"><span class="lbl">'+escH(ou(x.r.nome,'Recebedor '+(i+1)))+' · '+escH(pctTxt(x.pct))+'</span><span>'+escH(brl(x.valorC/100))+'</span></div>';
+  }).join('');
+  html+='<div class="tally-row sum"><span>Soma dos percentuais</span><span>'+escH(pctTxt(k.somaPct))+'</span></div>';
+  html+='<div class="tally-row"><span class="lbl">Aluguel mensal</span><span>'+escH(brl(k.aluguel))+'</span></div>';
+  if(k.descC>0) html+='<div class="tally-row"><span class="lbl">Aluguel no período de desconto</span><span>'+escH(brl((k.aluguelC-k.descC)/100))+'</span></div>';
+  let flag;
+  if(k.aluguelC<=0) flag=['off','Informe o valor do aluguel para conferir a divisão entre os recebedores.'];
+  else if(Math.abs(k.somaPct-100)<0.001) flag=['ok','Os recebedores somam 100% do aluguel.'];
+  else if(k.somaPct<100) flag=['off','Faltam '+pctTxt(100-k.somaPct)+' do aluguel sem recebedor.'];
+  else flag=['off','Os percentuais passam de 100% em '+pctTxt(k.somaPct-100)+'.'];
+  if(k.descC>=k.aluguelC && k.aluguelC>0) flag=['off','O desconto é igual ou maior que o aluguel.'];
+  html+='<div class="tally-flag '+flag[0]+'"><span class="dot"></span><span>'+escH(flag[1])+'</span></div>';
+  document.getElementById('tally').innerHTML=html;
+}
+
+/* ===================== modelo do documento ===================== */
+/* Termos em negrito no corpo das cláusulas, como no contrato-modelo. */
+const RE_PARTES=/(LOCAT[\u00C1A]RI[OA]\(S\)|LOCAT[\u00C1A]RI[OA]\(A\)|LOCAT[\u00C1A]RI[OA]S?|LOCADOR\(A\)|LOCADORA?|FIADORES)(?![A-Za-z\u00C0-\u00FA])/g;
+function rico(texto){
+  const out=[]; let ult=0, m;
+  RE_PARTES.lastIndex=0;
+  while((m=RE_PARTES.exec(texto))){
+    if(m.index>0 && /[A-Za-z\u00C0-\u00FA]/.test(texto[m.index-1])) continue;
+    if(m.index>ult) out.push({s:texto.slice(ult,m.index)});
+    out.push({s:m[0],b:true});
+    ult=m.index+m[0].length;
+  }
+  if(ult<texto.length) out.push({s:texto.slice(ult)});
+  return out;
+}
+function textoRuns(runs){return runs.map(function(r){return r.s;}).join('');}
+
+function linhasEndereco(c){
+  return [ou(c.endereco,'[endereço]'), [ou(c.bairro,'[bairro]'), tem(c.cep)?'CEP '+c.cep.trim():''].filter(Boolean).join(' — '),
+    [ou(c.cidade,'[cidade]'),ou(c.uf,'[UF]')].join(' — ')];
+}
+function nomeLocatario(c){return c.tipo==='pj'?ou(c.razaoSocial,'[razão social]'):ou(c.nome,'[nome completo]');}
+
+function qualificaFiador(d,n){
+  const p='f'+n;
+  let s=ou(d[p+'Nome'],'[nome do fiador '+n+']').toUpperCase();
+  const q=[];
+  if(tem(d[p+'Nac'])) q.push(d[p+'Nac'].trim());
+  if(tem(d[p+'EstadoCivil'])) q.push(d[p+'EstadoCivil'].trim());
+  if(q.length) s+=', '+q.join(', ');
+  if(tem(d[p+'Rg'])) s+=', portador(a) do RG nº '+d[p+'Rg'].trim();
+  s+=', inscrito(a) no CPF sob o nº '+ou(d[p+'Cpf'],'[CPF]');
+  const end=ou(d[p+'End'],'[endereço]')+', na cidade de '+ou(d[p+'Cidade'],'[cidade/UF]')+
+    (tem(d[p+'Cep'])?', CEP '+d[p+'Cep'].trim():'');
+  if(temConjuge(d[p+'EstadoCivil']) && tem(d[p+'ConjNome'])){
+    s+=', e seu cônjuge '+d[p+'ConjNome'].trim().toUpperCase()+
+      (tem(d[p+'ConjRg'])?', portador(a) do RG nº '+d[p+'ConjRg'].trim():'')+
+      ', inscrito(a) no CPF sob o nº '+ou(d[p+'ConjCpf'],'[CPF]')+
+      ', ambos residentes e domiciliados na '+end;
+  }else{
+    s+=', residente e domiciliado(a) na '+end;
+  }
+  if(tem(d[p+'Email'])) s+=', com endereço eletrônico '+d[p+'Email'].trim();
+  return s;
+}
+
+function construirDoc(d){
+  const B=[];
+  const k=calculos(d);
+  const ls=d.locatarios||[];
+  const defreitas=d.locadorTipo!=='outro';
+  const fiadores=d.temF2?[1,2]:[1];
+  const inicio=d.dataInicio?dataCurta(d.dataInicio):'[dd/mm/aaaa]';
+  const fim=k.fim?dataCurta(k.fim):'[dd/mm/aaaa]';
+  const prazoTxt=k.prazo>0?qtdExt(k.prazo)+' meses':'[prazo] meses';
+  const dataBase=d.dataBase||d.dataInicio;
+
+  B.push({t:'title',text:'CONTRATO DE LOCAÇÃO DE IMÓVEL '+(d.finalidade==='res'?'RESIDENCIAL':'NÃO RESIDENCIAL')});
+  const sub=tem(d.apelido)?d.apelido.trim()+(tem(d.imEnd)?' — '+d.imEnd.trim():''):(tem(d.imEnd)?d.imEnd.trim():'');
+  if(sub) B.push({t:'subtitle',text:sub});
+  B.push({t:'qtitle',text:'Quadro resumo'});
+
+  const Q=[];
+  const sec=function(num,text){Q.push({k:'sec',num:num,text:text});};
+  const kv=function(l,v){Q.push({k:'kv',l:l,v:v});};
+  const full=function(v){Q.push({k:'full',v:v});};
+
+  /* I — locador */
+  sec('I.','LOCADOR, daqui em diante chamada de “LOCADOR”');
+  let qual;
+  if(defreitas){
+    qual=DEFREITAS.razao+', pessoa jurídica de direito privado, inscrita no CNPJ sob o nº '+DEFREITAS.cnpj+
+      ', com sede na '+DEFREITAS.sede+', neste ato representada por '+ou(d.repNome,'[nome do representante]');
+    if(tem(d.repCargo)) qual+=', '+d.repCargo.trim();
+    qual+=', inscrito(a) no CPF sob o nº '+ou(d.repCpf,'[CPF]')+'.';
+  }else{
+    qual=ou(d.locQualif,'[qualificação completa do locador]');
+  }
+  full(qual);
+  const notAt=ou(d.notAt, defreitas?ou(d.repNome,'[nome]'):ou(d.locNome,'[nome]'));
+  const notEnd=ou(d.notEnd, defreitas?DEFREITAS.sede:'[endereço]');
+  kv('Dados para notificação',['At.: '+notAt,'End.: '+notEnd,
+    'Tel.: '+ou(d.notTel,'[telefone]'),'E-mail: '+ou(d.notEmail,'[e-mail]')].join('\n'));
+  kv('Dados do setor jurídico',[ou(d.jurNome,'[advogado(a) — OAB]'),ou(d.jurEnd,'[endereço]'),
+    'Telefone: '+ou(d.jurTel,'[telefone]'),'E-mail: '+ou(d.jurEmail,'[e-mail]')].join('\n'));
+
+  /* II — locatário(s) */
+  sec('II.','LOCATÁRIO, assim definido, daqui em diante, independentemente de gênero e número de locadores');
+  ls.forEach(function(c,i){
+    const pre=ls.length>1?'Locatário '+(i+1)+' — ':'';
+    const el=linhasEndereco(c);
+    if(c.tipo==='pj'){
+      kv(pre+'Razão social',ou(c.razaoSocial,'[razão social]').toUpperCase());
+      kv('CPF / CNPJ nº',ou(c.cnpj,'[CNPJ]'));
+      kv('Representante',ou(c.repNome,'[nome]')+' — CPF '+ou(c.repCpf,'[CPF]'));
+    }else{
+      kv(pre+'Nome',ou(c.nome,'[nome completo]').toUpperCase());
+    }
+    kv('Endereço',el[0]);
+    kv('Bairro / CEP',el[1]);
+    kv('Cidade / Estado',el[2]);
+    if(c.tipo!=='pj'){
+      kv('RG nº',ou(c.rg,'[RG]'));
+      kv('CPF / CNPJ nº',ou(c.cpf,'[CPF]'));
+    }
+    const tels=[tem(c.tel)?c.tel.trim():'', tem(c.telCom)?'Com.: '+c.telCom.trim():''].filter(Boolean).join(' — ');
+    kv('Tel.',tels||'[telefone]');
+    if(tem(c.email)) kv('E-mail',c.email.trim());
+  });
+
+  /* II.I — fiadores */
+  sec('II.I','FIADORES, assim definido, daqui em diante, independentemente de gênero e número de locadores');
+  fiadores.forEach(function(n){
+    const p='f'+n;
+    kv('Nome Fiador '+n,ou(d[p+'Nome'],'[nome]').toUpperCase()+' — CPF '+ou(d[p+'Cpf'],'[CPF]'));
+    kv('Estado civil',ou(d[p+'EstadoCivil'],'[estado civil]')+(tem(d[p+'Rg'])?' — RG '+d[p+'Rg'].trim():''));
+    if(temConjuge(d[p+'EstadoCivil'])){
+      kv('Nome do cônjuge',ou(d[p+'ConjNome'],'[nome]').toUpperCase()+' — CPF '+ou(d[p+'ConjCpf'],'[CPF]'));
+    }
+    kv('Endereço',ou(d[p+'End'],'[endereço]'));
+    kv('Cidade',ou(d[p+'Cidade'],'[cidade/UF]')+(tem(d[p+'Cep'])?' — CEP '+d[p+'Cep'].trim():''));
+  });
+
+  /* III — imóvel */
+  sec('III.','IMÓVEL, daqui em diante chamado de “Imóvel”');
+  kv('Endereço',ou(d.imEnd,'[endereço]'));
+  kv('Bairro / CEP',ou(d.imBairro,'[bairro]')+(tem(d.imCep)?' — CEP '+d.imCep.trim():''));
+  kv('Cidade / Estado',ou(d.imCidade,'[cidade]')+' — '+ou(d.imUf,'[UF]'));
+  kv('Matrículas / Cartório',ou(d.imMatricula,'[matrícula]')+' — '+ou(d.imCartorio,'[cartório]'));
+  kv('Descrição conforme matrícula',ou(d.imDesc,'[descrição conforme matrícula]'));
+  kv('Número IPTU',ou(d.imIptu,'[número]'));
+  kv('Localização',ou(d.imLocal,'Zona Urbana'));
+  kv('Nº do contribuinte',ou(d.imContrib,'[número]'));
+  kv('Espaço alugado (m²)',tem(d.imArea)?d.imArea.trim().replace(/\s*m²$/i,'')+' m²':'[área] m²');
+
+  /* IV — aluguel */
+  sec('IV.','ALUGUEL');
+  kv('Periodicidade','Mensal');
+  kv('Valor',k.aluguelC>0?valorExt(k.aluguel):'[valor]');
+  kv('Reajuste','Anual');
+  kv('Índice',INDICE);
+  kv('Prazo',prazoTxt);
+  kv('Período',inicio+' a '+fim);
+  kv('Carência',intOf(d.carencia)>0?qtdExt(intOf(d.carencia))+' dias':'Não há');
+  kv('Descontos',k.descC>0?ou(d.descRotulo,'Conforme observação abaixo'):'Não há');
+  kv('Data 1º venc.',d.dataVenc1?dataCurta(d.dataVenc1):'[dd/mm/aaaa]');
+  kv('Data base',dataBase?dataCurta(dataBase):'[dd/mm/aaaa]');
+  if(k.descC>0){
+    full('Obs: Será concedido um desconto no valor do aluguel de '+valorExt(k.desc)+
+      ', nos vencimentos previstos no período de '+(d.descDe?dataCurta(d.descDe):'[dd/mm/aaaa]')+
+      ' a '+(d.descAte?dataCurta(d.descAte):'[dd/mm/aaaa]')+'.');
+  }
+
+  /* V — forma de pagamento */
+  sec('V.','FORMA DE PAGAMENTO');
+  kv('Forma de pagamento',ou(d.formaPag,'Depósito Bancário'));
+  const dia=diaDoMes(d.dataVenc1);
+  kv('Data',dia?'Todo dia '+dia+' de cada mês':'[dia] de cada mês');
+  full('Os valores serão pagos diretamente em contas abaixo:');
+  k.recs.forEach(function(x){
+    const r=x.r;
+    kv('Recebedor',ou(r.nome,'[nome do recebedor]').toUpperCase());
+    kv('Banco / Agência',ou(r.banco,'[banco]')+' — Agência '+ou(r.agencia,'[agência]'));
+    kv('Conta corrente',ou(r.conta,'[conta]'));
+    kv('CPF / CNPJ',ou(r.doc,'[CPF/CNPJ]'));
+    if(tem(r.pix)) kv('Chave PIX',r.pix.trim());
+    let val=brl(x.valorC/100)+' — '+pctTxt(x.pct)+' do aluguel';
+    if(k.descC>0) val+='; '+brl(x.comDescC/100)+' nos vencimentos com desconto';
+    kv('Valor / Percentual',val);
+  });
+  const multa=numOf(d.multa)||20;
+  kv('Penalidades pelo atraso','Multa moratória de '+pctTxt(multa)+' ('+extensoInt(Math.round(multa))+' por cento) e juros de mora de 1% (um por cento) ao mês, calculados pro rata die.');
+
+  /* VI — demais condições */
+  sec('VI.','DEMAIS CONDIÇÕES DA LOCAÇÃO');
+  kv('Finalidade',(d.finalidade==='res'?'Residencial':'Não residencial')+', nos termos da Lei Federal nº 8.245/91');
+  kv('Prazo do contrato',prazoTxt+', com início '+inicio+' e fim '+fim);
+  kv('Renovações','Findando no prazo acima determinado, independentemente de qualquer aviso, notificação ou interpelação judicial ou extrajudicial, não se havendo como presumida falta de oposição do LOCADOR(A) o fato de findo o prazo, continuar o LOCATÁRIO(A) na posse do imóvel alugado, por qualquer motivo.');
+
+  /* VII — anexos */
+  sec('VII.','RELAÇÃO DE ANEXOS');
+  kv('Anexo A',ou(d.anexoA,'—'));
+  kv('Anexo B',ou(d.anexoB,'—'));
+
+  /* VIII — local e data */
+  sec('VIII.','LOCAL E DATA DA ASSINATURA DO CONTRATO');
+  kv('Local e data',ou(d.cidade,'[cidade]')+', '+(d.dataAss?dataExtensa(d.dataAss):'[data]'));
+
+  B.push({t:'quadro',rows:Q});
+
+  /* ---------- cláusulas: texto do contrato-modelo ---------- */
+  B.push({t:'p',runs:rico('Pelo presente, as partes identificadas nos itens I e II do Quadro Resumo ajustam este Contrato de Locação de Imóvel (“Contrato”), tendo por objeto a locação do Espaço Alugado descrito nos Anexos A e B, nos termos da Lei Federal nº 8.245/91, conforme as cláusulas e condições adiante.')});
+
+  const C=function(n,text){B.push({t:'h',num:n+'.',text:text});};
+  const I=function(num,lead,text,sub){
+    const runs=[{s:num+' ',b:true}];
+    if(lead) runs.push({s:lead+' ',b:true});
+    B.push({t:'item',sub:!!sub,runs:runs.concat(rico(text))});
+  };
+
+  C(1,'Espaço Alugado e Finalidade');
+  I('1.1.','Espaço Alugado.','O LOCATÁRIO tem a posse livre e desembaraçada do Espaço Alugado, que lhe foi entregue em boas condições de uso, assim como os acessos ao Espaço Alugado.');
+  I('1.2.','Destinação do Imóvel.','O imóvel será utilizado para a atividade de '+ou(d.atividade,'[atividade]')+', pelo LOCATÁRIO.');
+  I('1.3.','Obras e Benfeitorias.','Fica expressamente vetado o LOCATÁRIO, sob pena de rescisão contratual, fazer quaisquer benfeitorias ou alterações na estrutura do imóvel locado, sem o prévio consentimento escrito da LOCADOR. O LOCATÁRIO renuncia ao direito de retenção e de indenização pela benfeitoria realizada, seja útil, necessária ou voluptuária. Todas e quaisquer benfeitorias edificadas no imóvel locado, passarão a incorporar o imóvel.');
+  I('1.4.','','Este contrato não poderá ser sublocado, transferido e nem cedido à terceiro, no todo ou em parte, sem o consentimento expresso e por escrito da LOCADOR, salvo quando a sublocatária possuir pelo menos um sócio em comum no quadro societário da LOCATÁRIA.');
+  I('1.5.','','Em caso de eventuais autorizações de benfeitorias o LOCATÁRIO arcará com todos os custos relativos à execução das obras e acabamento do espaço comercial objeto deste contrato, devendo para tanto apresentar projeto, responsável técnico e bem como responder por todas as obrigações legais e eventuais danos causados no imóvel ou contra terceiros em decorrência das benfeitorias realizadas.');
+
+  C(2,'Vigência e Condição Resolutiva');
+  I('2.1.','Prazo de Vigência.','O prazo de vigência do presente Contrato é aquele descrito no item VI do Quadro Resumo, e se findará no prazo acima determinado, independentemente de qualquer aviso, notificação ou interpelação judicial ou extrajudicial, não se havendo como presumida falta de oposição do LOCADOR(A) o fato de findo o prazo, continuar o LOCATÁRIO(A) na posse do imóvel alugado, por qualquer motivo.');
+
+  C(3,'Aluguel');
+  I('3.1.','Valor e Reajuste.','Conforme previsto no item IV do Quadro Resumo, a LOCATÁRIO pagará ao(s) recebedor(es) o aluguel, observadas as deduções previstas em lei, que será reajustado anualmente, tomando-se como índice-base o divulgado no mês anterior ao do presente Contrato e como índice-reajuste o divulgado no mês anterior ao do pagamento. Será utilizado como índice de reajuste, o IGPM/FGV ou IPCA quando positivo, e em caso de índice negativo não haverá nenhum reajuste ou redução no valor do aluguel. A data base para aplicação do reajuste aqui previsto sempre será o primeiro dia do mês, tendo como marco inicial o dia '+(dataBase?dataCurta(dataBase):'[dd/mm/aaaa]')+'.');
+  I('3.1.1.','','O reajuste poderá ainda, de comum acordo entre as partes, ser praticado à correção do aluguel pelo valor de mercado no vencimento do contrato ou até mesmo durante a vigência do mesmo, nos termos do que prescreve o art. 18 da Lei 8.245/91.',true);
+  I('3.2.','Forma de Pagamento.','O pagamento do aluguel será efetuado na data e na forma previstas no item V do Quadro Resumo do mês subsequente ao vencido, valendo o comprovante de depósito como recibo. Qualquer alteração em relação aos dados bancários deverá ser informada por escrito ao LOCATÁRIO, com, no mínimo, 30 (trinta) dias de antecedência da mudança ou então tal valor será depositado na conta corrente indicada no Quadro Resumo.');
+  I('3.3.','Multa Moratória.','Caso o pagamento não ocorra até a data estabelecida acima, o LOCATÁRIO ficará sujeita à multa estabelecida no item V do Quadro Resumo. O LOCATÁRIO ainda não podendo eximir-se desta pena contratual sob qualquer pretexto, nos termos do disposto no artigo 416 do Código Civil. Nesta hipótese, serão ainda devidos pelo LOCATÁRIO as despesas decorrentes de honorários advocatícios de 10% (dez por cento) na hipótese de cobrança administrativa e 20% (vinte por cento) após ajuizamento da ação conforme preceitua o Estatuto da OAB/MG, devidos ao profissional contratado para tanto, mais correção monetária cumulativamente até a efetiva liquidação. Caso o atraso exceda a 30 (trinta) dias, incidirão ainda, juros de 01 (um) por cento ao mês. O atraso no pagamento do aluguel por três meses consecutivos torna rescindido o presente contrato de pleno direito.');
+
+  C(4,'Encargos');
+  I('4.1.','Pagamento de Encargos.','O LOCATÁRIO deverá pagar todos os encargos, tributos e seguros incidentes proporcional a área do Imóvel locado, obrigando-se a apresentar ao LOCADOR os respectivos comprovantes em até 10 (dez) dias da solicitação da LOCADOR, sob pena de rescisão contratual.');
+  I('4.2.','Pagamento de Despesas e Encargos.','O LOCATÁRIO pagará nas épocas próprias, as taxas de água, luz, IPTU, taxa de lixo e esgoto, seguro e taxa contra incêndio caso haja, bem como as despesas de condomínio, se for o caso, além de todo e futuro imposto que venha a incidir sobre o imóvel, devendo comprovar anualmente o seu pagamento junto o LOCADOR quando exigível por esta. A falta de pagamento de qualquer um desses encargos ensejará a recusa no recebimento do aluguel, incorrendo o LOCATÁRIO em multa moratória. Cabe, outrossim, a LOCATÁRIA satisfazer e cumprir por sua conta as exigências sanitárias ou de higiene, competindo a LOCATÁRIA fazer o pedido de ligação de luz, junto à Concessionária, pagas as respectivas despesas e promover o desligamento e quitação da última conta na devolução do imóvel.');
+
+  C(5,'Responsabilidades, Indenizações e Penalidades');
+  I('5.1.','Responsabilidade do LOCATÁRIO.','O LOCATÁRIO concorda em indenizar e isentar o LOCADOR por danos diretos e indiretos, causados a terceiros em decorrência da instalação das Estruturas e no desenvolvimento de suas atividades.');
+  I('5.2.','Multa por Quebra Contratual.','O presente contrato poderá ser rescindido, em qualquer tempo, desde que haja recíproca anuência das partes.');
+  I('5.3.','','Afora a exceção prevista acima, antes de vencido o prazo da locação, não poderá o LOCATÁRIO devolver ou desocupar o imóvel locado, senão pagando ao LOCADOR uma multa compensatória equivalente a 90(noventa) dias de aluguel, ou seja, 3(três) meses, na forma do artigo 571 do Código Civil, ficando também neste caso resguardado direito de retenção pelo LOCADOR toda benfeitoria realizada, seja útil, necessária ou voluptuária, sem qualquer tipo de indenização devido ao LOCATÁRIO, assim todas e quaisquer benfeitorias edificadas no imóvel locado, passarão a incorporar o imóvel.');
+  I('5.4.','','Em caso do LOCADOR optar pela retomada do imóvel com a rescisão antecipada do imóvel, esta será obrigada a indenizar o LOCATÁRIO pelas eventuais benfeitorias que foram realizadas no imóvel, desde que tenha sido devidamente autorizadas pelo LOCADOR.');
+  I('5.5.','','O LOCATÁRIO fica obrigado a satisfazer a todas as exigências legais dos Poderes Públicos a que der causa.');
+
+  C(6,'Notificações');
+  I('6.1.','Modalidades de Notificação.','As partes ajustam que quaisquer citações, intimações ou notificações, relativas ao presente Contrato, poderão ser efetivadas nas modalidades previstas no inciso IV do artigo 58 da Lei Federal nº 8.245/91, sendo que, se por correspondência, deverão ser encaminhadas para os endereços constantes nos itens I e II do Quadro Resumo.');
+
+  C(7,'Hipóteses de Rescisão');
+  I('7.1.','Incorporação ao Imóvel.','Se o LOCATÁRIO efetuar modificações ou benfeitorias sem prévia autorização por escrito pelo LOCADOR, as modificações realizadas ficarão incorporadas ao Imóvel, não cabendo às partes direito à indenização.');
+  I('7.2.','','A rescisão do presente contrato não exclui o direito de o LOCADOR exigir do LOCATÁRIO, a qualquer tempo, o pagamento de qualquer débito ou reparação de qualquer dano verificado até a data da rescisão. Ademais, a aplicação das penalidades ora estabelecidas não prejudica as demais sanções previstas nos instrumentos que integram o presente Contrato de Locação.');
+  I('7.3.','','O LOCATÁRIO fica obrigado a contratar seguro contra incêndio tendo como objeto o imóvel locado, devendo comprovar anualmente ao LOCADOR, sob pena de infração contratual.');
+  I('7.4.','','No caso de incêndio ou qualquer sinistro que inutilize o uso normal do imóvel, fica o presente contrato rescindido de pleno direito, independentemente de indenização, no entanto, responderá a LOCATÁRIA por incêndio ocorrido no imóvel, se não provar caso fortuito ou força maior, vício de construção ou propagação de fogo originado em outro prédio.');
+
+  C(8,'Direito de Preferência e Cláusula de Vigência');
+  I('8.1.','Preferência.','Fica garantido o direito de preferência da LOCATÁRIO, nos casos previstos nos artigos 27 e seguintes, da lei n° 8.245/91.');
+
+  C(9,'Dos Fiadores');
+  B.push({t:'p',runs:rico('Como fiadores e principal pagadores, assumindo com a LOCATÁRIA o compromisso de bem e fielmente cumprirem o presente contrato, em todas as suas cláusulas e condições, assinam este pacto '+
+    fiadores.map(function(n){return qualificaFiador(d,n);}).join('; e ')+'.')});
+
+  C(10,'Disposições Finais');
+  I('10.1.','Aditamentos.','Qualquer alteração ou aditamento aos termos do presente Contrato somente obrigará as partes se feita por escrito e assinada conjuntamente.');
+  I('10.2.','Ausência de Corretagem.','O LOCADOR declara para os devidos fins que não contratou corretor imobiliário para a negociação do presente Contrato.');
+  I('10.3.','Retenção de Imposto.','Caso haja retenção de imposto de renda na fonte em virtude deste contrato, o LOCATÁRIO fica obrigada a enviar o LOCADOR ou a quem este indicar, e sempre no mês subsequente do período retido, o(s) comprovante(s) de rendimento(s) pago(s) ou creditados, em nome da(s) recebedora(s).');
+  I('10.4.','Título Executivo.','As partes declaram, para todos os fins de direito, que este Contrato constitui título executivo extrajudicial e comporta execução específica de todas e quaisquer obrigações aqui assumidas, sem prejuízo de a parte inocente poder buscar, alternativa ou cumulativamente, a cobrança das penalidades devidas e indenização por perdas e danos.');
+  I('10.5.','Poderes.','As partes declaram que tem plenos poderes para firmar o presente Contrato, bem como obtiveram todas as autorizações necessárias para sua celebração, sendo certo que a sua assinatura não representa violação à legislação ou contrato.');
+  I('10.6.','Vistorias.','O LOCADOR poderá vistoriar o Espaço Alugado na presença de representante da LOCATÁRIA, em dia e horário comercial, previamente agendado com a LOCATÁRIA com antecedência mínima de 5 (cinco) dias úteis.');
+  I('10.7.','Vinculação de Sucessores.','As cláusulas e condições aqui contidas e obrigam os herdeiros e sucessores das partes, a qualquer título.');
+  I('10.8.','Independência.','Na hipótese de inaplicabilidade ou invalidação de alguma das cláusulas deste Contrato, se assim declarada judicialmente, não restarão prejudicadas a validade e a regular aplicação das demais.');
+  I('10.9.','Ausência de Novação.','A tolerância de uma parte não deverá ser entendida como uma novação de qualquer disposição do presente Contrato.');
+  I('10.10.','Prevalência.','As Partes declaram que o presente instrumento se sobrepõe a qualquer outro contrato, escrito ou verbal, anterior a esta data.');
+  I('10.11.','Interpretação.','Os títulos das cláusulas e itens deste Contrato servem apenas para referência e conveniência das partes e não definem, modificam ou descrevem o âmbito ou intenção de qualquer um dos termos deste Contrato.');
+
+  /* ---------- foro, fecho e assinaturas: bloco indivisível ---------- */
+  const iJunto=B.length;
+  B.push({t:'p',runs:[{s:'Fica eleito o Foro desta comarca de '},{s:FORO,b:true},
+    {s:', para qualquer ação ou procedimento judicial resultante de obrigações ou direitos decorrentes do presente Contrato.'}]});
+  B.push({t:'p',runs:rico('E por estarem as partes justas e contratadas e por considerarem o negócio fechado, assinam o presente instrumento em 02 (duas) de igual teor e forma.')});
+  B.push({t:'city',text:ou(d.cidade,'[cidade]')+', '+(d.dataAss?dataCurta(d.dataAss):'[dd/mm/aaaa]')+'.'});
+
+  B.push({t:'label',text:'Locador:'});
+  if(defreitas){
+    B.push({t:'sig',role:'Locador',name:DEFREITAS.razaoTitulo,
+      sub:'p. '+ou(d.repNome,'[representante]')+(tem(d.repCargo)?' — '+d.repCargo.trim():'')});
+  }else{
+    B.push({t:'sig',role:'Locador',name:ou(d.locNome,'[nome]'),sub:tem(d.locAssSub)?d.locAssSub.trim():''});
+  }
+  B.push({t:'label',text:'Locatário(s) e fiadores:'});
+  ls.forEach(function(c,i){
+    B.push({t:'sig',role:ls.length>1?'Locatário '+(i+1):'Locatário',
+      name:nomeLocatario(c).toUpperCase()+' — '+(c.tipo==='pj'?'CNPJ '+ou(c.cnpj,'[CNPJ]'):'CPF '+ou(c.cpf,'[CPF]')),
+      sub:c.tipo==='pj'&&tem(c.repNome)?'p. '+c.repNome.trim():''});
+  });
+  fiadores.forEach(function(n){
+    const p='f'+n;
+    B.push({t:'sig',role:'Fiador '+n,name:ou(d[p+'Nome'],'[nome]').toUpperCase()+' — CPF '+ou(d[p+'Cpf'],'[CPF]')});
+    if(temConjuge(d[p+'EstadoCivil'])){
+      B.push({t:'sig',role:'Cônjuge — Fiador '+n,name:ou(d[p+'ConjNome'],'[nome]').toUpperCase()+' — CPF '+ou(d[p+'ConjCpf'],'[CPF]')});
+    }
+  });
+  B.push({t:'label',text:'Testemunhas:'});
+  [1,2].forEach(function(n){
+    const p='t'+n;
+    B.push({t:'sig',role:'Testemunha '+n,name:'Nome: '+ou(d[p+'Nome'],''),
+      sub:'End.: '+ou(d[p+'End'],'')+'   ·   RG: '+ou(d[p+'Rg'],'')});
+  });
+  /* Do foro até a última testemunha nada pode ser separado por quebra de
+     página: assinaturas em folhas distintas obrigam a reimprimir a via. */
+  for(let i=iJunto;i<B.length;i++) B[i].junto=true;
+
+  /* ---------- anexos ---------- */
+  if(d.incAnexos){
+    B.push({t:'break'});
+    B.push({t:'anexo',text:'ANEXO A',sub:'Matrícula do imóvel'});
+    B.push({t:'break'});
+    B.push({t:'anexo',text:'ANEXO B',sub:'Memorial descritivo e croqui do espaço alugado e estruturas'});
+    B.push({t:'label',text:'Memorial descritivo:'});
+    if(tem(d.memorial)){
+      String(d.memorial).split(/\n+/).map(function(l){return l.trim();}).filter(Boolean)
+        .forEach(function(l){B.push({t:'p',runs:[{s:l}]});});
+    }else{
+      B.push({t:'frame',h:60});
+    }
+    B.push({t:'label',text:'Croqui:'});
+    B.push({t:'frame',h:tem(d.memorial)?120:95});
+  }
+  return B;
+}
+
+/* ===================== renderizador: pré-visualização ===================== */
+function runsHTML(runs){
+  return runs.map(function(r){return r.b?'<b>'+escH(r.s)+'</b>':escH(r.s);}).join('');
+}
+function multilinha(s){return escH(s).replace(/\n/g,'<br>');}
+
+function renderMinuta(d,blocks){
+  const num=ou(d.num,'[000/2026]');
+  let h='<div class="m-head"><div><div class="m-brand">DEFREITAS</div><div class="m-brand-sub">Imóveis Próprios</div></div>'+
+        '<div><div class="m-kind">Contrato de locação</div><div class="m-num">Nº '+escH(num)+'</div></div></div>';
+  blocks.forEach(function(b){
+    if(b.t==='title') h+='<h3 class="m-title">'+escH(b.text)+'</h3>';
+    else if(b.t==='subtitle') h+='<p class="m-subtitle">'+escH(b.text)+'</p>';
+    else if(b.t==='qtitle') h+='<div class="m-qtitle">'+escH(b.text)+'</div>';
+    else if(b.t==='quadro'){
+      h+='<table class="m-quadro"><tbody>'+b.rows.map(function(r){
+        if(r.k==='sec') return '<tr class="sec"><td colspan="2"><span class="qn">'+escH(r.num)+'</span>'+escH(r.text)+'</td></tr>';
+        if(r.k==='full') return '<tr><td class="full" colspan="2">'+multilinha(r.v)+'</td></tr>';
+        return '<tr><td class="l">'+escH(r.l)+'</td><td class="v">'+multilinha(r.v)+'</td></tr>';
+      }).join('')+'</tbody></table>';
+    }
+    else if(b.t==='h') h+='<div class="m-h"><span class="n">'+escH(b.num)+'</span>'+escH(b.text)+'</div>';
+    else if(b.t==='item') h+='<p class="m-it'+(b.sub?' sub':'')+'">'+runsHTML(b.runs)+'</p>';
+    else if(b.t==='p') h+='<p class="m-p">'+runsHTML(b.runs)+'</p>';
+    else if(b.t==='city') h+='<p class="m-city">'+escH(b.text)+'</p>';
+    else if(b.t==='label') h+='<div class="m-lbl">'+escH(b.text)+'</div>';
+    else if(b.t==='sig'){
+      h+='<div class="m-sig"><div class="m-sig-line"><div class="m-sig-role">'+escH(b.role)+'</div>'+
+         '<div class="m-sig-name">'+escH(b.name)+'</div>'+
+         (b.sub?'<div class="m-sig-sub">'+escH(b.sub)+'</div>':'')+'</div></div>';
+    }
+    else if(b.t==='break') h+='<hr class="m-break">';
+    else if(b.t==='anexo') h+='<div class="m-anexo">'+escH(b.text)+'</div><div class="m-anexo-sub">'+escH(b.sub)+'</div>';
+    else if(b.t==='frame') h+='<div class="m-frame" style="height:'+Math.round(b.h*1.3)+'px"></div>';
+  });
+  h+='<div class="m-foot"><span>DEFREITAS IMÓVEIS PRÓPRIOS</span><span>CONTRATO DE LOCAÇÃO Nº '+escH(num)+'</span></div>';
+  document.getElementById('minuta').innerHTML=h;
+}
+
+/* ===================== renderizador: PDF ===================== */
+const PG={w:210,h:297,ml:20,mr:20,top:30,bot:270};
+const CW=PG.w-PG.ml-PG.mr;
+const COR={marrom:[58,42,31],rotulo:[139,100,73],laranja:[193,98,45],texto:[43,39,35],suave:[85,80,74],claro:[139,132,121],fio:[217,211,200]};
+/* Métricas dos blocos de texto corrido: tamanho, entrelinha, recuo e respiro. */
+const MET={
+  p:{size:9.5,lh:5.0,ind:0,after:3.2,cor:COR.texto},
+  item:{size:9.3,lh:4.85,ind:0,after:2.6,cor:COR.suave},
+  sub:{size:9.1,lh:4.8,ind:8,after:2.6,cor:COR.suave}
+};
+
+/* Fontes do design system embutidas no PDF (SIL Open Font License), servidas
+   em fontes/ ao lado desta página. Com elas o PDF sai na tipografia da marca
+   e a largura medida é a largura desenhada em qualquer leitor; sem elas
+   (arquivo aberto localmente), cai nas fontes-padrão do PDF. */
+const FONTES=[
+  {arq:'WorkSans-Regular.ttf',fam:'WorkSans',est:'normal'},
+  {arq:'WorkSans-SemiBold.ttf',fam:'WorkSans',est:'bold'},
+  {arq:'SourceSerif4-Bold.ttf',fam:'SourceSerif',est:'bold'},
+  {arq:'IBMPlexMono-Regular.ttf',fam:'PlexMono',est:'normal'},
+  {arq:'IBMPlexMono-Medium.ttf',fam:'PlexMono',est:'bold'}
+];
+let fontesB64=null;
+async function carregarFontes(){
+  if(fontesB64!==null) return fontesB64;
+  try{
+    fontesB64=await Promise.all(FONTES.map(async function(f){
+      const r=await fetch('fontes/'+f.arq);
+      if(!r.ok) throw new Error(f.arq);
+      const a=new Uint8Array(await r.arrayBuffer());
+      let s=''; for(let i=0;i<a.length;i+=0x8000) s+=String.fromCharCode.apply(null,a.subarray(i,i+0x8000));
+      return btoa(s);
+    }));
+  }catch(e){fontesB64=false;}
+  return fontesB64;
+}
+let F={sans:'helvetica',serif:'times',mono:'courier',marca:false};
+/* Fontes-padrão do PDF não têm aspas tipográficas fora do WinAnsi; trocas seguras. */
+function pdfTxt(s){
+  s=String(s);
+  return F.marca?s:s.replace(/[‘’]/g,"'").replace(/[“”]/g,'"').replace(/…/g,'...');
+}
+
+async function gerarPDF(d,blocks){
+  const jsPDF=window.jspdf.jsPDF;
+  const doc=new jsPDF({unit:'mm',format:'a4',orientation:'portrait'});
+  const b64=await carregarFontes();
+  if(b64){
+    FONTES.forEach(function(f,i){doc.addFileToVFS(f.arq,b64[i]); doc.addFont(f.arq,f.fam,f.est);});
+    F={sans:'WorkSans',serif:'SourceSerif',mono:'PlexMono',marca:true};
+  }else{
+    F={sans:'helvetica',serif:'times',mono:'courier',marca:false};
+  }
+  const num=ou(d.num,'000/2026');
+  let y=PG.top;
+
+  /* align:'right' ignora o charSpace: o texto espaçado vazaria a margem. */
+  function aDireita(t,yy,cs){
+    const w=doc.getTextWidth(t)+cs*(t.length-1);
+    doc.text(t,PG.w-PG.mr-w,yy,{charSpace:cs});
+  }
+  function cabecalho(){
+    doc.setFont(F.serif,'bold'); doc.setFontSize(13); doc.setTextColor.apply(doc,COR.marrom);
+    doc.text('DEFREITAS',PG.ml,17);
+    doc.setFont(F.mono,'normal'); doc.setFontSize(6); doc.setTextColor.apply(doc,COR.rotulo);
+    doc.text(F.marca?'IMÓVEIS PRÓPRIOS':'IMOVEIS PROPRIOS',PG.ml,21,{charSpace:0.9});
+    doc.setFontSize(7.5); doc.setTextColor.apply(doc,COR.laranja);
+    aDireita(F.marca?'CONTRATO DE LOCAÇÃO':'CONTRATO DE LOCACAO',17,0.6);
+    doc.setTextColor.apply(doc,COR.suave); doc.setFontSize(8);
+    doc.text((F.marca?'Nº ':'No ')+pdfTxt(num),PG.w-PG.mr,21,{align:'right'});
+    doc.setDrawColor.apply(doc,COR.marrom); doc.setLineWidth(0.5);
+    doc.line(PG.ml,24,PG.w-PG.mr,24);
+  }
+  function novaPagina(){doc.addPage(); cabecalho(); y=PG.top;}
+  function espaco(h){if(y+h>PG.bot) novaPagina();}
+
+  /* Texto com trechos em negrito, quebrado e justificado à mão: o jsPDF não
+     mistura pesos numa mesma linha justificada. */
+  function palavras(runs){
+    const ws=[]; let atual=null;
+    runs.forEach(function(r){
+      pdfTxt(r.s).split(/(\s+)/).forEach(function(tok){
+        if(tok==='') return;
+        if(/^\s+$/.test(tok)){atual=null; return;}
+        if(!atual){atual={parts:[],w:0}; ws.push(atual);}
+        atual.parts.push({s:tok,b:!!r.b});
+      });
+    });
+    return ws;
+  }
+  function larguraParte(p,size){
+    doc.setFont(F.sans,p.b?'bold':'normal'); doc.setFontSize(size);
+    return doc.getTextWidth(p.s);
+  }
+  function quebrar(runs,width,size){
+    const ws=palavras(runs);
+    doc.setFont(F.sans,'normal'); doc.setFontSize(size);
+    const esp=doc.getTextWidth(' ');
+    ws.forEach(function(w){w.w=w.parts.reduce(function(a,p){p.w=larguraParte(p,size); return a+p.w;},0);});
+    const linhas=[]; let ln=[], lw=0;
+    ws.forEach(function(w){
+      const novo=ln.length?lw+esp+w.w:w.w;
+      if(ln.length && novo>width){linhas.push({ws:ln,w:lw}); ln=[w]; lw=w.w;}
+      else{ln.push(w); lw=novo;}
+    });
+    if(ln.length) linhas.push({ws:ln,w:lw});
+    return {linhas:linhas,esp:esp};
+  }
+  function desenharLinha(l,x,yy,width,size,cor,justifica,esp){
+    const soma=l.ws.reduce(function(a,w){return a+w.w;},0);
+    const gap=(justifica&&l.ws.length>1)?(width-soma)/(l.ws.length-1):esp;
+    let cx=x;
+    l.ws.forEach(function(w){
+      w.parts.forEach(function(p){
+        doc.setFont(F.sans,p.b?'bold':'normal'); doc.setFontSize(size); doc.setTextColor.apply(doc,cor);
+        doc.text(p.s,cx,yy); cx+=p.w;
+      });
+      cx+=gap;
+    });
+  }
+  function metr(b){return b.t==='item'?(b.sub?MET.sub:MET.item):MET.p;}
+
+  /* Altura de cada bloco, na mesma métrica do desenho: mantém foro e
+     assinaturas na mesma página. */
+  function altura(b){
+    if(b.t==='p'||b.t==='item'){
+      const m=metr(b);
+      return quebrar(b.runs,CW-m.ind,m.size).linhas.length*m.lh+m.after;
+    }
+    if(b.t==='city') return 5+5+6;
+    if(b.t==='label') return 7+3;
+    if(b.t==='sig') return 9+4+4+(b.sub?3.6:0)+1;
+    return 0;
+  }
+  function alturaGrupo(bs){return bs.reduce(function(a,b){return a+altura(b);},0);}
+
+  cabecalho();
+  const pagInteira=PG.bot-PG.top;
+
+  blocks.forEach(function(b,idx){
+    if(b.junto && (idx===0 || !blocks[idx-1].junto)){
+      const fimGrupo=blocks.findIndex(function(x,j){return j>idx&&!x.junto;});
+      const grupo=blocks.slice(idx,fimGrupo<0?blocks.length:fimGrupo);
+      const h=alturaGrupo(grupo);
+      if(h>PG.bot-y && h<=pagInteira) novaPagina();
+      /* Grupo maior que uma página: as assinaturas ao menos começam juntas. */
+      else if(h>pagInteira){
+        const iAss=grupo.findIndex(function(x){return x.t==='label';});
+        if(iAss>=0) grupo[iAss].novaSeNaoCouber=alturaGrupo(grupo.slice(iAss));
+      }
+    }
+    if(b.novaSeNaoCouber && b.novaSeNaoCouber>PG.bot-y && b.novaSeNaoCouber<=pagInteira) novaPagina();
+
+    if(b.t==='title'){
+      y+=2;
+      doc.setFont(F.serif,'bold'); doc.setFontSize(14.5); doc.setTextColor.apply(doc,COR.marrom);
+      const ls=doc.splitTextToSize(pdfTxt(b.text),CW);
+      espaco(ls.length*7+6);
+      ls.forEach(function(l){doc.text(l,PG.w/2,y,{align:'center'}); y+=7;});
+      y+=0.5;
+    }
+    else if(b.t==='subtitle'){
+      doc.setFont(F.mono,'normal'); doc.setFontSize(7.6); doc.setTextColor.apply(doc,COR.rotulo);
+      doc.splitTextToSize(pdfTxt(b.text).toUpperCase(),CW-10).forEach(function(l){doc.text(l,PG.w/2,y,{align:'center',charSpace:0.2}); y+=3.8;});
+      y+=4;
+    }
+    else if(b.t==='qtitle'){
+      doc.setFont(F.mono,'bold'); doc.setFontSize(8); doc.setTextColor.apply(doc,COR.laranja);
+      doc.text(pdfTxt(b.text).toUpperCase(),PG.ml,y,{charSpace:1});
+      y+=3;
+    }
+    else if(b.t==='quadro'){
+      /* Caixa de linha explícita: a régua fecha a linha e o texto da
+         seguinte começa depois dela. */
+      const lw=50, gap=5, vw=CW-lw-gap;
+      const szL=7, szV=8.7, lh=4.2, capH=2.5, padTop=2.1, padBot=2.3;
+      const regua=function(yy,forte){
+        doc.setDrawColor.apply(doc,forte?COR.marrom:COR.fio); doc.setLineWidth(forte?0.35:0.15);
+        doc.line(PG.ml,yy,PG.w-PG.mr,yy);
+      };
+      const linhasValor=function(v,w){
+        doc.setFont(F.sans,'normal'); doc.setFontSize(szV);
+        let out=[];
+        pdfTxt(v).split('\n').forEach(function(par){out=out.concat(doc.splitTextToSize(par,w));});
+        return out;
+      };
+      b.rows.forEach(function(r,ri){
+        if(r.k==='sec'){
+          const hSec=5+capH+padBot;
+          /* seção não fica órfã no pé da página */
+          if(y+hSec+12>PG.bot) novaPagina(); else if(ri>0) y+=2.5;
+          const base=y+4.5+capH;
+          doc.setFont(F.mono,'bold'); doc.setFontSize(7.8); doc.setTextColor.apply(doc,COR.laranja);
+          doc.text(r.num,PG.ml,base);
+          doc.setFont(F.sans,'bold'); doc.setFontSize(8.4); doc.setTextColor.apply(doc,COR.marrom);
+          const tl=doc.splitTextToSize(pdfTxt(r.text),CW-12);
+          tl.forEach(function(l,i){doc.text(l,PG.ml+12,base+i*lh);});
+          y=base+(tl.length-1)*lh+padBot;
+          regua(y,true);
+          return;
+        }
+        let ll, vl, xV, hRow;
+        if(r.k==='full'){
+          ll=[]; vl=linhasValor(r.v,CW); xV=PG.ml;
+        }else{
+          doc.setFont(F.mono,'normal'); doc.setFontSize(szL);
+          ll=doc.splitTextToSize(pdfTxt(r.l).toUpperCase(),lw);
+          vl=linhasValor(r.v,vw); xV=PG.ml+lw+gap;
+        }
+        const n=Math.max(ll.length,vl.length);
+        hRow=padTop+capH+(n-1)*lh+padBot;
+        if(y+hRow>PG.bot){novaPagina(); regua(y,false);}
+        const base=y+padTop+capH;
+        if(ll.length){
+          doc.setFont(F.mono,'normal'); doc.setFontSize(szL); doc.setTextColor.apply(doc,COR.rotulo);
+          ll.forEach(function(l,i){doc.text(l,PG.ml,base+i*lh);});
+        }
+        doc.setFont(F.sans,'normal'); doc.setFontSize(szV); doc.setTextColor.apply(doc,r.k==='full'?COR.suave:COR.texto);
+        vl.forEach(function(l,i){doc.text(l,xV,base+i*lh);});
+        y+=hRow;
+        regua(y,false);
+      });
+      y+=8;
+    }
+    else if(b.t==='h'){
+      espaco(4.5+5+2+10);
+      y+=4.5;
+      doc.setFont(F.sans,'bold'); doc.setFontSize(9.8); doc.setTextColor.apply(doc,COR.laranja);
+      doc.text(b.num,PG.ml,y);
+      const wn=doc.getTextWidth(b.num+'  ');
+      doc.setTextColor.apply(doc,COR.marrom);
+      doc.text(pdfTxt(b.text).toUpperCase(),PG.ml+wn,y);
+      y+=5+2;
+    }
+    else if(b.t==='p'||b.t==='item'){
+      const m=metr(b);
+      const w=CW-m.ind;
+      const q=quebrar(b.runs,w,m.size);
+      q.linhas.forEach(function(l,i){
+        if(y>PG.bot) novaPagina();
+        desenharLinha(l,PG.ml+m.ind,y,w,m.size,m.cor,i<q.linhas.length-1,q.esp);
+        y+=m.lh;
+      });
+      y+=m.after;
+    }
+    else if(b.t==='city'){
+      y+=5;
+      doc.setFont(F.sans,'normal'); doc.setFontSize(9.5); doc.setTextColor.apply(doc,COR.texto);
+      doc.text(pdfTxt(b.text),PG.ml,y);
+      y+=5+6;
+    }
+    else if(b.t==='label'){
+      espaco(10+altura({t:'sig'}));
+      y+=7;
+      doc.setFont(F.mono,'bold'); doc.setFontSize(7.4); doc.setTextColor.apply(doc,COR.rotulo);
+      doc.text(pdfTxt(b.text).toUpperCase(),PG.ml,y,{charSpace:0.6});
+      y+=3;
+    }
+    else if(b.t==='sig'){
+      espaco(altura(b));   /* uma assinatura nunca se parte ao meio */
+      y+=9;
+      doc.setDrawColor.apply(doc,COR.texto); doc.setLineWidth(0.3);
+      doc.line(PG.ml,y,PG.ml+100,y);
+      y+=4;
+      doc.setFont(F.mono,'normal'); doc.setFontSize(6.8); doc.setTextColor.apply(doc,COR.rotulo);
+      doc.text(pdfTxt(b.role).toUpperCase(),PG.ml,y,{charSpace:0.5});
+      y+=4;
+      doc.setFont(F.sans,'normal'); doc.setFontSize(8.8); doc.setTextColor.apply(doc,COR.texto);
+      doc.text(doc.splitTextToSize(pdfTxt(b.name),CW)[0],PG.ml,y);
+      if(b.sub){
+        y+=3.6;
+        doc.setFontSize(8); doc.setTextColor.apply(doc,COR.claro);
+        doc.text(doc.splitTextToSize(pdfTxt(b.sub),CW)[0],PG.ml,y);
+      }
+      y+=1;
+    }
+    else if(b.t==='break'){novaPagina();}
+    else if(b.t==='anexo'){
+      y+=4;
+      doc.setFont(F.serif,'bold'); doc.setFontSize(14); doc.setTextColor.apply(doc,COR.marrom);
+      doc.text(b.text,PG.w/2,y,{align:'center'});
+      y+=6;
+      doc.setFont(F.mono,'normal'); doc.setFontSize(7.6); doc.setTextColor.apply(doc,COR.rotulo);
+      doc.splitTextToSize(pdfTxt(b.sub).toUpperCase(),CW).forEach(function(l){doc.text(l,PG.w/2,y,{align:'center',charSpace:0.3}); y+=3.8;});
+      y+=4;
+    }
+    else if(b.t==='frame'){
+      espaco(20);
+      const h=Math.min(b.h,PG.bot-y-3);
+      y+=3;
+      doc.setDrawColor.apply(doc,COR.fio); doc.setLineWidth(0.25);
+      doc.rect(PG.ml,y,CW,h);
+      y+=h+2;
+    }
+  });
+
+  const total=doc.internal.getNumberOfPages();
+  for(let p=1;p<=total;p++){
+    doc.setPage(p);
+    doc.setDrawColor.apply(doc,COR.fio); doc.setLineWidth(0.15);
+    doc.line(PG.ml,278,PG.w-PG.mr,278);
+    doc.setFont(F.mono,'normal'); doc.setFontSize(6.8); doc.setTextColor.apply(doc,COR.claro);
+    doc.text(F.marca?'DEFREITAS IMÓVEIS PRÓPRIOS':'DEFREITAS IMOVEIS PROPRIOS',PG.ml,283,{charSpace:0.4});
+    aDireita((F.marca?'LOCAÇÃO Nº ':'LOCACAO No ')+pdfTxt(num)+'  ·  '+(F.marca?'PÁGINA ':'PAGINA ')+p+'/'+total,283,0.4);
+  }
+  return doc.output('blob');
+}
+
+/* ===================== renderizador: Word (OOXML) ===================== */
+function rPr(o){
+  o=o||{};
+  const font=o.font||'Calibri';
+  let s='<w:rPr><w:rFonts w:ascii="'+font+'" w:hAnsi="'+font+'" w:cs="'+font+'"/>';
+  if(o.b) s+='<w:b/>';
+  if(o.caps) s+='<w:caps/>';
+  s+='<w:color w:val="'+(o.color||'2B2723')+'"/>';
+  if(o.spacing) s+='<w:spacing w:val="'+o.spacing+'"/>';
+  s+='<w:sz w:val="'+(o.size||20)+'"/><w:szCs w:val="'+(o.size||20)+'"/>';
+  s+='</w:rPr>';
+  return s;
+}
+/* Um run por trecho; quebras de linha viram <w:br/>. */
+function runX(texto,o){
+  return String(texto).split('\n').map(function(parte,i){
+    return '<w:r>'+rPr(o)+(i>0?'<w:br/>':'')+'<w:t xml:space="preserve">'+escX(parte)+'</w:t></w:r>';
+  }).join('');
+}
+function pPrX(o){
+  /* keepNext/keepLines antes de spacing: a sequência de CT_PPrBase é fixa e
+     o Word descarta elemento fora de ordem. */
+  let s='<w:pPr>';
+  if(o.keep) s+='<w:keepNext/><w:keepLines/>';
+  s+='<w:spacing w:before="'+(o.before||0)+'" w:after="'+(o.after==null?120:o.after)+'" w:line="'+(o.line||276)+'" w:lineRule="auto"/>';
+  if(o.ind) s+='<w:ind w:left="'+o.ind+'"/>';
+  s+='<w:jc w:val="'+(o.jc||'both')+'"/></w:pPr>';
+  return s;
+}
+function pDocx(text,o){o=o||{}; return '<w:p>'+pPrX(o)+runX(text,o)+'</w:p>';}
+function pRuns(runs,o){
+  o=o||{};
+  return '<w:p>'+pPrX(o)+runs.map(function(r){
+    return runX(r.s,Object.assign({},o,{b:!!r.b,color:r.b?'2B2723':o.color}));
+  }).join('')+'</w:p>';
+}
+function pQuebra(){return '<w:p><w:r><w:br w:type="page"/></w:r></w:p>';}
+
+function gerarDOCX(d,blocks){
+  const num=ou(d.num,'000/2026');
+  let body='';
+  body+=pDocx('DEFREITAS',{font:'Cambria',b:true,size:26,color:'3A2A1F',jc:'left',after:0,spacing:20});
+  body+=pDocx('IMÓVEIS PRÓPRIOS  ·  CONTRATO DE LOCAÇÃO Nº '+num,
+    {font:'Consolas',size:14,color:'8B6449',jc:'left',after:240,spacing:30});
+
+  /* 9638 twips úteis, na mesma proporção do PDF */
+  const COL_ROT=2840, COL_VAL=6798, TOT=COL_ROT+COL_VAL;
+  const celula=function(w,conteudo,span){
+    return '<w:tc><w:tcPr><w:tcW w:w="'+w+'" w:type="dxa"/>'+(span?'<w:gridSpan w:val="2"/>':'')+
+      '<w:vAlign w:val="top"/></w:tcPr>'+conteudo+'</w:tc>';
+  };
+
+  blocks.forEach(function(b,idx){
+    const kp=!!b.junto;
+    const ultimo=idx===blocks.length-1||(blocks[idx+1]&&!blocks[idx+1].junto);
+    if(b.t==='title') body+=pDocx(b.text,{font:'Cambria',b:true,size:30,color:'3A2A1F',jc:'center',before:120,after:60});
+    else if(b.t==='subtitle') body+=pDocx(b.text.toUpperCase(),{font:'Consolas',size:15,color:'8B6449',jc:'center',after:200});
+    else if(b.t==='qtitle') body+=pDocx(b.text.toUpperCase(),{font:'Consolas',b:true,size:16,color:'C1622D',jc:'left',before:120,after:60,spacing:40});
+    else if(b.t==='quadro'){
+      /* tblLayout fixed é obrigatório: sem ele o Word redimensiona as
+         colunas pelo conteúdo. Ordem dos filhos de tblPr segue o esquema. */
+      body+='<w:tbl><w:tblPr>'+
+        '<w:tblW w:w="'+TOT+'" w:type="dxa"/>'+
+        '<w:tblBorders>'+
+        '<w:bottom w:val="single" w:sz="4" w:space="0" w:color="D9D3C8"/>'+
+        '<w:insideH w:val="single" w:sz="4" w:space="0" w:color="D9D3C8"/>'+
+        '</w:tblBorders>'+
+        '<w:tblLayout w:type="fixed"/>'+
+        '<w:tblCellMar><w:top w:w="70" w:type="dxa"/><w:bottom w:w="70" w:type="dxa"/>'+
+        '<w:left w:w="0" w:type="dxa"/><w:right w:w="140" w:type="dxa"/></w:tblCellMar>'+
+        '</w:tblPr>'+
+        '<w:tblGrid><w:gridCol w:w="'+COL_ROT+'"/><w:gridCol w:w="'+COL_VAL+'"/></w:tblGrid>';
+      b.rows.forEach(function(r){
+        if(r.k==='sec'){
+          body+='<w:tr><w:trPr><w:cantSplit/></w:trPr><w:tc><w:tcPr><w:tcW w:w="'+TOT+'" w:type="dxa"/><w:gridSpan w:val="2"/>'+
+            '<w:tcBorders><w:bottom w:val="single" w:sz="8" w:space="0" w:color="3A2A1F"/></w:tcBorders>'+
+            '<w:vAlign w:val="bottom"/></w:tcPr>'+
+            '<w:p>'+pPrX({jc:'left',before:200,after:0,line:240,keep:true})+
+              runX(r.num+'   ',{font:'Consolas',b:true,size:16,color:'C1622D'})+
+              runX(r.text,{b:true,size:17,color:'3A2A1F'})+'</w:p></w:tc></w:tr>';
+        }else if(r.k==='full'){
+          body+='<w:tr><w:trPr><w:cantSplit/></w:trPr>'+celula(TOT,pDocx(r.v,{size:17,color:'55504A',jc:'both',after:0,line:252}),true)+'</w:tr>';
+        }else{
+          body+='<w:tr><w:trPr><w:cantSplit/></w:trPr>'+
+            celula(COL_ROT,pDocx(String(r.l).toUpperCase(),{font:'Consolas',size:14,color:'8B6449',jc:'left',after:0,line:240}))+
+            celula(COL_VAL,pDocx(r.v,{size:17,jc:'left',after:0,line:240}))+'</w:tr>';
+        }
+      });
+      body+='</w:tbl>'+pDocx('',{after:120});
+    }
+    else if(b.t==='h'){
+      body+='<w:p>'+pPrX({jc:'left',before:260,after:100,keep:true})+
+        runX(b.num+'  ',{b:true,size:20,color:'C1622D'})+runX(b.text.toUpperCase(),{b:true,size:20,color:'3A2A1F'})+'</w:p>';
+    }
+    else if(b.t==='item') body+=pRuns(b.runs,{size:19,color:'55504A',ind:b.sub?454:0,after:110,keep:kp&&!ultimo});
+    else if(b.t==='p') body+=pRuns(b.runs,{size:20,after:140,keep:kp&&!ultimo});
+    else if(b.t==='city') body+=pDocx(b.text,{size:20,jc:'left',before:240,after:120,keep:kp&&!ultimo});
+    else if(b.t==='label') body+=pDocx(b.text.toUpperCase(),{font:'Consolas',b:true,size:15,color:'8B6449',jc:'left',before:240,after:0,spacing:20,keep:true});
+    else if(b.t==='sig'){
+      body+=pDocx('______________________________________________________',{size:20,jc:'left',before:400,after:30,keep:true});
+      body+=pDocx(String(b.role).toUpperCase(),{font:'Consolas',size:14,color:'8B6449',jc:'left',after:10,keep:true});
+      body+=pDocx(b.name,{size:18,jc:'left',after:b.sub?10:60,keep:(kp&&!ultimo)||!!b.sub});
+      if(b.sub) body+=pDocx(b.sub,{size:16,color:'8B8479',jc:'left',after:60,keep:kp&&!ultimo});
+    }
+    else if(b.t==='break') body+=pQuebra();
+    else if(b.t==='anexo'){
+      body+=pDocx(b.text,{font:'Cambria',b:true,size:28,color:'3A2A1F',jc:'center',before:120,after:40});
+      body+=pDocx(b.sub.toUpperCase(),{font:'Consolas',size:15,color:'8B6449',jc:'center',after:240});
+    }
+    else if(b.t==='frame'){
+      const alt=Math.round(b.h*56.7);   // mm → twips
+      body+='<w:tbl><w:tblPr><w:tblW w:w="'+TOT+'" w:type="dxa"/>'+
+        '<w:tblBorders><w:top w:val="single" w:sz="4" w:space="0" w:color="D9D3C8"/><w:left w:val="single" w:sz="4" w:space="0" w:color="D9D3C8"/>'+
+        '<w:bottom w:val="single" w:sz="4" w:space="0" w:color="D9D3C8"/><w:right w:val="single" w:sz="4" w:space="0" w:color="D9D3C8"/></w:tblBorders>'+
+        '<w:tblLayout w:type="fixed"/></w:tblPr><w:tblGrid><w:gridCol w:w="'+TOT+'"/></w:tblGrid>'+
+        '<w:tr><w:trPr><w:trHeight w:val="'+alt+'" w:hRule="exact"/></w:trPr>'+celula(TOT,pDocx('',{after:0}))+'</w:tr></w:tbl>'+
+        pDocx('',{after:120});
+    }
+  });
+
+  const sect='<w:sectPr><w:footerReference w:type="default" r:id="rId2"/>'+
+    '<w:pgSz w:w="11906" w:h="16838"/>'+
+    '<w:pgMar w:top="1134" w:right="1134" w:bottom="1134" w:left="1134" w:header="567" w:footer="567" w:gutter="0"/>'+
+    '</w:sectPr>';
+
+  const documentXml='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+    '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">'+
+    '<w:body>'+body+sect+'</w:body></w:document>';
+
+  const campo=function(instr){
+    const o={font:'Consolas',size:13,color:'8B8479'};
+    return '<w:r>'+rPr(o)+'<w:fldChar w:fldCharType="begin"/></w:r>'+
+      '<w:r>'+rPr(o)+'<w:instrText xml:space="preserve"> '+instr+' </w:instrText></w:r>'+
+      '<w:r>'+rPr(o)+'<w:fldChar w:fldCharType="separate"/></w:r>'+
+      '<w:r>'+rPr(o)+'<w:t>1</w:t></w:r>'+
+      '<w:r>'+rPr(o)+'<w:fldChar w:fldCharType="end"/></w:r>';
+  };
+  const footerXml='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+    '<w:ftr xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">'+
+    '<w:p><w:pPr><w:pBdr><w:top w:val="single" w:sz="4" w:space="6" w:color="D9D3C8"/></w:pBdr>'+
+    '<w:tabs><w:tab w:val="right" w:pos="9638"/></w:tabs><w:spacing w:after="0"/></w:pPr>'+
+    runX('DEFREITAS IMÓVEIS PRÓPRIOS',{font:'Consolas',size:13,color:'8B8479'})+
+    '<w:r>'+rPr({font:'Consolas',size:13,color:'8B8479'})+'<w:tab/></w:r>'+
+    runX('LOCAÇÃO Nº '+num+'  ·  PÁGINA ',{font:'Consolas',size:13,color:'8B8479'})+campo('PAGE')+
+    runX('/',{font:'Consolas',size:13,color:'8B8479'})+campo('NUMPAGES')+
+    '</w:p></w:ftr>';
+
+  const stylesXml='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+    '<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">'+
+    '<w:docDefaults><w:rPrDefault><w:rPr>'+
+    '<w:rFonts w:ascii="Calibri" w:hAnsi="Calibri" w:cs="Calibri"/>'+
+    '<w:color w:val="2B2723"/><w:sz w:val="20"/><w:szCs w:val="20"/>'+
+    '<w:lang w:val="pt-BR"/></w:rPr></w:rPrDefault>'+
+    '<w:pPrDefault><w:pPr><w:spacing w:after="120" w:line="276" w:lineRule="auto"/></w:pPr></w:pPrDefault>'+
+    '</w:docDefaults>'+
+    '<w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/></w:style>'+
+    '</w:styles>';
+
+  const contentTypes='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+    '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'+
+    '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>'+
+    '<Default Extension="xml" ContentType="application/xml"/>'+
+    '<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>'+
+    '<Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/>'+
+    '<Override PartName="/word/footer1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml"/>'+
+    '</Types>';
+
+  const rels='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+    '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'+
+    '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>'+
+    '</Relationships>';
+
+  const docRels='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+    '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'+
+    '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>'+
+    '<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer" Target="footer1.xml"/>'+
+    '</Relationships>';
+
+  const zip=new JSZip();
+  zip.file('[Content_Types].xml',contentTypes);
+  zip.folder('_rels').file('.rels',rels);
+  const w=zip.folder('word');
+  w.file('document.xml',documentXml);
+  w.file('styles.xml',stylesXml);
+  w.file('footer1.xml',footerXml);
+  w.folder('_rels').file('document.xml.rels',docRels);
+  return zip.generateAsync({type:'blob'});
+}
+
+/* ===================== download ===================== */
+let downloads=null, downloadsResolved=false;
+if(window.claude&&window.claude.use){
+  window.claude.use('downloads').then(function(ns){
+    downloads=ns; downloadsResolved=true; atualizarBotoes();
+  }).catch(function(){downloadsResolved=true; atualizarBotoes();});
+}else{downloadsResolved=true;}
+
+function atualizarBotoes(){
+  const nota=document.getElementById('export-note');
+  const ok=!!downloads;
+  document.getElementById('btn-pdf').disabled=!ok;
+  document.getElementById('btn-docx').disabled=!ok;
+  if(!downloadsResolved) return;
+  if(!ok){
+    nota.className='export-note err';
+    nota.textContent='A exportação de arquivos não está disponível nesta visualização. Abra o artefato em claude.ai para gerar o PDF e o Word.';
+  }
+}
+function nomeArquivo(d,ext){
+  const num=ou(d.num,'000-2026').replace(/[^\w-]+/g,'-');
+  const ls=d.locatarios||[];
+  const quem=(ls[0]?nomeLocatario(ls[0]):'locatario').normalize('NFD').replace(/[̀-ͯ]/g,'')
+    .replace(/[^\w\s-]/g,'').trim().split(/\s+/).slice(0,2).join('-').toLowerCase();
+  return 'locacao-'+num+'-'+quem+'.'+ext;
+}
+function avisar(msg,erro){
+  const nota=document.getElementById('export-note');
+  nota.className='export-note'+(erro?' err':'');
+  nota.textContent=msg;
+}
+function tratarErro(e){
+  const c=e&&e.code;
+  if(c==='declined'){avisar('Download cancelado. Nada foi salvo.',false); return;}
+  if(c==='rate_limited'){avisar('Já existe um download aguardando confirmação. Conclua-o e tente de novo.',true); return;}
+  if(c==='unavailable'||c==='not_granted'||c==='capability_disabled'||c==='capability_removed'){
+    downloads=null; atualizarBotoes(); return;
+  }
+  avisar('Não foi possível gerar o arquivo. Confira os dados e tente novamente.',true);
+}
+async function exportarPDF(){
+  const d=lerForm(), blocks=construirDoc(d);
+  avisar('Gerando o PDF…',false);
+  try{
+    const blob=await gerarPDF(d,blocks);
+    await downloads.save({filename:nomeArquivo(d,'pdf'),data:blob});
+    avisar('PDF salvo.',false);
+  }catch(e){tratarErro(e);}
+}
+async function exportarDOCX(){
+  const d=lerForm(), blocks=construirDoc(d);
+  avisar('Gerando o documento Word…',false);
+  try{
+    const blob=await gerarDOCX(d,blocks);
+    await downloads.save({filename:nomeArquivo(d,'docx'),data:blob});
+    avisar('Documento Word salvo.',false);
+  }catch(e){tratarErro(e);}
+}
+
+/* ===================== ciclo ===================== */
+function aplicarVisibilidade(d){
+  const outro=d.locadorTipo==='outro';
+  document.getElementById('box-loc-defreitas').hidden=outro;
+  document.getElementById('box-loc-outro').hidden=!outro;
+  document.querySelectorAll('[data-locador]').forEach(function(b){
+    const on=b.getAttribute('data-locador')===(outro?'outro':'defreitas');
+    b.classList.toggle('on',on); b.setAttribute('aria-pressed',String(on));
+  });
+  document.getElementById('notAt').placeholder=outro?'em branco: quem assina pelo locador':'em branco: o representante';
+  document.getElementById('notEnd').placeholder=outro?'endereço do locador':'em branco: a sede da Defreitas';
+  document.getElementById('fiador2').hidden=!d.temF2;
+  document.getElementById('box-desc').hidden=!d.temDesc;
+  document.getElementById('box-anexos').hidden=!d.incAnexos;
+  [1,2].forEach(function(n){
+    document.getElementById('f'+n+'-conj').hidden=!temConjuge(d['f'+n+'EstadoCivil']);
+  });
+}
+
+let tRender=null;
+function atualizar(){
+  const d=lerForm();
+  aplicarVisibilidade(d);
+  renderTally(d);
+  const blocks=construirDoc(d);
+  renderMinuta(d,blocks);
+  const k=calculos(d);
+  document.getElementById('side-meta').textContent=
+    'quadro I–VIII · '+blocks.filter(function(b){return b.t==='h';}).length+' cláusulas';
+  document.getElementById('aluguel-extenso').textContent=k.aluguelC>0?extensoMoeda(k.aluguel):'';
+  document.getElementById('fim-hint').textContent=k.fim?'Término: '+dataCurta(k.fim):'';
+  const dia=diaDoMes(d.dataVenc1);
+  document.getElementById('venc-hint').textContent=dia?'Vence todo dia '+dia+' de cada mês.':'';
+  document.getElementById('desc-hint').textContent=k.descC>0?'Aluguel com desconto: '+brl((k.aluguelC-k.descC)/100):'';
+  try{localStorage.setItem(LS,JSON.stringify(d));}catch(e){}
+}
+function agendar(){clearTimeout(tRender); tRender=setTimeout(atualizar,120);}
+
+/* Máscara e validação de CPF/CNPJ; o campo de recebedor aceita os dois. */
+function validarDoc(id){
+  const el=document.getElementById(id);
+  if(!el) return;
+  const dig=el.value.replace(/\D/g,'');
+  const ehCnpj=/cnpj$/i.test(id)||(/-doc$/.test(id)&&dig.length>11);
+  el.value = ehCnpj ? maskCNPJ(el.value) : maskCPF(el.value);
+  const hint=document.getElementById(id+'-hint');
+  if(!hint) return;
+  const tam=ehCnpj?14:11, nome=ehCnpj?'CNPJ':'CPF';
+  if(!dig.length){hint.textContent=''; hint.className='hint';}
+  else if(dig.length<tam){hint.textContent=nome+' incompleto'; hint.className='hint bad';}
+  else if(ehCnpj?validaCNPJ(el.value):validaCPF(el.value)){hint.textContent=nome+' válido'; hint.className='hint good';}
+  else{hint.textContent='Dígitos verificadores não conferem'; hint.className='hint bad';}
+}
+const RE_DOC=/(cpf|cnpj|-doc)$/i;
+const RE_CEP=/(cep|Cep)$/;
+
+document.addEventListener('input',function(ev){
+  const t=ev.target;
+  if(!t||!t.id) return;
+  if(RE_DOC.test(t.id)){
+    const fim=t.selectionStart===t.value.length;
+    validarDoc(t.id);
+    if(fim) try{t.setSelectionRange(t.value.length,t.value.length);}catch(e){}
+  }
+  if(RE_CEP.test(t.id)) t.value=maskCEP(t.value);
+  agendar();
+});
+document.addEventListener('focusout',function(ev){
+  const t=ev.target;
+  if(t&&t.id&&CAMPOS_MOEDA.indexOf(t.id)>=0){
+    const antes=t.value;
+    t.value=fmtMoeda(t.value);
+    if(t.value!==antes) agendar();
+  }
+},true);
+document.addEventListener('change',function(){agendar();});
+document.addEventListener('click',function(ev){
+  const el=ev.target&&ev.target.closest?ev.target.closest('button'):null;
+  if(!el) return;
+  const lc=el.getAttribute('data-locador');
+  if(lc){document.getElementById('locadorTipo').value=lc; atualizar(); return;}
+  const rmL=el.getAttribute('data-rm-loc');
+  if(rmL!=null){
+    locatarios=lerForm().locatarios; locatarios.splice(parseInt(rmL,10),1);
+    if(!locatarios.length) locatarios=[locVazio()];
+    renderLocatarios(); atualizar(); return;
+  }
+  const rmR=el.getAttribute('data-rm-rec');
+  if(rmR!=null){
+    recebedores=lerForm().recebedores; recebedores.splice(parseInt(rmR,10),1);
+    if(!recebedores.length) recebedores=[recVazio('100')];
+    renderRecebedores(); atualizar(); return;
+  }
+  const tp=el.getAttribute('data-tipo');
+  if(tp!=null){
+    const parts=tp.split(':'), i=parseInt(parts[0],10);
+    locatarios=lerForm().locatarios;
+    if(locatarios[i]&&locatarios[i].tipo!==parts[1]){
+      locatarios[i].tipo=parts[1];
+      renderLocatarios(); atualizar();
+    }
+  }
+});
+document.getElementById('btn-add-loc').addEventListener('click',function(){
+  locatarios=lerForm().locatarios; locatarios.push(locVazio());
+  renderLocatarios(); atualizar();
+});
+document.getElementById('btn-add-rec').addEventListener('click',function(){
+  const d=lerForm();
+  recebedores=d.recebedores;
+  /* o novo recebedor já nasce com o percentual que falta para 100% */
+  const falta=Math.max(0,100-calculos(d).somaPct);
+  recebedores.push(recVazio(falta>0?String(Math.round(falta*100)/100).replace('.',','):''));
+  renderRecebedores(); atualizar();
+});
+document.getElementById('btn-clear').addEventListener('click',function(){
+  escreverForm(JSON.parse(JSON.stringify(VAZIO)));
+  document.getElementById('draft-banner').hidden=true;
+  try{localStorage.removeItem(LS);}catch(e){}
+  atualizar();
+  const f=document.getElementById('num'); if(f) f.focus();
+});
+document.getElementById('btn-pdf').addEventListener('click',exportarPDF);
+document.getElementById('btn-docx').addEventListener('click',exportarDOCX);
+
+/* ---- arranque ---- */
+(function(){
+  document.getElementById('fiador1').innerHTML=htmlFiador(1);
+  document.getElementById('fiador2').innerHTML=htmlFiador(2);
+  let inicial=null, restaurado=false;
+  try{
+    const raw=localStorage.getItem(LS);
+    if(raw){inicial=Object.assign(JSON.parse(JSON.stringify(VAZIO)),JSON.parse(raw)); restaurado=true;}
+  }catch(e){}
+  if(!inicial) inicial=JSON.parse(JSON.stringify(VAZIO));
+  escreverForm(inicial);
+  document.getElementById('draft-banner').hidden=!restaurado;
+  ['repCpf','f1Cpf','f1ConjCpf','f2Cpf','f2ConjCpf'].forEach(validarDoc);
+  CAMPOS_MOEDA.forEach(function(id){
+    const el=document.getElementById(id);
+    if(el&&el.value) el.value=fmtMoeda(el.value);
+  });
+  atualizarBotoes();
+  atualizar();
+})();
+</script>
