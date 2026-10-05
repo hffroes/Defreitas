@@ -1065,7 +1065,7 @@ function qualificaLocatario(c){
   if(c.tipo==='pj'){
     let s=ou(c.razaoSocial,'[razão social]').toUpperCase()+
       ', pessoa jurídica de direito privado, inscrita no CNPJ sob o nº '+ou(c.cnpj,'[CNPJ]')+
-      ', com sede em '+ou(c.endereco,'[endereço da sede]');
+      (String(c.endereco||'').trim()?', com sede em '+c.endereco.trim():'');
     if(String(c.repNome||'').trim()){
       s+=', neste ato representada na forma de seus atos constitutivos por '+c.repNome.trim();
       if(String(c.repCargo||'').trim()) s+=', '+c.repCargo.trim();
@@ -1073,9 +1073,11 @@ function qualificaLocatario(c){
     }
     return s;
   }
-  return qualificaPF(c);
+  return qualificaPF(c,true);
 }
-function qualificaPF(c){
+/* Endereço do locatário em branco significa que não há a informação:
+   a qualificação sai sem ele, sem marcador a preencher. */
+function qualificaPF(c,enderecoOpcional){
   let s=ou(c.nome,'[nome completo]').toUpperCase();
   const q=[];
   ['nacionalidade','estadoCivil','profissao'].forEach(function(f){
@@ -1084,7 +1086,8 @@ function qualificaPF(c){
   if(q.length) s+=', '+q.join(', ');
   s+=', inscrito(a) no CPF sob o nº '+ou(c.cpf,'[CPF]');
   if(String(c.rg||'').trim()) s+=', portador(a) do RG nº '+c.rg.trim();
-  s+=', residente e domiciliado(a) em '+ou(c.endereco,'[endereço completo]');
+  if(String(c.endereco||'').trim()) s+=', residente e domiciliado(a) em '+c.endereco.trim();
+  else if(!enderecoOpcional) s+=', residente e domiciliado(a) em [endereço completo]';
   return s;
 }
 function contatos(c){
