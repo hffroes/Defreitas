@@ -113,7 +113,7 @@ Nº [000/2026]
 | Forma de pagamento | [uma ou mais: PIX — chave [_____] / boleto bancário / dinheiro — [local]] |
 | Reajuste | Anual, pelo [IGP-M / IPCA], a cada [mês de aniversário] |
 | Garantia | [caução em dinheiro / fiança / seguro-fiança / sem garantia] |
-| IPTU e taxa de lixo | Por conta do(a) locatário(a) — [pagamento direto das guias / reembolso de R$ [valor] em parcela única anual, no primeiro vencimento e a cada renovação anual / reembolso em [nº] parcelas mensais com o aluguel] |
+| IPTU e taxa de lixo | Por conta do(a) locatário(a) — [responsabilidade do(a) locatário(a), sem valores / pagamento direto das guias / reembolso de R$ [valor, opcional] em parcela única anual, no primeiro vencimento e a cada renovação anual / reembolso em [nº] parcelas mensais com o aluguel] |
 | Condomínio | [Não é unidade em condomínio / Unidade em condomínio — despesas ordinárias por conta do(a) locatário(a) / Unidade em condomínio — despesas por conta da locadora] — valor atual R$ [valor] (opcional) |
 | Pintura de devolução | Paredes em [cor], tetos em [cor], tinta [marca / linha] ou de qualidade equivalente |
 | Multa por devolução antecipada | [3 (três)] aluguéis, proporcional ao tempo restante do contrato |
@@ -184,7 +184,7 @@ O pagamento do aluguel ou de qualquer encargo após o vencimento sujeita o(a) LO
 Além do aluguel, correm por conta do(a) LOCATÁRIO(A), a partir da data de início da locação até a efetiva devolução das chaves:
 
 a) consumo de água e esgoto, energia elétrica, gás e telefone/internet;
-b) Imposto Predial e Territorial Urbano (IPTU) e taxa de coleta de lixo incidentes sobre o imóvel, [pagos diretamente pelo(a) LOCATÁRIO(A) nas guias emitidas pela Prefeitura, com envio do comprovante à LOCADORA em até 5 (cinco) dias do pagamento / reembolsados à LOCADORA no valor de R$ [valor] ([valor por extenso]), referente ao exercício de [aaaa], [em parcela única anual, paga junto com o primeiro vencimento do contrato e, a cada renovação anual, junto com o primeiro vencimento do novo período, pelo valor lançado pela Prefeitura para o exercício / em [nº] parcelas mensais cobradas junto com o aluguel]];
+b) Imposto Predial e Territorial Urbano (IPTU) e taxa de coleta de lixo incidentes sobre o imóvel, [durante a locação, de responsabilidade do(a) LOCATÁRIO(A), pelos valores lançados pela Prefeitura em cada exercício, na proporção do período de ocupação, cabendo-lhe comprovar o pagamento à LOCADORA sempre que solicitado / pagos diretamente pelo(a) LOCATÁRIO(A) nas guias emitidas pela Prefeitura, com envio do comprovante à LOCADORA em até 5 (cinco) dias do pagamento / reembolsados à LOCADORA no valor de R$ [valor] ([valor por extenso]) — ou, sem valor fixado, pelo valor lançado pela Prefeitura —, referente ao exercício de [aaaa], [em parcela única anual, paga junto com o primeiro vencimento do contrato e, a cada renovação anual, junto com o primeiro vencimento do novo período, pelo valor lançado pela Prefeitura para o exercício / em [nº] parcelas mensais cobradas junto com o aluguel]];
 c) (quando a unidade estiver em condomínio e as despesas couberem ao(à) LOCATÁRIO(A)) despesas ordinárias de condomínio, assim entendidas as do art. 23, §1º, da Lei nº 8.245/1991[, atualmente de R$ [valor] por mês];
 d) (quando aplicável) prêmio de seguro contra incêndio do imóvel, nos termos da Cláusula 14ª.
 
