@@ -1,200 +1,702 @@
 {
   "arquivo": "Contrato de locacao - Galpao Rua Panama 158 - Turano Construtora",
-  "num": "[000/2026]",
+  "num": "02/2026",
   "blocos": [
-    {"t": "title", "text": "CONTRATO DE LOCAÇÃO DE IMÓVEL NÃO RESIDENCIAL"},
-
-    {"t": "quadro", "rows": [
-      ["Locadora", "Defreitas Compra, Venda, Incorporação e Locação de Bens Imóveis Próprios Ltda — CNPJ 11.435.163/0001-13"],
-      ["Representante", "Heitor de Freitas Froes — CPF 124.558.106-66"],
-      ["Endereço para notificações", "Rua Doutor Walter Ferreira Barreto, nº 525, Bairro Ibituruna, Montes Claros/MG, CEP 39.401-347"],
-      ["E-mail da locadora", "hffroes@gmail.com"],
-      ["Locatária", "Turano Construtora Ltda — CNPJ 12.575.065/0001-44"],
-      ["Endereço da locatária", "Av. Doutor José Corrêa Machado, nº 1079, Bloco C, 1º andar, Sala 102, Montes Claros/MG, CEP 39.401-832"],
-      ["Telefone da locatária", "(38) 98411-5441"],
-      ["Fiador", "Guilherme Trindade Turano — CPF 011.689.716-23 — RG MG 615819613 — casado"],
-      ["Imóvel", "Rua Panamá, nº 158, Bairro Esplanada, Montes Claros/MG, CEP 39.401-449"],
-      ["Área total do imóvel", "1.710,00 m²"],
-      ["Área locada", "1.430,00 m² (área útil aproximada)"],
-      ["Áreas não locadas", "280,00 m², de uso exclusivo da locadora (Cláusula III)"],
-      ["Finalidade", "Atividades administrativas, armazenamento, apoio operacional e logístico, atividades industriais leves e correlatas à operação da locatária"],
-      ["Prazo", "12 (doze) meses — de 10/04/2026 a 10/04/2027"],
-      ["Aluguel mensal", "R$ 10.000,00 (dez mil reais)"],
-      ["Desconto inicial", "50% nos 3 (três) primeiros meses — R$ 5.000,00 (cinco mil reais) por mês"],
-      ["Vencimento", "Todo dia 10 de cada mês"],
-      ["Forma de pagamento", "Depósito bancário em favor de Heitor de Freitas Froes — [banco, agência e conta]"],
-      ["Reajuste", "Anual, pelo menor índice positivo entre IPCA e IGP-M"],
-      ["Anexos", "I — Relatório de avaliação do valor de mercado do aluguel; II — Memorial descritivo das áreas; III — Laudo de vistoria inicial"]
-    ]},
-
-    {"t": "h", "text": "I — DA IDENTIFICAÇÃO DAS PARTES"},
-    {"t": "p", "text": "LOCADORA: DEFREITAS COMPRA, VENDA, INCORPORAÇÃO E LOCAÇÃO DE BENS IMÓVEIS PRÓPRIOS LTDA, inscrita no CNPJ sob o nº 11.435.163/0001-13, com sede na R. Lafeta, 116, Sala 105, Centro, Montes Claros/MG, CEP 39.400-045, neste ato representada por HEITOR DE FREITAS FROES, inscrito no CPF sob o nº 124.558.106-66, com endereço para notificações na Rua Doutor Walter Ferreira Barreto, nº 525, Bairro Ibituruna, Montes Claros/MG, CEP 39.401-347, e e-mail hffroes@gmail.com, doravante denominada LOCADORA, legítima proprietária do imóvel adiante identificado;"},
-    {"t": "p", "text": "LOCATÁRIA: TURANO CONSTRUTORA LTDA, inscrita no CNPJ sob o nº 12.575.065/0001-44, com sede na Av. Doutor José Corrêa Machado, nº 1079, Bloco C, 1º andar, Sala 102, Montes Claros/MG, CEP 39.401-832, telefone (38) 98411-5441, neste ato representada por [nome do representante legal], inscrito(a) no CPF sob o nº [_____], doravante denominada LOCATÁRIA;"},
-    {"t": "p", "text": "FIADOR: GUILHERME TRINDADE TURANO, casado, inscrito no CPF sob o nº 011.689.716-23, portador do RG nº MG 615819613, com endereço na Av. Doutor José Corrêa Machado, nº 1079, Bloco C, 1º andar, Sala 102, Montes Claros/MG, CEP 39.401-832, doravante denominado FIADOR."},
-    {"t": "p", "text": "As partes acima qualificadas têm entre si justo e contratado o presente Contrato de Locação de Imóvel Não Residencial, que se regerá pelas cláusulas seguintes e, subsidiariamente, pela Lei nº 8.245/1991 e pela legislação civil aplicável."},
-
-    {"t": "h", "text": "II — DO OBJETO"},
-    {"t": "p", "text": "O presente contrato tem por objeto a locação parcial do imóvel situado na Rua Panamá, nº 158, Bairro Esplanada, Montes Claros/MG, CEP 39.401-449, com área total de 1.710,00 m² (mil setecentos e dez metros quadrados), correspondendo a área locada à área útil aproximada de 1.430,00 m² (mil quatrocentos e trinta metros quadrados), ocupada pela LOCATÁRIA."},
-    {"t": "pi", "text": "Parágrafo primeiro — A LOCATÁRIA declara receber a área locada em condições adequadas ao uso proposto e ao exercício de suas atividades operacionais e empresariais."},
-    {"t": "pi", "text": "Parágrafo segundo — A presente locação não abrange as áreas identificadas na Cláusula III como de uso exclusivo da LOCADORA, que permanecem sob sua posse direta e se destinam:"},
-    {"t": "li", "text": "a) à operação própria;"},
-    {"t": "li", "text": "b) ao armazenamento;"},
-    {"t": "li", "text": "c) à circulação interna;"},
-    {"t": "li", "text": "d) à manutenção;"},
-    {"t": "li", "text": "e) à utilização comercial;"},
-    {"t": "li", "text": "f) ao apoio operacional."},
-
-    {"t": "h", "text": "III — DAS ÁREAS NÃO LOCADAS"},
-    {"t": "p", "text": "Permanecem sob posse, uso e operação exclusiva da LOCADORA as áreas abaixo, que totalizam 280,00 m² (duzentos e oitenta metros quadrados) e são descontadas da área total do imóvel:"},
-    {"t": "quadro", "rows": [
-      ["Casa dos fundos, compressor, 710 e Uno", "176,00 m²"],
-      ["Loja frontal", "54,00 m²"],
-      ["Maquinário da fábrica (área aproximada)", "50,00 m²"],
-      ["Total não locado", "280,00 m²"]
-    ]},
-    {"t": "pi", "text": "Parágrafo único — As áreas acima poderão futuramente ser incorporadas à área locada mediante termo aditivo específico entre as partes."},
-
-    {"t": "h", "text": "IV — DAS ÁREAS EM TRANSIÇÃO"},
-    {"t": "p", "text": "As áreas atualmente em processo de desocupação poderão ser futuramente incorporadas à posse da LOCATÁRIA."},
-    {"t": "pi", "text": "Parágrafo único — A eventual ampliação dependerá de:"},
-    {"t": "li", "text": "a) disponibilidade operacional;"},
-    {"t": "li", "text": "b) concordância das partes;"},
-    {"t": "li", "text": "c) formalização por termo aditivo."},
-
-    {"t": "h", "text": "V — DA OCUPAÇÃO COMPARTILHADA, DOS ACESSOS E DA CIRCULAÇÃO"},
-    {"t": "p", "text": "A LOCATÁRIA reconhece que determinadas áreas do imóvel permanecerão sob utilização direta da LOCADORA, devendo a convivência e a circulação operacional entre as partes ocorrer de forma harmoniosa e coordenada, respeitando:"},
-    {"t": "li", "text": "a) os acessos;"},
-    {"t": "li", "text": "b) a circulação;"},
-    {"t": "li", "text": "c) a segurança;"},
-    {"t": "li", "text": "d) a integridade patrimonial;"},
-    {"t": "li", "text": "e) o funcionamento das operações."},
-    {"t": "pi", "text": "Parágrafo primeiro — A LOCADORA poderá acessar suas áreas exclusivas a qualquer momento, não podendo a LOCATÁRIA impedir, restringir ou dificultar o acesso da LOCADORA às áreas não locadas."},
-    {"t": "pi", "text": "Parágrafo segundo — Havendo necessidade operacional, manutenção, reparo estrutural ou adequações técnicas, a LOCADORA poderá acessar o imóvel mediante comunicação prévia."},
-    {"t": "pi", "text": "Parágrafo terceiro — A LOCATÁRIA obriga-se a preservar:"},
-    {"t": "li", "text": "a) os acessos internos;"},
-    {"t": "li", "text": "b) os corredores operacionais;"},
-    {"t": "li", "text": "c) as áreas de carga e descarga;"},
-    {"t": "li", "text": "d) a circulação de veículos;"},
-    {"t": "li", "text": "e) os sistemas hidráulicos;"},
-    {"t": "li", "text": "f) os sistemas elétricos;"},
-    {"t": "li", "text": "g) os equipamentos estruturais."},
-
-    {"t": "h", "text": "VI — DA DESTINAÇÃO"},
-    {"t": "p", "text": "O imóvel será utilizado exclusivamente para fins empresariais e operacionais da LOCATÁRIA, compreendendo:"},
-    {"t": "li", "text": "a) atividades administrativas;"},
-    {"t": "li", "text": "b) armazenamento;"},
-    {"t": "li", "text": "c) apoio operacional;"},
-    {"t": "li", "text": "d) apoio logístico;"},
-    {"t": "li", "text": "e) atividades industriais leves;"},
-    {"t": "li", "text": "f) atividades correlatas à operação da TURANO CONSTRUTORA LTDA."},
-    {"t": "pi", "text": "Parágrafo único — É vedada a utilização do imóvel para atividades ilícitas ou incompatíveis com sua natureza."},
-
-    {"t": "h", "text": "VII — DO PRAZO"},
-    {"t": "p", "text": "A locação é celebrada por prazo determinado de 12 (doze) meses, com início em 10 de abril de 2026 e término em 10 de abril de 2027."},
-
-    {"t": "h", "text": "VIII — DO ALUGUEL, DO DESCONTO INICIAL E DO REAJUSTE"},
-    {"t": "p", "text": "O aluguel mensal é de R$ 10.000,00 (dez mil reais)."},
-    {"t": "pi", "text": "Parágrafo primeiro — Será concedido desconto de 50% (cinquenta por cento) sobre o aluguel nos 3 (três) primeiros meses da locação, período em que o aluguel mensal será de R$ 5.000,00 (cinco mil reais)."},
-    {"t": "pi", "text": "Parágrafo segundo — O aluguel será reajustado anualmente pelo menor índice positivo entre o IPCA e o IGP-M."},
-
-    {"t": "h", "text": "IX — DO PAGAMENTO E DA MORA"},
-    {"t": "p", "text": "O aluguel deverá ser pago até o dia 10 (dez) de cada mês, mediante depósito bancário em favor de HEITOR DE FREITAS FROES, na conta [banco, agência e conta]."},
-    {"t": "pi", "text": "Parágrafo único — Em caso de atraso, incidirão sobre o valor devido:"},
-    {"t": "li", "text": "a) multa moratória de 20% (vinte por cento);"},
-    {"t": "li", "text": "b) juros de 1% (um por cento) ao mês;"},
-    {"t": "li", "text": "c) correção monetária."},
-
-    {"t": "h", "text": "X — DOS ENCARGOS"},
-    {"t": "p", "text": "Serão de responsabilidade da LOCATÁRIA:"},
-    {"t": "li", "text": "a) energia elétrica;"},
-    {"t": "li", "text": "b) água;"},
-    {"t": "li", "text": "c) taxas operacionais;"},
-    {"t": "li", "text": "d) consumos próprios;"},
-    {"t": "li", "text": "e) tributos incidentes sobre sua atividade."},
-    {"t": "pi", "text": "Parágrafo único — As despesas comuns eventualmente compartilhadas poderão ser rateadas proporcionalmente entre as partes."},
-
-    {"t": "h", "text": "XI — DAS OBRIGAÇÕES E DA RESPONSABILIDADE DA LOCATÁRIA"},
-    {"t": "p", "text": "Constituem obrigações da LOCATÁRIA:"},
-    {"t": "li", "text": "a) conservar o imóvel;"},
-    {"t": "li", "text": "b) preservar as instalações;"},
-    {"t": "li", "text": "c) responder pelos danos causados;"},
-    {"t": "li", "text": "d) cumprir as exigências legais;"},
-    {"t": "li", "text": "e) manter padrões mínimos de segurança;"},
-    {"t": "li", "text": "f) respeitar as normas ambientais e urbanísticas."},
-    {"t": "pi", "text": "Parágrafo primeiro — A LOCATÁRIA responderá integralmente pelos danos causados:"},
-    {"t": "li", "text": "a) ao imóvel;"},
-    {"t": "li", "text": "b) às instalações;"},
-    {"t": "li", "text": "c) às áreas comuns;"},
-    {"t": "li", "text": "d) às estruturas existentes;"},
-    {"t": "li", "text": "e) aos equipamentos eventualmente compartilhados;"},
-    {"t": "li", "text": "f) às áreas da LOCADORA."},
-    {"t": "pi", "text": "Parágrafo segundo — A responsabilidade prevista neste contrato abrange inclusive atos praticados por:"},
-    {"t": "li", "text": "a) empregados;"},
-    {"t": "li", "text": "b) prestadores de serviços;"},
-    {"t": "li", "text": "c) fornecedores;"},
-    {"t": "li", "text": "d) visitantes;"},
-    {"t": "li", "text": "e) terceiros autorizados;"},
-    {"t": "li", "text": "f) subcontratados."},
-    {"t": "pi", "text": "Parágrafo terceiro — A LOCATÁRIA compromete-se a não armazenar produtos perigosos, inflamáveis ou incompatíveis com a estrutura do imóvel sem autorização prévia da LOCADORA e sem observância das normas legais aplicáveis."},
-    {"t": "pi", "text": "Parágrafo quarto — A LOCATÁRIA compromete-se a respeitar integralmente:"},
-    {"t": "li", "text": "a) as normas ambientais;"},
-    {"t": "li", "text": "b) as normas urbanísticas;"},
-    {"t": "li", "text": "c) as normas sanitárias;"},
-    {"t": "li", "text": "d) as normas de segurança do trabalho;"},
-    {"t": "li", "text": "e) as exigências do Corpo de Bombeiros;"},
-    {"t": "li", "text": "f) as exigências municipais e estaduais."},
-
-    {"t": "h", "text": "XII — DAS BENFEITORIAS"},
-    {"t": "p", "text": "Nenhuma alteração estrutural poderá ser realizada sem autorização expressa da LOCADORA."},
-    {"t": "pi", "text": "Parágrafo primeiro — As benfeitorias úteis, necessárias ou voluptuárias realizadas sem autorização integrarão o imóvel, sem direito a retenção ou indenização."},
-    {"t": "pi", "text": "Parágrafo segundo — As benfeitorias industriais e operacionais removíveis poderão ser retiradas pela LOCATÁRIA ao término da locação, desde que não causem danos estruturais ao imóvel."},
-
-    {"t": "h", "text": "XIII — DA VISTORIA E DA CONSERVAÇÃO"},
-    {"t": "p", "text": "O imóvel será entregue mediante vistoria inicial assinada pelas partes, cujo laudo integra o presente contrato para todos os fins de direito (Anexo III)."},
-    {"t": "pi", "text": "Parágrafo primeiro — A LOCADORA poderá realizar vistorias no imóvel durante a locação, previamente agendadas com a LOCATÁRIA."},
-    {"t": "pi", "text": "Parágrafo segundo — Ao término da locação será realizada vistoria final para verificação das condições do imóvel."},
-    {"t": "pi", "text": "Parágrafo terceiro — A LOCATÁRIA deverá devolver o imóvel em condições compatíveis com aquelas em que o recebeu, ressalvado o desgaste natural decorrente do uso normal."},
-    {"t": "pi", "text": "Parágrafo quarto — Constatados danos além do desgaste natural, a LOCATÁRIA ficará obrigada ao reparo imediato ou ao ressarcimento correspondente."},
-
-    {"t": "h", "text": "XIV — DO INADIMPLEMENTO"},
-    {"t": "p", "text": "O atraso no pagamento do aluguel ou dos encargos por período superior a 30 (trinta) dias constituirá inadimplemento contratual."},
-    {"t": "pi", "text": "Parágrafo primeiro — O inadimplemento autorizará a LOCADORA a promover:"},
-    {"t": "li", "text": "a) a cobrança judicial;"},
-    {"t": "li", "text": "b) a execução do contrato;"},
-    {"t": "li", "text": "c) o despejo;"},
-    {"t": "li", "text": "d) a cobrança de perdas e danos."},
-    {"t": "pi", "text": "Parágrafo segundo — O atraso superior a 90 (noventa) dias poderá ensejar a rescisão imediata do contrato."},
-
-    {"t": "h", "text": "XV — DA RESCISÃO"},
-    {"t": "p", "text": "O presente contrato poderá ser rescindido:"},
-    {"t": "li", "text": "a) por comum acordo;"},
-    {"t": "li", "text": "b) por inadimplência;"},
-    {"t": "li", "text": "c) por descumprimento contratual;"},
-    {"t": "li", "text": "d) por utilização irregular do imóvel."},
-    {"t": "pi", "text": "Parágrafo único — Em caso de desocupação antecipada injustificada pela LOCATÁRIA, ficará devida multa equivalente a 3 (três) aluguéis."},
-
-    {"t": "h", "text": "XVI — DA FIANÇA"},
-    {"t": "p", "text": "O FIADOR responde solidariamente com a LOCATÁRIA por todas as obrigações assumidas neste contrato."},
-
-    {"t": "h", "text": "XVII — DO TÍTULO EXECUTIVO"},
-    {"t": "p", "text": "O presente contrato constitui título executivo extrajudicial."},
-
-    {"t": "h", "text": "XVIII — DOS ANEXOS"},
-    {"t": "p", "text": "Integram o presente contrato, para todos os fins de direito:"},
-    {"t": "li", "text": "a) ANEXO I — Relatório de avaliação do valor de mercado do aluguel;"},
-    {"t": "li", "text": "b) ANEXO II — Memorial descritivo das áreas;"},
-    {"t": "li", "text": "c) ANEXO III — Laudo de vistoria inicial."},
-
-    {"t": "h", "text": "XIX — DO FORO", "junto": true},
-    {"t": "p", "text": "Fica eleito o foro da comarca de Montes Claros/MG para dirimir quaisquer questões oriundas deste contrato, com renúncia a qualquer outro, por mais privilegiado que seja.", "junto": true},
-    {"t": "p", "text": "E, por estarem assim justas e contratadas, as partes assinam o presente instrumento em 3 (três) vias de igual teor e forma, na presença das testemunhas abaixo.", "junto": true},
-    {"t": "city", "text": "Montes Claros/MG, ____ de ____________________ de 2026.", "junto": true},
-
-    {"t": "sig", "role": "Locadora", "name": "Defreitas Compra, Venda, Incorporação e Locação de Bens Imóveis Próprios Ltda", "sub": "p. Heitor de Freitas Froes — representante", "junto": true},
-    {"t": "sig", "role": "Locatária", "name": "Turano Construtora Ltda", "sub": "p. [representante legal]", "junto": true},
-    {"t": "sig", "role": "Fiador", "name": "Guilherme Trindade Turano — CPF 011.689.716-23", "junto": true},
-    {"t": "sig", "role": "Cônjuge do fiador (anuência à fiança)", "name": "[nome] — CPF [_____]", "junto": true},
-    {"t": "sig", "role": "Testemunha", "name": "[nome] — CPF [_____]", "junto": true},
-    {"t": "sig", "role": "Testemunha", "name": "[nome] — CPF [_____]", "junto": true}
+    {
+      "t": "title",
+      "text": "CONTRATO DE LOCAÇÃO DE IMÓVEL NÃO RESIDENCIAL"
+    },
+    {
+      "t": "quadro",
+      "rows": [
+        [
+          "Locadora",
+          "Defreitas Compra, Venda, Incorporação e Locação de Bens Imóveis Próprios Ltda — CNPJ 11.435.163/0001-13"
+        ],
+        [
+          "Representante",
+          "Heitor de Freitas Froes — CPF 124.558.106-66"
+        ],
+        [
+          "Endereço para notificações",
+          "Rua Doutor Walter Ferreira Barreto, nº 525, Bairro Ibituruna, Montes Claros/MG, CEP 39.401-347"
+        ],
+        [
+          "E-mail da locadora",
+          "hffroes@gmail.com"
+        ],
+        [
+          "Locatária",
+          "Turano Construtora Ltda — CNPJ 12.575.065/0001-44"
+        ],
+        [
+          "Endereço da locatária",
+          "Av. Doutor José Corrêa Machado, nº 1079, Bloco C, 1º andar, Sala 102, Montes Claros/MG, CEP 39.401-832"
+        ],
+        [
+          "Representante da locatária",
+          "Guilherme Trindade Turano — CPF 011.689.716-23 — RG MG 615819613"
+        ],
+        [
+          "Telefone da locatária",
+          "(38) 98411-5441"
+        ],
+        [
+          "Fiador",
+          "Guilherme Trindade Turano — CPF 011.689.716-23 — RG MG 615819613 — casado"
+        ],
+        [
+          "Imóvel",
+          "Rua Panamá, nº 158, Bairro Esplanada, Montes Claros/MG, CEP 39.401-449"
+        ],
+        [
+          "Área total do imóvel",
+          "1.710,00 m²"
+        ],
+        [
+          "Área locada",
+          "1.430,00 m² (área útil aproximada)"
+        ],
+        [
+          "Áreas não locadas",
+          "280,00 m², de uso exclusivo da locadora (Cláusula III)"
+        ],
+        [
+          "Finalidade",
+          "Atividades administrativas, armazenamento, apoio operacional e logístico, atividades industriais leves e correlatas à operação da locatária"
+        ],
+        [
+          "Prazo",
+          "12 (doze) meses — de 10/04/2026 a 10/04/2027"
+        ],
+        [
+          "Aluguel mensal",
+          "R$ 10.000,00 (dez mil reais)"
+        ],
+        [
+          "Desconto inicial",
+          "50% nos 3 (três) primeiros meses — R$ 5.000,00 (cinco mil reais) por mês"
+        ],
+        [
+          "Vencimento",
+          "Todo dia 10 de cada mês"
+        ],
+        [
+          "Forma de pagamento",
+          "Depósito bancário em favor de Heitor de Freitas Froes — Sicoob Engecred, agência 3299, conta 46052-4"
+        ],
+        [
+          "Reajuste",
+          "Anual, pelo menor índice positivo entre IPCA e IGP-M"
+        ],
+        [
+          "Anexos",
+          "I — Relatório de avaliação do valor de mercado do aluguel; II — Memorial descritivo das áreas; III — Laudo de vistoria inicial"
+        ]
+      ]
+    },
+    {
+      "t": "h",
+      "text": "I — DA IDENTIFICAÇÃO DAS PARTES"
+    },
+    {
+      "t": "p",
+      "text": "LOCADORA: DEFREITAS COMPRA, VENDA, INCORPORAÇÃO E LOCAÇÃO DE BENS IMÓVEIS PRÓPRIOS LTDA, inscrita no CNPJ sob o nº 11.435.163/0001-13, com sede na R. Lafeta, 116, Sala 105, Centro, Montes Claros/MG, CEP 39.400-045, neste ato representada por HEITOR DE FREITAS FROES, inscrito no CPF sob o nº 124.558.106-66, com endereço para notificações na Rua Doutor Walter Ferreira Barreto, nº 525, Bairro Ibituruna, Montes Claros/MG, CEP 39.401-347, e e-mail hffroes@gmail.com, doravante denominada LOCADORA, legítima proprietária do imóvel adiante identificado;"
+    },
+    {
+      "t": "p",
+      "text": "LOCATÁRIA: TURANO CONSTRUTORA LTDA, inscrita no CNPJ sob o nº 12.575.065/0001-44, com sede na Av. Doutor José Corrêa Machado, nº 1079, Bloco C, 1º andar, Sala 102, Montes Claros/MG, CEP 39.401-832, telefone (38) 98411-5441, neste ato representada por GUILHERME TRINDADE TURANO, inscrito no CPF sob o nº 011.689.716-23, portador do RG nº MG 615819613, doravante denominada LOCATÁRIA;"
+    },
+    {
+      "t": "p",
+      "text": "FIADOR: GUILHERME TRINDADE TURANO, casado, inscrito no CPF sob o nº 011.689.716-23, portador do RG nº MG 615819613, com endereço na Av. Doutor José Corrêa Machado, nº 1079, Bloco C, 1º andar, Sala 102, Montes Claros/MG, CEP 39.401-832, doravante denominado FIADOR."
+    },
+    {
+      "t": "p",
+      "text": "As partes acima qualificadas têm entre si justo e contratado o presente Contrato de Locação de Imóvel Não Residencial, que se regerá pelas cláusulas seguintes e, subsidiariamente, pela Lei nº 8.245/1991 e pela legislação civil aplicável."
+    },
+    {
+      "t": "h",
+      "text": "II — DO OBJETO"
+    },
+    {
+      "t": "p",
+      "text": "O presente contrato tem por objeto a locação parcial do imóvel situado na Rua Panamá, nº 158, Bairro Esplanada, Montes Claros/MG, CEP 39.401-449, com área total de 1.710,00 m² (mil setecentos e dez metros quadrados), correspondendo a área locada à área útil aproximada de 1.430,00 m² (mil quatrocentos e trinta metros quadrados), ocupada pela LOCATÁRIA."
+    },
+    {
+      "t": "pi",
+      "text": "Parágrafo primeiro — A LOCATÁRIA declara receber a área locada em condições adequadas ao uso proposto e ao exercício de suas atividades operacionais e empresariais."
+    },
+    {
+      "t": "pi",
+      "text": "Parágrafo segundo — A presente locação não abrange as áreas identificadas na Cláusula III como de uso exclusivo da LOCADORA, que permanecem sob sua posse direta e se destinam:"
+    },
+    {
+      "t": "li",
+      "text": "a) à operação própria;"
+    },
+    {
+      "t": "li",
+      "text": "b) ao armazenamento;"
+    },
+    {
+      "t": "li",
+      "text": "c) à circulação interna;"
+    },
+    {
+      "t": "li",
+      "text": "d) à manutenção;"
+    },
+    {
+      "t": "li",
+      "text": "e) à utilização comercial;"
+    },
+    {
+      "t": "li",
+      "text": "f) ao apoio operacional."
+    },
+    {
+      "t": "h",
+      "text": "III — DAS ÁREAS NÃO LOCADAS"
+    },
+    {
+      "t": "p",
+      "text": "Permanecem sob posse, uso e operação exclusiva da LOCADORA as áreas abaixo, que totalizam 280,00 m² (duzentos e oitenta metros quadrados) e são descontadas da área total do imóvel:"
+    },
+    {
+      "t": "quadro",
+      "rows": [
+        [
+          "Casa dos fundos, compressor, 710 e Uno",
+          "176,00 m²"
+        ],
+        [
+          "Loja frontal",
+          "54,00 m²"
+        ],
+        [
+          "Maquinário da fábrica (área aproximada)",
+          "50,00 m²"
+        ],
+        [
+          "Total não locado",
+          "280,00 m²"
+        ]
+      ]
+    },
+    {
+      "t": "pi",
+      "text": "Parágrafo único — As áreas acima poderão futuramente ser incorporadas à área locada mediante termo aditivo específico entre as partes."
+    },
+    {
+      "t": "h",
+      "text": "IV — DAS ÁREAS EM TRANSIÇÃO"
+    },
+    {
+      "t": "p",
+      "text": "As áreas atualmente em processo de desocupação poderão ser futuramente incorporadas à posse da LOCATÁRIA."
+    },
+    {
+      "t": "pi",
+      "text": "Parágrafo único — A eventual ampliação dependerá de:"
+    },
+    {
+      "t": "li",
+      "text": "a) disponibilidade operacional;"
+    },
+    {
+      "t": "li",
+      "text": "b) concordância das partes;"
+    },
+    {
+      "t": "li",
+      "text": "c) formalização por termo aditivo."
+    },
+    {
+      "t": "h",
+      "text": "V — DA OCUPAÇÃO COMPARTILHADA, DOS ACESSOS E DA CIRCULAÇÃO"
+    },
+    {
+      "t": "p",
+      "text": "A LOCATÁRIA reconhece que determinadas áreas do imóvel permanecerão sob utilização direta da LOCADORA, devendo a convivência e a circulação operacional entre as partes ocorrer de forma harmoniosa e coordenada, respeitando:"
+    },
+    {
+      "t": "li",
+      "text": "a) os acessos;"
+    },
+    {
+      "t": "li",
+      "text": "b) a circulação;"
+    },
+    {
+      "t": "li",
+      "text": "c) a segurança;"
+    },
+    {
+      "t": "li",
+      "text": "d) a integridade patrimonial;"
+    },
+    {
+      "t": "li",
+      "text": "e) o funcionamento das operações."
+    },
+    {
+      "t": "pi",
+      "text": "Parágrafo primeiro — A LOCADORA poderá acessar suas áreas exclusivas a qualquer momento, não podendo a LOCATÁRIA impedir, restringir ou dificultar o acesso da LOCADORA às áreas não locadas."
+    },
+    {
+      "t": "pi",
+      "text": "Parágrafo segundo — Havendo necessidade operacional, manutenção, reparo estrutural ou adequações técnicas, a LOCADORA poderá acessar o imóvel mediante comunicação prévia."
+    },
+    {
+      "t": "pi",
+      "text": "Parágrafo terceiro — A LOCATÁRIA obriga-se a preservar:"
+    },
+    {
+      "t": "li",
+      "text": "a) os acessos internos;"
+    },
+    {
+      "t": "li",
+      "text": "b) os corredores operacionais;"
+    },
+    {
+      "t": "li",
+      "text": "c) as áreas de carga e descarga;"
+    },
+    {
+      "t": "li",
+      "text": "d) a circulação de veículos;"
+    },
+    {
+      "t": "li",
+      "text": "e) os sistemas hidráulicos;"
+    },
+    {
+      "t": "li",
+      "text": "f) os sistemas elétricos;"
+    },
+    {
+      "t": "li",
+      "text": "g) os equipamentos estruturais."
+    },
+    {
+      "t": "h",
+      "text": "VI — DA DESTINAÇÃO"
+    },
+    {
+      "t": "p",
+      "text": "O imóvel será utilizado exclusivamente para fins empresariais e operacionais da LOCATÁRIA, compreendendo:"
+    },
+    {
+      "t": "li",
+      "text": "a) atividades administrativas;"
+    },
+    {
+      "t": "li",
+      "text": "b) armazenamento;"
+    },
+    {
+      "t": "li",
+      "text": "c) apoio operacional;"
+    },
+    {
+      "t": "li",
+      "text": "d) apoio logístico;"
+    },
+    {
+      "t": "li",
+      "text": "e) atividades industriais leves;"
+    },
+    {
+      "t": "li",
+      "text": "f) atividades correlatas à operação da TURANO CONSTRUTORA LTDA."
+    },
+    {
+      "t": "pi",
+      "text": "Parágrafo único — É vedada a utilização do imóvel para atividades ilícitas ou incompatíveis com sua natureza."
+    },
+    {
+      "t": "h",
+      "text": "VII — DO PRAZO"
+    },
+    {
+      "t": "p",
+      "text": "A locação é celebrada por prazo determinado de 12 (doze) meses, com início em 10 de abril de 2026 e término em 10 de abril de 2027."
+    },
+    {
+      "t": "h",
+      "text": "VIII — DO ALUGUEL, DO DESCONTO INICIAL E DO REAJUSTE"
+    },
+    {
+      "t": "p",
+      "text": "O aluguel mensal é de R$ 10.000,00 (dez mil reais)."
+    },
+    {
+      "t": "pi",
+      "text": "Parágrafo primeiro — Será concedido desconto de 50% (cinquenta por cento) sobre o aluguel nos 3 (três) primeiros meses da locação, período em que o aluguel mensal será de R$ 5.000,00 (cinco mil reais)."
+    },
+    {
+      "t": "pi",
+      "text": "Parágrafo segundo — O aluguel será reajustado anualmente pelo menor índice positivo entre o IPCA e o IGP-M."
+    },
+    {
+      "t": "h",
+      "text": "IX — DO PAGAMENTO E DA MORA"
+    },
+    {
+      "t": "p",
+      "text": "O aluguel deverá ser pago até o dia 10 (dez) de cada mês, mediante depósito bancário em favor de HEITOR DE FREITAS FROES, no Sicoob Engecred, agência 3299, conta 46052-4."
+    },
+    {
+      "t": "pi",
+      "text": "Parágrafo único — Em caso de atraso, incidirão sobre o valor devido:"
+    },
+    {
+      "t": "li",
+      "text": "a) multa moratória de 20% (vinte por cento);"
+    },
+    {
+      "t": "li",
+      "text": "b) juros de 1% (um por cento) ao mês;"
+    },
+    {
+      "t": "li",
+      "text": "c) correção monetária."
+    },
+    {
+      "t": "h",
+      "text": "X — DOS ENCARGOS"
+    },
+    {
+      "t": "p",
+      "text": "Serão de responsabilidade da LOCATÁRIA:"
+    },
+    {
+      "t": "li",
+      "text": "a) energia elétrica;"
+    },
+    {
+      "t": "li",
+      "text": "b) água;"
+    },
+    {
+      "t": "li",
+      "text": "c) taxas operacionais;"
+    },
+    {
+      "t": "li",
+      "text": "d) consumos próprios;"
+    },
+    {
+      "t": "li",
+      "text": "e) tributos incidentes sobre sua atividade."
+    },
+    {
+      "t": "pi",
+      "text": "Parágrafo único — As despesas comuns eventualmente compartilhadas poderão ser rateadas proporcionalmente entre as partes."
+    },
+    {
+      "t": "h",
+      "text": "XI — DAS OBRIGAÇÕES E DA RESPONSABILIDADE DA LOCATÁRIA"
+    },
+    {
+      "t": "p",
+      "text": "Constituem obrigações da LOCATÁRIA:"
+    },
+    {
+      "t": "li",
+      "text": "a) conservar o imóvel;"
+    },
+    {
+      "t": "li",
+      "text": "b) preservar as instalações;"
+    },
+    {
+      "t": "li",
+      "text": "c) responder pelos danos causados;"
+    },
+    {
+      "t": "li",
+      "text": "d) cumprir as exigências legais;"
+    },
+    {
+      "t": "li",
+      "text": "e) manter padrões mínimos de segurança;"
+    },
+    {
+      "t": "li",
+      "text": "f) respeitar as normas ambientais e urbanísticas."
+    },
+    {
+      "t": "pi",
+      "text": "Parágrafo primeiro — A LOCATÁRIA responderá integralmente pelos danos causados:"
+    },
+    {
+      "t": "li",
+      "text": "a) ao imóvel;"
+    },
+    {
+      "t": "li",
+      "text": "b) às instalações;"
+    },
+    {
+      "t": "li",
+      "text": "c) às áreas comuns;"
+    },
+    {
+      "t": "li",
+      "text": "d) às estruturas existentes;"
+    },
+    {
+      "t": "li",
+      "text": "e) aos equipamentos eventualmente compartilhados;"
+    },
+    {
+      "t": "li",
+      "text": "f) às áreas da LOCADORA."
+    },
+    {
+      "t": "pi",
+      "text": "Parágrafo segundo — A responsabilidade prevista neste contrato abrange inclusive atos praticados por:"
+    },
+    {
+      "t": "li",
+      "text": "a) empregados;"
+    },
+    {
+      "t": "li",
+      "text": "b) prestadores de serviços;"
+    },
+    {
+      "t": "li",
+      "text": "c) fornecedores;"
+    },
+    {
+      "t": "li",
+      "text": "d) visitantes;"
+    },
+    {
+      "t": "li",
+      "text": "e) terceiros autorizados;"
+    },
+    {
+      "t": "li",
+      "text": "f) subcontratados."
+    },
+    {
+      "t": "pi",
+      "text": "Parágrafo terceiro — A LOCATÁRIA compromete-se a não armazenar produtos perigosos, inflamáveis ou incompatíveis com a estrutura do imóvel sem autorização prévia da LOCADORA e sem observância das normas legais aplicáveis."
+    },
+    {
+      "t": "pi",
+      "text": "Parágrafo quarto — A LOCATÁRIA compromete-se a respeitar integralmente:"
+    },
+    {
+      "t": "li",
+      "text": "a) as normas ambientais;"
+    },
+    {
+      "t": "li",
+      "text": "b) as normas urbanísticas;"
+    },
+    {
+      "t": "li",
+      "text": "c) as normas sanitárias;"
+    },
+    {
+      "t": "li",
+      "text": "d) as normas de segurança do trabalho;"
+    },
+    {
+      "t": "li",
+      "text": "e) as exigências do Corpo de Bombeiros;"
+    },
+    {
+      "t": "li",
+      "text": "f) as exigências municipais e estaduais."
+    },
+    {
+      "t": "h",
+      "text": "XII — DAS BENFEITORIAS"
+    },
+    {
+      "t": "p",
+      "text": "Nenhuma alteração estrutural poderá ser realizada sem autorização expressa da LOCADORA."
+    },
+    {
+      "t": "pi",
+      "text": "Parágrafo primeiro — As benfeitorias úteis, necessárias ou voluptuárias realizadas sem autorização integrarão o imóvel, sem direito a retenção ou indenização."
+    },
+    {
+      "t": "pi",
+      "text": "Parágrafo segundo — As benfeitorias industriais e operacionais removíveis poderão ser retiradas pela LOCATÁRIA ao término da locação, desde que não causem danos estruturais ao imóvel."
+    },
+    {
+      "t": "h",
+      "text": "XIII — DA VISTORIA E DA CONSERVAÇÃO"
+    },
+    {
+      "t": "p",
+      "text": "O imóvel será entregue mediante vistoria inicial assinada pelas partes, cujo laudo integra o presente contrato para todos os fins de direito (Anexo III)."
+    },
+    {
+      "t": "pi",
+      "text": "Parágrafo primeiro — A LOCADORA poderá realizar vistorias no imóvel durante a locação, previamente agendadas com a LOCATÁRIA."
+    },
+    {
+      "t": "pi",
+      "text": "Parágrafo segundo — Ao término da locação será realizada vistoria final para verificação das condições do imóvel."
+    },
+    {
+      "t": "pi",
+      "text": "Parágrafo terceiro — A LOCATÁRIA deverá devolver o imóvel em condições compatíveis com aquelas em que o recebeu, ressalvado o desgaste natural decorrente do uso normal."
+    },
+    {
+      "t": "pi",
+      "text": "Parágrafo quarto — Constatados danos além do desgaste natural, a LOCATÁRIA ficará obrigada ao reparo imediato ou ao ressarcimento correspondente."
+    },
+    {
+      "t": "h",
+      "text": "XIV — DO INADIMPLEMENTO"
+    },
+    {
+      "t": "p",
+      "text": "O atraso no pagamento do aluguel ou dos encargos por período superior a 30 (trinta) dias constituirá inadimplemento contratual."
+    },
+    {
+      "t": "pi",
+      "text": "Parágrafo primeiro — O inadimplemento autorizará a LOCADORA a promover:"
+    },
+    {
+      "t": "li",
+      "text": "a) a cobrança judicial;"
+    },
+    {
+      "t": "li",
+      "text": "b) a execução do contrato;"
+    },
+    {
+      "t": "li",
+      "text": "c) o despejo;"
+    },
+    {
+      "t": "li",
+      "text": "d) a cobrança de perdas e danos."
+    },
+    {
+      "t": "pi",
+      "text": "Parágrafo segundo — O atraso superior a 90 (noventa) dias poderá ensejar a rescisão imediata do contrato."
+    },
+    {
+      "t": "h",
+      "text": "XV — DA RESCISÃO"
+    },
+    {
+      "t": "p",
+      "text": "O presente contrato poderá ser rescindido:"
+    },
+    {
+      "t": "li",
+      "text": "a) por comum acordo;"
+    },
+    {
+      "t": "li",
+      "text": "b) por inadimplência;"
+    },
+    {
+      "t": "li",
+      "text": "c) por descumprimento contratual;"
+    },
+    {
+      "t": "li",
+      "text": "d) por utilização irregular do imóvel."
+    },
+    {
+      "t": "pi",
+      "text": "Parágrafo único — Em caso de desocupação antecipada injustificada pela LOCATÁRIA, ficará devida multa equivalente a 3 (três) aluguéis."
+    },
+    {
+      "t": "h",
+      "text": "XVI — DA FIANÇA"
+    },
+    {
+      "t": "p",
+      "text": "O FIADOR responde solidariamente com a LOCATÁRIA por todas as obrigações assumidas neste contrato."
+    },
+    {
+      "t": "h",
+      "text": "XVII — DO TÍTULO EXECUTIVO"
+    },
+    {
+      "t": "p",
+      "text": "O presente contrato constitui título executivo extrajudicial."
+    },
+    {
+      "t": "h",
+      "text": "XVIII — DOS ANEXOS"
+    },
+    {
+      "t": "p",
+      "text": "Integram o presente contrato, para todos os fins de direito:"
+    },
+    {
+      "t": "li",
+      "text": "a) ANEXO I — Relatório de avaliação do valor de mercado do aluguel;"
+    },
+    {
+      "t": "li",
+      "text": "b) ANEXO II — Memorial descritivo das áreas;"
+    },
+    {
+      "t": "li",
+      "text": "c) ANEXO III — Laudo de vistoria inicial."
+    },
+    {
+      "t": "h",
+      "text": "XIX — DO FORO",
+      "junto": true
+    },
+    {
+      "t": "p",
+      "text": "Fica eleito o foro da comarca de Montes Claros/MG para dirimir quaisquer questões oriundas deste contrato, com renúncia a qualquer outro, por mais privilegiado que seja.",
+      "junto": true
+    },
+    {
+      "t": "p",
+      "text": "E, por estarem assim justas e contratadas, as partes assinam o presente instrumento em 3 (três) vias de igual teor e forma, para que produza seus efeitos legais.",
+      "junto": true
+    },
+    {
+      "t": "city",
+      "text": "Montes Claros/MG, 14 de outubro de 2026.",
+      "junto": true
+    },
+    {
+      "t": "sig",
+      "role": "Locadora",
+      "name": "Defreitas Compra, Venda, Incorporação e Locação de Bens Imóveis Próprios Ltda",
+      "sub": "p. Heitor de Freitas Froes — representante",
+      "junto": true
+    },
+    {
+      "t": "sig",
+      "role": "Locatária",
+      "name": "Turano Construtora Ltda",
+      "sub": "p. Guilherme Trindade Turano — representante",
+      "junto": true
+    },
+    {
+      "t": "sig",
+      "role": "Fiador",
+      "name": "Guilherme Trindade Turano — CPF 011.689.716-23",
+      "junto": true
+    },
+    {
+      "t": "sig",
+      "role": "Cônjuge do fiador (anuência à fiança)",
+      "name": "[nome] — CPF [_____]",
+      "junto": true
+    }
   ]
 }
