@@ -1406,6 +1406,9 @@ function gerarPDF(d,blocks){
       if(b.t==='city') y+=5;
       let i=0;
       while(i<ls.length){
+        /* O respiro do bloco anterior pode ter levado y além da margem:
+           sem esta quebra a primeira linha sai em cima do rodapé. */
+        if(y>PG.bot) novaPagina();
         const cabe=Math.max(1,Math.floor((PG.bot-y)/lh));
         const chunk=ls.slice(i,i+cabe);
         doc.text(chunk,PG.ml+ind,y,{align: b.t==='city'?'left':'justify', maxWidth:w, lineHeightFactor:lh/(size*0.3528)});
@@ -1518,7 +1521,8 @@ function gerarDOCX(d,blocks){
       body+='</w:tbl>'+pVazio();
     }
     else if(b.t==='h'){
-      body+=pDocx(b.text,{b:true,size:20,color:'3A2A1F',jc:'left',before:260,after:120,keep:kp&&!ultimo});
+      /* título de cláusula sempre preso ao parágrafo seguinte: nunca órfão no pé da página */
+      body+=pDocx(b.text,{b:true,size:20,color:'3A2A1F',jc:'left',before:260,after:120,keep:!ultimo});
     }
     else if(b.t==='p') body+=pDocx(b.text,{size:20,after:140,keep:kp&&!ultimo});
     else if(b.t==='pi') body+=pDocx(b.text,{size:19,color:'55504A',ind:340,after:140,keep:kp&&!ultimo});
