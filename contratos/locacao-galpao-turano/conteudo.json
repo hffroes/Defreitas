@@ -74,10 +74,6 @@
           "R$ 10.000,00 (dez mil reais)"
         ],
         [
-          "Desconto inicial",
-          "50% nos 3 (três) primeiros meses — R$ 5.000,00 (cinco mil reais) por mês"
-        ],
-        [
           "Vencimento",
           "Todo dia 10 de cada mês"
         ],
@@ -326,7 +322,7 @@
     },
     {
       "t": "h",
-      "text": "VIII — DO ALUGUEL, DO DESCONTO INICIAL E DO REAJUSTE"
+      "text": "VIII — DO ALUGUEL E DO REAJUSTE"
     },
     {
       "t": "p",
@@ -334,11 +330,7 @@
     },
     {
       "t": "pi",
-      "text": "Parágrafo primeiro — Será concedido desconto de 50% (cinquenta por cento) sobre o aluguel nos 3 (três) primeiros meses da locação, período em que o aluguel mensal será de R$ 5.000,00 (cinco mil reais)."
-    },
-    {
-      "t": "pi",
-      "text": "Parágrafo segundo — O aluguel será reajustado anualmente pelo menor índice positivo entre o IPCA e o IGP-M."
+      "text": "Parágrafo único — O aluguel será reajustado anualmente pelo menor índice positivo entre o IPCA e o IGP-M."
     },
     {
       "t": "h",
